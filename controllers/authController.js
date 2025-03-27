@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
 // custom modules
-import app from "../index.js";
 import User from "../models/userModel.js";
 
 // error handling
@@ -42,6 +41,13 @@ const register = catchAsync(async (req, res, next) => {
 
   const token = signToken(newUser._id);
 
+  res.cookie("jwt", token, {
+    httpOnly: true,
+    expires: new Date(
+      Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+    ),
+  });
+
   res.status(200).json({
     status: "success",
     token: token,
@@ -58,7 +64,41 @@ const login = catchAsync(async (req, res, next) => {
       new AppError("Please provide email or password filed correctly", 400)
     );
   }
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    return next(
+      new AppError(
+        "email id not found, please register first and try again",
+        400
+      )
+    );
+  }
+
+  if (!(await user.correctPassword(password, user.password))) {
+    return next(
+      new AppError(
+        "password does not match, please enter correct password",
+        400
+      )
+    );
+  }
+
+  const token = signToken(user._id);
+
+  res.cookie("jwt", token, {
+    httpOnly: false,
+    expires: new Date(
+      Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+    ),
+  });
+
+  res.status(200).json({
+    status: "success",
+    token,
+    user,
+  });
 });
 
 // exporting all functions
-export { register };
+export { register, login };

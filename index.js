@@ -1,5 +1,6 @@
 // installed modules
 import express from "express";
+import cookieParser from "cookie-parser";
 
 // custom modules
 import urlRoutes from "./routes/urlRoutes.js";
@@ -11,6 +12,7 @@ const app = express();
 
 // global middlewares
 app.use(express.json());
+app.use(cookieParser());
 
 // routes for the application
 app.use("/urls", urlRoutes);
