@@ -10,14 +10,17 @@ import User from "../models/userModel.js";
 import AppError from "../utils/appError.js";
 import catchAsync from "../../../backend/utils/catchAsync.js";
 
+// config file configuration
 dotenv.config({ path: "./config.env" });
 
+// function for creating the jwt token
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET_KEY, {
     expiresIn: process.env.JWT_EXPIRES,
   });
 };
 
+// register function for registering the user
 const register = catchAsync(async (req, res, next) => {
   const { name, email, password, confirmPassword } = req.body;
 
@@ -57,4 +60,5 @@ const login = catchAsync(async (req, res, next) => {
   }
 });
 
+// exporting all functions
 export { register };
