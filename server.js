@@ -1,8 +1,11 @@
 // installed modules
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 
 // custom modules
 import app from "./index.js";
+
+dotenv.config({ path: "./config.env" });
 
 const DB = "mongodb://localhost:27017/UrlShortner";
 mongoose

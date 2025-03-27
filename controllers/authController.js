@@ -1,8 +1,22 @@
+// installed modules
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+// custom modules
 import app from "../index.js";
 import User from "../models/userModel.js";
 
+// error handling
 import AppError from "../utils/appError.js";
 import catchAsync from "../../../backend/utils/catchAsync.js";
+
+dotenv.config({ path: "./config.env" });
+
+const signToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET_KEY, {
+    expiresIn: process.env.JWT_EXPIRES,
+  });
+};
 
 const register = catchAsync(async (req, res, next) => {
   const { name, email, password, confirmPassword } = req.body;
@@ -23,10 +37,24 @@ const register = catchAsync(async (req, res, next) => {
     confirmPassword,
   });
 
+  const token = signToken(newUser._id);
+
   res.status(200).json({
     status: "success",
+    token: token,
     data: newUser,
   });
+});
+
+// login the user
+const login = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return next(
+      new AppError("Please provide email or password filed correctly", 400)
+    );
+  }
 });
 
 export { register };
