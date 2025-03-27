@@ -35,6 +35,10 @@ app.use("/auth", authRouter);
 app.use("/", viewsRouter);
 
 // global error hadnling middleware
+app.all("*", (req, res) => {
+  res.status(404).render("404", { url: req.originalUrl });
+});
+
 app.use(errorHandler);
 
 export default app;

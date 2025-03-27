@@ -1,5 +1,9 @@
-const getRegisterPage = (req, res) => {
+const getHomepagePage = (req, res) => {
   res.render("index");
 };
 
-export { getRegisterPage };
+const getRegisterPage = (req, res) => {
+  res.render("register");
+};
+
+export { getHomepagePage, getRegisterPage };
