@@ -3,7 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 // installed modules
-import express from "express";
+import express, { urlencoded } from "express";
 import cookieParser from "cookie-parser";
 import ejs from "ejs";
 
@@ -26,6 +26,7 @@ app.set("views", path.join(__dirname, "views"));
 // global middlewares
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 
 // routes for the application's api
 app.use("/urls", urlRoutes);
