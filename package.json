@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "dev": "concurrently \"npx @tailwindcss/cli -i ./public/css/style.css -o ./public/css/output.css --watch\" \"nodemon server.js\""
   },
   "keywords": [
     "urlshortener"
@@ -14,6 +15,7 @@
   "author": "keyur",
   "license": "ISC",
   "dependencies": {
+    "@tailwindcss/cli": "^4.0.17",
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
@@ -21,6 +23,10 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.0",
-    "nanoid": "^5.1.5"
+    "nanoid": "^5.1.5",
+    "tailwindcss": "^4.0.17"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
   }
 }
