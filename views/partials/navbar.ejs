@@ -1,0 +1,55 @@
+<nav
+  class="h-25 bg-black text-white flex justify-between items-center gap-5 px-5"
+>
+  <!-- Logo menu -->
+  <div class="md:block">
+    <img src="#" alt="Website logo" />
+  </div>
+
+  <!-- Button for nav responsive -->
+  <button id="menu-toggle" class="text-white md:hidden absolute right-5">
+    ☰
+  </button>
+
+  <!-- Navigation menu -->
+  <div
+    id="menu"
+    class="md:static md:min-h-fit absolute min-h-[30vh] bg-black left-0 top-[5%] w-full flex items-center justify-center"
+  >
+    <ul
+      class="flex flex-col md:flex-row gap-5 justify-center items-center h-full"
+    >
+      <li>Home</li>
+      <li>Pricing</li>
+      <li>About us</li>
+      <li>Contact us</li>
+      <li>About me</li>
+    </ul>
+  </div>
+
+  <!-- Authentication menu -->
+  <div class="mr-10 flex gap-4">
+    <button class="hover:text-slate-300 cursor-pointer">Logout</button>
+    <button class="hover:text-slate-300 cursor-pointer">Login</button>
+    <button class="hover:text-slate-300 cursor-pointer">Register</button>
+  </div>
+</nav>
+
+<script>
+  const menuToggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("menu");
+
+  menuToggle.addEventListener("click", () => {
+    if (window.innerWidth <= 767) {
+      menu.classList.toggle("hidden");
+    }
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 767) {
+      menu.classList.remove("hidden");
+    } else {
+      menu.classList.add("hidden");
+    }
+  });
+</script>
