@@ -1,39 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/output.css" />
     <title>Register</title>
-</head>
+  </head>
 
-<body>
-    <form action="/auth/register" method="post">
-        <h2>Register page</h2>
+  <body>
+    <%# Include register page %> <%- include("../partials/navbar") %>
 
-        <label for="name">Enter you name : </label>
-        <input type="text" name="name" id="name">
+    <main
+      class="mt-20 w-[95vw] md:w-[80vw] lg:w-[85vw] mx-auto flex flex-col lg:flex-row shadow inset-shadow-sm"
+    >
+      <div id="image" class="w-full lg:w-1/2 rounded-l-2xl overflow-hidden">
+        <img
+          src="http://localhost:3000/images/auth/login-image.avif"
+          alt="some login image"
+          class="w-full h-full object-cover"
+        />
+      </div>
 
-        <br>
+      <div
+        id="form"
+        class="w-full lg:w-1/2 sm:h-full rounded-r-2xl overflow-hidden"
+      >
+        <form
+          action="/auth/register"
+          method="post"
+          class="mt-2 mb-5 text-center"
+        >
+          <h1 class="text-3xl mb-10 font-bold">Don't have a account?</h1>
 
-        <label for="email">Enter your email</label>
-        <input type="email" name="email" id="email">
+          <div id="name" class="mt-4 grid grid-cols-2 gap-3">
+            <label for="name" class="font-medium">Enter you name : </label>
+            <input type="text" name="name" id="name" class="outline-1 mr-3" />
+          </div>
 
-        <br>
+          <br />
 
-        <label for="password">password</label>
-        <input type="password" name="password" id="password">
+          <div id="email" class="mt-4 grid grid-cols-2 gap-3">
+            <label for="email" class="font-medium">Enter your email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              class="outline-1 mr-3"
+            />
+          </div>
 
-        <br>
+          <br />
 
-        <label for="confirmPassword">Conform your password</label>
-        <input type="password" name="confirmPassword" id="confirmPassword">
+          <div id="password" class="mt-4 grid grid-cols-2 gap-3">
+            <label for="password" class="font-medium">password</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="outline-1 mr-3"
+            />
+          </div>
 
-        <br>
+          <br />
 
-        <input type="submit" value="Register">
-    </form>
+          <div id="confirmpassword" class="mt-4 grid grid-cols-2 gap-3">
+            <label for="confirmPassword" class="font-medium"
+              >Conform your password</label
+            >
+            <input
+              type="password"
+              name="confirmPassword"
+              id="confirmPassword"
+              class="outline-1 mr-3"
+            />
+          </div>
 
-</body>
+          <br />
 
+          <input
+            type="submit"
+            value="Register"
+            class="border border-white rounded cursor-pointer mt-10 mb-3 px-3 py-1 bg-blue-700 text-white hover:bg-blue-600"
+          />
+        </form>
+      </div>
+    </main>
+  </body>
 </html>
