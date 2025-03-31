@@ -37,12 +37,19 @@
 
   <!-- Authentication menu -->
   <div class="mr-10 flex gap-4">
-    <button class="hover:text-slate-300 cursor-pointer">Logout</button>
-    <button class="hover:text-slate-300 cursor-pointer">Login</button>
-    <button class="hover:text-slate-300 cursor-pointer">Register</button>
+    <button id="logout" class="hover:text-slate-300 cursor-pointer">
+      Logout
+    </button>
+    <button class="hover:text-slate-300 cursor-pointer">
+      <a href="/login">Login</a>
+    </button>
+    <button class="hover:text-slate-300 cursor-pointer">
+      <a href="/register">Register</a>
+    </button>
   </div>
 </nav>
 
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
   const menuToggle = document.getElementById("menu-toggle");
   const menu = document.getElementById("menu");
@@ -58,6 +65,26 @@
       menu.classList.remove("hidden");
     } else {
       menu.classList.add("hidden");
+    }
+  });
+
+  document.getElementById("logout").addEventListener("click", async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/auth/logout", {
+        withCredentials: true,
+      });
+
+      console.log(response.data.status);
+
+      if (response.data.status === "success") {
+        alert("logout successfull");
+        window.location.href = "/login";
+      }
+    } catch (err) {
+      alert(err.response.data.message);
+      console.log(err.response.data.message);
+
+      console.log(err.response);
     }
   });
 </script>

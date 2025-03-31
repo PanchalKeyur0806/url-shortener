@@ -85,6 +85,7 @@
       </div>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
       async function handleLogin(event) {
         event.preventDefault();
@@ -92,20 +93,11 @@
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
 
-        const response = await fetch("http://localhost:3000/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
+        try {
+          const response = await axios.post("/auth/login", { email, password });
           alert("login successfull");
-          document.cookie = `jwt=${data.token}; path=/;`;
-          window.location.href = "/";
-        } else {
-          console.log(`${data.messsage}`);
+        } catch (error) {
+          alert(error.response.data.message);
         }
       }
     </script>

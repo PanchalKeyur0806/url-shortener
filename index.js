@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import express, { urlencoded } from "express";
 import cookieParser from "cookie-parser";
 import ejs from "ejs";
+import cors from "cors";
 
 // custom modules
 import urlRoutes from "./routes/urlRoutes.js";
@@ -24,10 +25,16 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 // global middlewares
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
-app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 // routes for the application's api
 app.use("/urls", urlRoutes);

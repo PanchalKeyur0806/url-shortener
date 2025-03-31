@@ -87,7 +87,7 @@ const login = catchAsync(async (req, res, next) => {
   const token = signToken(user._id);
 
   res.cookie("jwt", token, {
-    httpOnly: false,
+    httpOnly: true,
     expires: new Date(
       Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000
     ),
@@ -100,5 +100,23 @@ const login = catchAsync(async (req, res, next) => {
   });
 });
 
+const logout = catchAsync(async (req, res, next) => {
+  if (!req.cookies || !req.cookies.jwt) {
+    return next(new AppError("cookie not found", 400));
+  }
+
+  // console.log(req.cookie.jwt);
+
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "Lax",
+  });
+
+  res.status(200).json({
+    status: "success",
+    message: "logout successfully",
+  });
+});
 // exporting all functions
-export { register, login };
+export { register, login, logout };
