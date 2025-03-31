@@ -13,6 +13,7 @@
     --color-blue-800: oklch(0.424 0.199 265.638);
     --color-blue-900: oklch(0.379 0.146 265.522);
     --color-blue-950: oklch(0.282 0.091 267.935);
+    --color-slate-50: oklch(0.984 0.003 247.858);
     --color-slate-300: oklch(0.869 0.022 252.894);
     --color-slate-700: oklch(0.372 0.044 257.287);
     --color-slate-800: oklch(0.279 0.041 260.031);
@@ -20,6 +21,8 @@
     --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
+    --text-2xl: 1.5rem;
+    --text-2xl--line-height: calc(2 / 1.5);
     --text-3xl: 1.875rem;
     --text-3xl--line-height: calc(2.25 / 1.875);
     --text-4xl: 2.25rem;
@@ -185,8 +188,14 @@
   .top-\[5\%\] {
     top: 5%;
   }
+  .right-0 {
+    right: calc(var(--spacing) * 0);
+  }
   .right-5 {
     right: calc(var(--spacing) * 5);
+  }
+  .bottom-0 {
+    bottom: calc(var(--spacing) * 0);
   }
   .left-0 {
     left: calc(var(--spacing) * 0);
@@ -211,6 +220,9 @@
     @media (width >= 96rem) {
       max-width: 96rem;
     }
+  }
+  .mx-3 {
+    margin-inline: calc(var(--spacing) * 3);
   }
   .mx-6 {
     margin-inline: calc(var(--spacing) * 6);
@@ -241,6 +253,9 @@
   }
   .mt-20 {
     margin-top: calc(var(--spacing) * 20);
+  }
+  .mt-auto {
+    margin-top: auto;
   }
   .mr-3 {
     margin-right: calc(var(--spacing) * 3);
@@ -284,6 +299,9 @@
   .min-h-\[30vh\] {
     min-height: 30vh;
   }
+  .min-h-screen {
+    min-height: 100vh;
+  }
   .w-\[9vw\] {
     width: 9vw;
   }
@@ -319,6 +337,9 @@
   }
   .items-center {
     align-items: center;
+  }
+  .justify-around {
+    justify-content: space-around;
   }
   .justify-between {
     justify-content: space-between;
@@ -438,6 +459,10 @@
   .font-serif {
     font-family: var(--font-serif);
   }
+  .text-2xl {
+    font-size: var(--text-2xl);
+    line-height: var(--tw-leading, var(--text-2xl--line-height));
+  }
   .text-3xl {
     font-size: var(--text-3xl);
     line-height: var(--tw-leading, var(--text-3xl--line-height));
@@ -470,6 +495,12 @@
   }
   .text-blue-800 {
     color: var(--color-blue-800);
+  }
+  .text-slate-50 {
+    color: var(--color-slate-50);
+  }
+  .text-slate-300 {
+    color: var(--color-slate-300);
   }
   .text-slate-700 {
     color: var(--color-slate-700);
@@ -599,6 +630,16 @@
   .md\:min-h-fit {
     @media (width >= 48rem) {
       min-height: fit-content;
+    }
+  }
+  .md\:w-\[50\] {
+    @media (width >= 48rem) {
+      width: 50;
+    }
+  }
+  .md\:w-\[50vw\] {
+    @media (width >= 48rem) {
+      width: 50vw;
     }
   }
   .md\:w-\[80vw\] {
