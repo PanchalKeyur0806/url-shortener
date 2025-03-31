@@ -171,9 +171,6 @@
   .absolute {
     position: absolute;
   }
-  .fixed {
-    position: fixed;
-  }
   .static {
     position: static;
   }
@@ -224,9 +221,6 @@
   }
   .mb-\[50px\] {
     margin-bottom: 50px;
-  }
-  .block {
-    display: block;
   }
   .flex {
     display: flex;

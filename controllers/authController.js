@@ -10,7 +10,7 @@ import AppError from "../utils/appError.js";
 import catchAsync from "../../../backend/utils/catchAsync.js";
 
 // config file configuration
-dotenv.config({ path: "./config.env" });
+dotenv.config({ path: "../config.env" });
 
 // function for creating the jwt token
 const signToken = (id) => {
@@ -105,8 +105,6 @@ const logout = catchAsync(async (req, res, next) => {
     return next(new AppError("cookie not found", 400));
   }
 
-  // console.log(req.cookie.jwt);
-
   res.clearCookie("jwt", {
     httpOnly: true,
     secure: false,
@@ -118,5 +116,25 @@ const logout = catchAsync(async (req, res, next) => {
     message: "logout successfully",
   });
 });
+
+// protect route
+const protect = catchAsync(async (req, res, next) => {
+  const token = req.cookies.jwt;
+
+  if (!token) {
+    return next(new AppError("please login to get access this page", 404));
+  }
+
+  const decode = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+  const user = await User.findById(decode.id);
+  if (!user) {
+    return next(new AppError("user not exists", 400));
+  }
+
+  req.user = user;
+  next();
+});
+
 // exporting all functions
-export { register, login, logout };
+export { register, login, logout, protect };
