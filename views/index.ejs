@@ -9,6 +9,77 @@
 
   <body>
     <%# Include navbar tag %> <%- include("./partials/navbar") %>
-    <h1>Home page</h1>
+
+    <div id="container" class="mt-10 w-[95vw] lg:w-[50vw] mx-auto">
+      <h1 class="mb-10 text-4xl text-blue-500 font-bold font-serif text-center">
+        Short Url
+      </h1>
+
+      <div id="url-short" class="rounded-2xl shadow">
+        <h1 class="py-5 font-bold text-slate-700 text-4xl text-center">
+          Paste url to shortend
+        </h1>
+
+        <form method="post" class="my-3 text-center">
+          <input
+            type="text"
+            name="url"
+            id="url"
+            placeholder="Enter url to shortend"
+            class="outline-1 outline-black p-2"
+          />
+
+          <input
+            type="submit"
+            value="shortend url"
+            class="outline bg-blue-600 text-white rounded p-2 cursor-pointer"
+          />
+        </form>
+
+        <p class="py-5 text-center font-mono">
+          ShortURL is a free tool to shorten URLs and generate short links URL
+          shortener allows to create a shortened link making it easy to share
+        </p>
+      </div>
+
+      <!-- another card -->
+      <div class="mt-20 shadow rounded text-center">
+        <h2 class="py-3 text-3xl text-slate-700 font-semibold">
+          Want more? Try our premium feature
+        </h2>
+
+        <p class="my-3 font-mono">
+          Custom short links, powerful dashboard, detailed analytics, API, UTM
+          builder, QR codes, browser extension, app integrations and support
+        </p>
+
+        <button class="my-3 p-2 bg-blue-600 text-white rounded">
+          <a href="/premium">Get Premium now</a>
+        </button>
+      </div>
+
+      <div class="mt-10">
+        <h1 class="text-3xl text-slate-700 my-3 font-semibold">
+          About our services
+        </h1>
+        <p class="font-medium">
+          ShortURL allows to shorten long links from Instagram, Facebook,
+          YouTube, Twitter, Linked In, WhatsApp, TikTok, blogs and sites. Just
+          paste the long URL and click the Shorten URL button. On the next page,
+          copy the shortened URL and share it on sites, chat and emails. After
+          shortening the URL, check how many clicks it received.
+        </p>
+
+        <h1 class="my-4 text-3xl text-slate-700 font-semibold">
+          Shorten, share and track
+        </h1>
+        <p class="font-medium">
+          Your shortened URLs can be used in publications, documents,
+          advertisements, blogs, forums, instant messages, and other locations.
+          Track statistics for your business and projects by monitoring the
+          number of hits from your URL with our click counter.
+        </p>
+      </div>
+    </div>
   </body>
 </html>
