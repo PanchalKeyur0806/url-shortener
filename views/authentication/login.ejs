@@ -28,7 +28,7 @@
         </div>
 
         <form
-          action="/auth/login"
+          onsubmit="handleLogin(event)"
           method="post"
           class="w-full sm:w-1/2 p-6 shadow-xl"
         >
@@ -84,5 +84,30 @@
         </form>
       </div>
     </main>
+
+    <script>
+      async function handleLogin(event) {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        const response = await fetch("http://localhost:3000/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert("login successfull");
+          document.cookie = `jwt=${data.token}; path=/;`;
+          window.location.href = "/";
+        } else {
+          console.log(`${data.messsage}`);
+        }
+      }
+    </script>
   </body>
 </html>
