@@ -3,11 +3,11 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
 // custom modules
-import User from "../models/userModel.js";
+import User from "../../models/userModel.js";
 
 // error handling
-import AppError from "../utils/appError.js";
-import catchAsync from "../../../backend/utils/catchAsync.js";
+import AppError from "../../utils/appError.js";
+import catchAsync from "../../../../backend/utils/catchAsync.js";
 
 // config file configuration
 dotenv.config({ path: "../config.env" });

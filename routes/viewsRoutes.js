@@ -1,14 +1,16 @@
 import express from "express";
 import {
-  getHomepagePage,
+  homePage,
+  createShortUrl,
   getRegisterPage,
   getLoginPage,
-} from "../controllers/viewsController.js";
+} from "../controllers/viewsController/viewsController.js";
 
 const router = express.Router();
 
 //
-router.get("/", getHomepagePage);
+// router.get("/", homePage);
+router.route("/").get(homePage).post(createShortUrl);
 
 // for authentication
 router.get("/register", getRegisterPage);

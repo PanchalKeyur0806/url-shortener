@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import Url from "../models/urlModel.js";
+import Url from "../../models/urlModel.js";
 
 // get all existing urls
 const getAllUrls = async (req, res) => {

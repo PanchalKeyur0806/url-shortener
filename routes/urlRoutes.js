@@ -4,7 +4,7 @@ import {
   createUrl,
   getUrl,
   generateReport,
-} from "../controllers/urlController.js";
+} from "../controllers/apiController/urlController.js";
 
 const router = express.Router();
 

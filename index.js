@@ -12,7 +12,7 @@ import cors from "cors";
 import urlRoutes from "./routes/urlRoutes.js";
 import authRouter from "./routes/authRoutes.js";
 import viewsRouter from "./routes/viewsRoutes.js";
-import errorHandler from "./controllers/errorHandler.js";
+import errorHandler from "./controllers/apiController/errorHandler.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
