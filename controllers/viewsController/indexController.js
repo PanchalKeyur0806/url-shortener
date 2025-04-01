@@ -2,6 +2,7 @@ import { nanoid } from "nanoid";
 import catchAsync from "../../utils/catchAsync.js";
 import Url from "../../models/urlModel.js";
 import AppError from "../../utils/appError.js";
+import * as urlServices from "../../services/urlServices.js";
 
 const homePage = (req, res) => {
   res.render("index", {
@@ -15,46 +16,24 @@ const homePage = (req, res) => {
 
 const createShortUrl = catchAsync(async (req, res, next) => {
   const { url } = req.body;
-  const shortID = nanoid(10);
 
-  if (!url) {
-    return next(new AppError("please enter your url", 400));
-  }
-
-  const newUrl = await Url.create({
-    shortId: shortID,
-    redirectUrl: url,
-    visitHistory: [],
-  });
-
-  const shortUrl = `${req.protocol}://${req.get("host")}/${shortID}`;
+  const result = await urlServices.createShortUrl(url);
+  const shortUrl = `${req.protocol}://${req.get("host")}/${result.shortId}`;
 
   res.render("index", {
     status: "success",
     message: "url created successfully",
     url: shortUrl,
-    id: shortID,
-    createdUrl: newUrl,
+    id: result.shortID,
+    createdUrl: result.newUrl,
   });
 });
 
 // redirect the url
 const redirectToUrl = catchAsync(async (req, res, next) => {
-  const { shortId } = req.params;
+  const { urlid } = req.params;
 
-  const entry = await Url.findOneAndUpdate(
-    {
-      shortId,
-    },
-    {
-      $push: {
-        visitHistory: { timestamp: Date.now() },
-      },
-    },
-    {
-      new: true,
-    }
-  );
+  const entry = await urlServices.findAndUpdateUrl(urlid);
 
   if (!entry) {
     return res.status(404).render("404", { message: "url not found" });

@@ -19,7 +19,7 @@ export const createShortUrl = async (originalUrl) => {
 };
 
 // url redirection
-export const findAndUpdateUrl = async (shortUrl) => {
+export const findAndUpdateUrl = async (shortId) => {
   const entry = await Url.findOneAndUpdate(
     {
       shortId,
