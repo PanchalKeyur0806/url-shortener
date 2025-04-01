@@ -1,8 +1,10 @@
 import { nanoid } from "nanoid";
 import Url from "../../models/urlModel.js";
+import catchAsync from "../../utils/catchAsync.js";
+import * as urlServices from "../../services/urlServices.js";
 
 // get all existing urls
-const getAllUrls = async (req, res) => {
+export const getAllUrls = async (req, res) => {
   const urls = await Url.find();
 
   res.status(200).json({
@@ -12,59 +14,41 @@ const getAllUrls = async (req, res) => {
 };
 
 // create url
-const createUrl = async (req, res) => {
+export const createShortUrlApi = catchAsync(async (req, res, next) => {
   const { url } = req.body;
-  const shortID = nanoid(10);
 
-  console.log("short id is ..", shortID);
-
-  if (!url) {
-    return res.status(400).json({
-      status: "fail",
-      message: "please enter url filed",
-    });
-  }
-
-  const newUrl = await Url.create({
-    shortId: shortID,
-    redirectUrl: url,
-    visitHistory: [],
-    // userId: 100,
-  });
+  const result = await urlServices.createShortUrl(url);
+  const shortUrl = `${req.protocol}://${req.get("host")}/${result.shortId}`;
 
   res.status(200).json({
     status: "success",
     message: "url created successfully",
-    id: shortID,
-    createdUrl: newUrl,
+    url: shortUrl,
+    id: result.shortId,
+    createdUrl: result.newUrl,
   });
-};
+});
 
 // get the url and redirect to specific page
-const getUrl = async (req, res) => {
+export const redirectUrlApi = catchAsync(async (req, res, next) => {
   const { urlId } = req.params;
-  if (!urlId) {
-    res
-      .status(400)
-      .json({ status: "fail", message: "please provide shortid in params" });
+
+  const entry = await urlServices.findAndUpdateUrl(urlId);
+  if (!entry) {
+    return res.status(400).json({
+      status: "fail",
+      message: "url not found",
+    });
   }
 
-  const entry = await Url.findOneAndUpdate(
-    { shortId: urlId },
-    {
-      $push: {
-        visitHistory: {
-          timestamp: Date.now(),
-        },
-      },
-    }
-  );
-
-  res.redirect(entry.redirectUrl);
-};
+  res.status(200).json({
+    status: "success",
+    redirectUrl: entry.redirectUrl,
+  });
+});
 
 // generate report about specific shortid
-const generateReport = async (req, res) => {
+export const generateReport = async (req, res) => {
   const { shortId } = req.params;
   if (!shortId) {
     res
@@ -80,5 +64,3 @@ const generateReport = async (req, res) => {
     info: result,
   });
 };
-
-export { getAllUrls, createUrl, getUrl, generateReport };

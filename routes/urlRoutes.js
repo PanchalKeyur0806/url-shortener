@@ -1,16 +1,16 @@
 import express from "express";
 import {
   getAllUrls,
-  createUrl,
-  getUrl,
+  createShortUrlApi,
+  redirectUrlApi,
   generateReport,
 } from "../controllers/apiController/urlController.js";
 
 const router = express.Router();
 
-router.route("/").get(getAllUrls).post(createUrl);
+router.route("/").get(getAllUrls).post(createShortUrlApi);
 
-router.get("/:urlId", getUrl);
+router.get("/:urlId", redirectUrlApi);
 
 router.get("/report/:shortId", generateReport);
 
