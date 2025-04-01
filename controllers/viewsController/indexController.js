@@ -38,6 +38,31 @@ const createShortUrl = catchAsync(async (req, res, next) => {
   });
 });
 
+// redirect the url
+const redirectToUrl = catchAsync(async (req, res, next) => {
+  const { shortId } = req.params;
+
+  const entry = await Url.findOneAndUpdate(
+    {
+      shortId,
+    },
+    {
+      $push: {
+        visitHistory: { timestamp: Date.now() },
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  if (!entry) {
+    return res.status(404).render("404", { message: "url not found" });
+  }
+
+  res.redirect(entry.redirectUrl);
+});
+
 // authentication
 const getRegisterPage = (req, res) => {
   res.render("authentication/register");
@@ -47,4 +72,10 @@ const getRegisterPage = (req, res) => {
 const getLoginPage = (req, res) => {
   res.render("authentication/login");
 };
-export { homePage, createShortUrl, getRegisterPage, getLoginPage };
+export {
+  homePage,
+  createShortUrl,
+  getRegisterPage,
+  getLoginPage,
+  redirectToUrl,
+};
