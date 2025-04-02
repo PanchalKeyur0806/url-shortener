@@ -9,7 +9,7 @@ dotenv.config({ path: "./config.env" });
 const renderRegisterPage = (req, res) => {
   res.render("authentication/register", {
     newUser: null,
-    message: "",
+    message: undefined,
     status: "initial",
   });
 };
@@ -41,20 +41,24 @@ const renderLoginPage = (req, res) => {
 };
 
 const handleLogin = catchAsync(async (req, res) => {
-  const { user, token } = await authServices.loginUser(req.body);
+  try {
+    const { user, token } = await authServices.loginUser(req.body);
 
-  res.cookie("jwt", token, {
-    httpOnly: true,
-    expires: new Date(
-      Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-    ),
-  });
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      expires: new Date(
+        Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+      ),
+    });
 
-  res.render("authentication/login", {
-    status: "success",
-    message: "login successfull",
-    data: user,
-  });
+    res.redirect("/");
+  } catch (err) {
+    res.render("authentication/login", {
+      status: "error",
+      message: err.message,
+      data: null,
+    });
+  }
 });
 
 export { renderRegisterPage, handleRegistration, renderLoginPage, handleLogin };
