@@ -42,19 +42,4 @@ const redirectToUrl = catchAsync(async (req, res, next) => {
   res.redirect(entry.redirectUrl);
 });
 
-// authentication
-const getRegisterPage = (req, res) => {
-  res.render("authentication/register");
-};
-
-// login
-const getLoginPage = (req, res) => {
-  res.render("authentication/login");
-};
-export {
-  homePage,
-  createShortUrl,
-  getRegisterPage,
-  getLoginPage,
-  redirectToUrl,
-};
+export { homePage, createShortUrl, redirectToUrl };

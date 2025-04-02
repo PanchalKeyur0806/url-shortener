@@ -276,9 +276,6 @@
   .hidden {
     display: none;
   }
-  .table {
-    display: table;
-  }
   .h-25 {
     height: calc(var(--spacing) * 25);
   }
@@ -302,9 +299,6 @@
   }
   .w-full {
     width: 100%;
-  }
-  .border-collapse {
-    border-collapse: collapse;
   }
   .cursor-pointer {
     cursor: pointer;
@@ -602,6 +596,11 @@
   .md\:w-\[50vw\] {
     @media (width >= 48rem) {
       width: 50vw;
+    }
+  }
+  .md\:w-\[60vw\] {
+    @media (width >= 48rem) {
+      width: 60vw;
     }
   }
   .md\:w-\[80vw\] {

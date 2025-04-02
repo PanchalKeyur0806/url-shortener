@@ -11,6 +11,17 @@
     <!-- Importing the navbar -->
     <%- include("../partials/navbar") %>
 
+    <div id="popup">
+      <% if (status === "success") { %>
+      <div
+        class="w-[95vw] md:w-[60vw] mx-auto mt-5 p-4 flex justify-between items-center bg-green-100 text-green-800 rounded-lg"
+      >
+        <p><%= message %></p>
+        <p class="cursor-pointer">X</p>
+      </div>
+      <% } %>
+    </div>
+
     <!-- Login Page -->
     <main class="h-full flex items-center justify-center">
       <div
@@ -85,21 +96,11 @@
       </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-      async function handleLogin(event) {
-        event.preventDefault();
-
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-
-        try {
-          const response = await axios.post("/auth/login", { email, password });
-          alert("login successfull");
-        } catch (error) {
-          alert(error.response.data.message);
-        }
-      }
+      const popup = document.getElementById("popup");
+      popup.addEventListener("click", () => {
+        popup.remove();
+      });
     </script>
   </body>
 </html>

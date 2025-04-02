@@ -10,6 +10,17 @@
   <body>
     <%# Include register page %> <%- include("../partials/navbar") %>
 
+    <div id="popup">
+      <% if (status === "success") { %>
+      <div
+        class="w-[95vw] md:w-[60vw] mx-auto mt-5 p-4 flex justify-between items-center bg-green-100 text-green-800 rounded-lg"
+      >
+        <p><%= message %></p>
+        <p class="cursor-pointer">X</p>
+      </div>
+      <% } %>
+    </div>
+
     <main
       class="mt-20 w-[95vw] md:w-[80vw] lg:w-[85vw] mx-auto flex flex-col lg:flex-row shadow inset-shadow-sm"
     >
@@ -85,31 +96,11 @@
         </form>
       </div>
     </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-      async function handleRegister(event) {
-        event.preventDefault();
-
-        const name = document.getElementById("name").value;
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        const confirmPassword =
-          document.getElementById("confirmPassword").value;
-
-        try {
-          const response = await axios.post("/auth/register", {
-            name,
-            email,
-            password,
-            confirmPassword,
-          });
-
-          alert("login successfull");
-        } catch (err) {
-          console.error(err.response.data.message);
-        }
-      }
+      const popup = document.getElementById("popup");
+      popup.addEventListener("click", () => {
+        popup.remove();
+      });
     </script>
   </body>
 </html>
