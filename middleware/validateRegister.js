@@ -23,7 +23,7 @@ export const validateRegisters = [
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.status(400).render("index", {
+      return res.status(400).render("authentication/register", {
         status: "error",
         message: errors.array()[0].msg,
       });

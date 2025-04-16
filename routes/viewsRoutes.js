@@ -15,6 +15,7 @@ import {
 // validation middlewares
 import { validateUrl } from "../middleware/validateUrl.js";
 import { validateRegisters } from "../middleware/validateRegister.js";
+import { validateLogin } from "../middleware/validateLogin.js";
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ router
   .route("/register")
   .get(renderRegisterPage)
   .post(validateRegisters, handleRegistration);
-router.route("/login").get(renderLoginPage).post(handleLogin);
+router.route("/login").get(renderLoginPage).post(validateLogin, handleLogin);
 
 router.route("/").get(homePage).post(validateUrl, createShortUrl);
 

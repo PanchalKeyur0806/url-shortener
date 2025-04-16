@@ -33,12 +33,6 @@ export const registration = async (userData) => {
 
 export const loginUser = async (userData) => {
   const { email, password } = userData;
-  if (!email) {
-    throw new AppError("please enter your email address", 400);
-  }
-  if (!password) {
-    throw new AppError("please enter your password", 400);
-  }
 
   const findUser = await User.findOne({ email });
   if (!findUser) {
