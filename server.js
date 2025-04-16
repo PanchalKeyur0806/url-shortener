@@ -8,7 +8,8 @@ import app from "./index.js";
 dotenv.config({ path: "./config.env" });
 
 // connect to the database
-const DB = "mongodb://localhost:27017/UrlShortner";
+const DB =
+  "mongodb+srv://PanchalKeyur08:BleachIsPeak8@cluster0.kqdlh.mongodb.net/UrlShortner";
 mongoose
   .connect(DB)
   .then((data) => console.log("Database connected successfully"))
