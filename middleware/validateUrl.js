@@ -1,0 +1,26 @@
+import { body, validationResult } from "express-validator";
+import AppError from "../utils/appError.js";
+
+export const validateUrl = [
+  body("url")
+    .isString()
+    .withMessage("please enter a string value in the filed")
+    .notEmpty()
+    .withMessage("please enter url in the input filed")
+    .isURL()
+    .withMessage("Invalid url format"),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).render("index", {
+        status: "error",
+        message: errors.array()[0].msg,
+        data: null,
+      });
+    }
+
+    next();
+  },
+];

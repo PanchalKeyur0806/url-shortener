@@ -10,6 +10,24 @@
   <body class="flex flex-col min-h-screen">
     <%# Include navbar tag %> <%- include("./partials/navbar") %>
 
+    <div id="popup">
+      <% if (status === "success") { %>
+      <div
+        class="w-[95vw] md:w-[60vw] mx-auto mt-5 p-4 flex justify-between items-center bg-green-100 text-green-800 rounded-lg"
+      >
+        <p><%= message %></p>
+        <p class="cursor-pointer dismiss-btn">X</p>
+      </div>
+      <% } else if(status === "error"){ %>
+      <div
+        class="w-[95vw] md:w-[60vw] mx-auto mt-5 p-4 flex justify-between items-center bg-red-100 text-red-800 rounded-lg"
+      >
+        <p><%= message %></p>
+        <p class="cursor-pointer dismiss-btn">X</p>
+      </div>
+      <% } %>
+    </div>
+
     <div id="container" class="mt-10 w-[95vw] lg:w-[50vw] mx-auto">
       <h1 class="mb-10 text-4xl text-blue-500 font-bold font-serif text-center">
         Short Url
@@ -97,5 +115,20 @@
       </div>
     </div>
     <%# include footer %> <%- include("./partials/footer") %>
+
+    <script>
+      const popup = document.getElementById("popup");
+      const dismiss_btn = document.querySelector(".dismiss-btn");
+
+      if (dismiss_btn) {
+        dismiss_btn.addEventListener("click", () => {
+          popup.remove();
+        });
+
+        setTimeout(() => {
+          popup.style.display = "none";
+        }, 5000);
+      }
+    </script>
   </body>
 </html>

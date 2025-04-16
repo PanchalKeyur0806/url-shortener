@@ -24,7 +24,7 @@ const createShortUrl = catchAsync(async (req, res, next) => {
     status: "success",
     message: "url created successfully",
     url: shortUrl,
-    id: result.shortID,
+    id: result.shortId,
     createdUrl: result.newUrl,
   });
 });
