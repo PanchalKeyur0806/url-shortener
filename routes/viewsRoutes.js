@@ -12,12 +12,17 @@ import {
   handleLogin,
 } from "../controllers/viewsController/authController.js";
 
+// validation middlewares
 import { validateUrl } from "../middleware/validateUrl.js";
+import { validateRegisters } from "../middleware/validateRegister.js";
 
 const router = express.Router();
 
 // for authentication
-router.route("/register").get(renderRegisterPage).post(handleRegistration);
+router
+  .route("/register")
+  .get(renderRegisterPage)
+  .post(validateRegisters, handleRegistration);
 router.route("/login").get(renderLoginPage).post(handleLogin);
 
 router.route("/").get(homePage).post(validateUrl, createShortUrl);

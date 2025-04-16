@@ -14,10 +14,6 @@ const signToken = (id) => {
 export const registration = async (userData) => {
   const { name, email, password, confirmPassword } = userData;
 
-  if (!name || !email || !password || !confirmPassword) {
-    throw new AppError("please enter all fields correctly", 400);
-  }
-
   const existsUser = await User.findOne({ email });
   if (existsUser) {
     throw new AppError(

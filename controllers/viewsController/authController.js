@@ -24,12 +24,7 @@ const handleRegistration = catchAsync(async (req, res, next) => {
     ),
   });
 
-  res.render("authentication/register", {
-    status: "success",
-    message: "account created",
-    data: user,
-    token,
-  });
+  res.redirect("/");
 });
 
 const renderLoginPage = (req, res) => {

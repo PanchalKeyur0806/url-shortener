@@ -16,7 +16,14 @@
         class="w-[95vw] md:w-[60vw] mx-auto mt-5 p-4 flex justify-between items-center bg-green-100 text-green-800 rounded-lg"
       >
         <p><%= message %></p>
-        <p class="cursor-pointer">X</p>
+        <p class="cursor-pointer dismiss-btn">X</p>
+      </div>
+      <% } else if(status === "error"){ %>
+      <div
+        class="w-[95vw] md:w-[60vw] mx-auto mt-5 p-4 flex justify-between items-center bg-red-100 text-red-800 rounded-lg"
+      >
+        <p><%= message %></p>
+        <p class="cursor-pointer dismiss-btn">X</p>
       </div>
       <% } %>
     </div>
@@ -98,9 +105,13 @@
     </main>
     <script>
       const popup = document.getElementById("popup");
-      popup.addEventListener("click", () => {
-        popup.remove();
-      });
+      const dismissBtn = document.querySelector(".dismiss-btn");
+
+      if (dismissBtn) {
+        dismissBtn.addEventListener("click", () => {
+          popup.remove();
+        });
+      }
     </script>
   </body>
 </html>
