@@ -14,21 +14,35 @@
       class="md:static absolute left-0 top-full md:min-h-fit md:w-auto w-full bg-blue-950 md:bg-transparent hidden md:flex flex-col"
     >
       <ul class="flex md:flex-row flex-col items-center gap-5 my-8 md:my-3">
-        <li><a href="/">Home</a></li>
-        <li><a href="/pricing">our pricing</a></li>
-        <li><a href="/about-us">about us</a></li>
-        <li><a href="/contact-us">contact-us</a></li>
+        <li><a href="/" class="hover:text-gray-300 cursor-pointer">Home</a></li>
+        <li>
+          <a href="/pricing" class="hover:text-gray-300 cursor-pointer"
+            >our pricing</a
+          >
+        </li>
+        <li>
+          <a href="/about-us" class="hover:text-gray-300 cursor-pointer"
+            >about us</a
+          >
+        </li>
+        <li>
+          <a href="/contact-us" class="hover:text-gray-300 cursor-pointer"
+            >contact-us</a
+          >
+        </li>
       </ul>
     </div>
 
-    <div class="flex gap-5 items-center">
-      <a href="/register">register</a>
-      <a href="/login">login</a>
-      <a href="/" id="logout" class="mx-5">logout</a>
+    <div class="flex gap-2 items-center">
+      <a href="/register" class="hover:text-gray-300 cursor-pointer"
+        >register</a
+      >
+      <a href="/login" class="hover:text-gray-300 cursor-pointer">login</a>
+      <a href="/" id="logout" class="mr-5 hover:text-gray-300">logout</a>
 
       <ion-icon
         name="menu"
-        class="md:hidden"
+        class="md:hidden mr-3"
         onclick="onToggle(this)"
       ></ion-icon>
     </div>
