@@ -9,6 +9,7 @@ dotenv.config({ path: "./config.env" });
 const renderRegisterPage = (req, res) => {
   res.render("authentication/register", {
     newUser: null,
+    title: "register - url shortner",
     message: undefined,
     status: "initial",
   });
@@ -30,6 +31,7 @@ const handleRegistration = catchAsync(async (req, res, next) => {
 const renderLoginPage = (req, res) => {
   res.render("authentication/login", {
     status: "initial",
+    title: "login page - urlshortner",
     message: "",
     data: null,
   });

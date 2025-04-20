@@ -23,6 +23,7 @@ const createShortUrl = catchAsync(async (req, res, next) => {
 
   res.render("index", {
     status: "success",
+    title: "Home page - url shortner",
     message: "url created successfully",
     url: shortUrl,
     id: result.shortId,

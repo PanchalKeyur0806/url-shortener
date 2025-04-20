@@ -14,7 +14,7 @@ const urlSchema = mongoose.Schema(
     userId: {
       type: mongoose.Schema.ObjectId,
       ref: "User",
-      //   required: true,
+      // required: true,
     },
     visitHistory: [{ timestamp: { type: Number, default: Date.now() } }],
   },

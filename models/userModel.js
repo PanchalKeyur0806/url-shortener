@@ -7,17 +7,46 @@ const userSchema = mongoose.Schema(
     name: {
       type: String,
       required: [true, "please enter your name"],
+      trim: true,
+      maxlength: 20,
     },
     email: {
       type: String,
       required: [true, "please enter your email address"],
       unique: true,
+      lowercase: true,
+      trim: true,
     },
     password: {
       type: String,
       required: [true, "please provide your password"],
       minlength: [8, "password must have atleast 8 characters"],
       maxlength: [16, "password must have maximum 16 characters"],
+    },
+    plan: {
+      type: String,
+      enum: ["free", "monthly", "yearly"],
+      default: "free",
+    },
+    planStartDate: {
+      type: Date,
+    },
+    planEndDate: {
+      type: Date,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+    urls: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Url",
+      },
+    ],
+    createdAt: {
+      type: Date,
+      default: Date.now(),
     },
   },
   {
