@@ -1,76 +1,48 @@
-<nav
-  class="h-25 gradient bg-gradient-to-tr from-blue-950 to-blue-900 text-white flex justify-between items-center gap-5 px-5"
->
-  <!-- Logo menu -->
-  <div class="md:block">
-    <img src="#" alt="Website logo" />
-  </div>
+<header class="bg-gradient-to-t from-blue-950 to-blue-900 text-white">
+  <nav class="flex justify-between items-center relative">
+    <div class="flex items-center cursor-pointer">
+      <img
+        class="w-20"
+        src="https://free-url-shortener.rb.gy/url-shortener.png"
+        alt=""
+      />
+      <span>Url shortner</span>
+    </div>
 
-  <!-- Button for nav responsive -->
-  <button id="menu-toggle" class="text-white md:hidden absolute right-5">
-    ☰
-  </button>
-
-  <!-- Navigation menu -->
-  <div
-    id="menu"
-    class="md:static md:min-h-fit absolute min-h-[30vh] left-0 top-[5%] w-full flex items-center justify-center bg-gradient-to-tr from-blue-950 to-blue-900"
-  >
-    <ul
-      class="flex flex-col md:flex-row gap-5 justify-center items-center h-full"
+    <div
+      id="nav-link"
+      class="md:static absolute left-0 top-full md:min-h-fit md:w-auto w-full bg-blue-950 md:bg-transparent hidden md:flex flex-col"
     >
-      <li class="cursor-pointer hover:text-slate-300"><a href="/">Home</a></li>
-      <li class="cursor-pointer hover:text-slate-300">
-        <a href="/our-plan">Our Plan</a>
-      </li>
-      <li class="cursor-pointer hover:text-slate-300">
-        <a href="/about-us">About us</a>
-      </li>
-      <li class="cursor-pointer hover:text-slate-300">
-        <a href="/contact-us">Contact us</a>
-      </li>
-      <li class="cursor-pointer hover:text-slate-300">
-        <a href="/me">About me</a>
-      </li>
-    </ul>
-  </div>
+      <ul class="flex md:flex-row flex-col items-center gap-5 my-8 md:my-3">
+        <li><a href="/">Home</a></li>
+        <li><a href="/pricing">our pricing</a></li>
+        <li><a href="/about-us">about us</a></li>
+        <li><a href="/contact-us">contact-us</a></li>
+      </ul>
+    </div>
 
-  <!-- Authentication menu -->
-  <div class="mr-10 flex gap-4">
-    <button id="logout" class="hover:text-slate-300 cursor-pointer">
-      Logout
-    </button>
-    <button class="hover:text-slate-300 cursor-pointer">
-      <a href="/login">Login</a>
-    </button>
-    <button class="hover:text-slate-300 cursor-pointer">
-      <a href="/register">Register</a>
-    </button>
-  </div>
-</nav>
+    <div class="flex gap-5 items-center">
+      <a href="/register">register</a>
+      <a href="/login">login</a>
+      <a href="/" id="logout" class="mx-5">logout</a>
+
+      <ion-icon
+        name="menu"
+        class="md:hidden"
+        onclick="onToggle(this)"
+      ></ion-icon>
+    </div>
+  </nav>
+</header>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const menuToggle = document.getElementById("menu-toggle");
-    const menu = document.getElementById("menu");
+  const navLink = document.getElementById("nav-link");
 
-    menuToggle.addEventListener("click", (e) => {
-      console.log(e.target);
-      if (window.innerWidth <= 767) {
-        menu.classList.toggle("hidden");
-      }
-    });
-
-    window.addEventListener("resize", () => {
-      if (window.innerWidth > 767) {
-        menu.classList.remove("hidden");
-      } else {
-        menu.classList.add("hidden");
-      }
-    });
-  });
-
+  function onToggle(e) {
+    e.name = e.name === "menu" ? "close" : "menu";
+    navLink.classList.toggle("hidden");
+  }
   document.getElementById("logout").addEventListener("click", async () => {
     try {
       const response = await axios.get("http://localhost:3000/auth/logout", {

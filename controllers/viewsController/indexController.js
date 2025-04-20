@@ -7,6 +7,7 @@ import * as urlServices from "../../services/urlServices.js";
 const homePage = (req, res) => {
   res.render("index", {
     status: "initial",
+    title: "Home page - url shortner",
     message: "",
     url: "",
     id: "",
