@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import bcrypt from "bcryptjs";
 import AppError from "../utils/appError.js";
 
@@ -24,9 +24,9 @@ const userSchema = mongoose.Schema(
       maxlength: [16, "password must have maximum 16 characters"],
     },
     plan: {
-      type: String,
-      enum: ["free", "monthly", "yearly"],
-      default: "free",
+      type: mongoose.Schema.ObjectId,
+      ref: "Plan",
+      required: true,
     },
     planStartDate: {
       type: Date,

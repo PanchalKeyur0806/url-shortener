@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 
 import catchAsync from "../utils/catchAsync.js";
+import AppError from "../utils/appError.js";
 
 const protect = catchAsync(async (req, res, next) => {
   const token = req.cookies.jwt;
