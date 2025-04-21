@@ -61,6 +61,7 @@ const handleLogin = catchAsync(async (req, res) => {
     res.redirect("/");
   } catch (err) {
     res.render("authentication/login", {
+      title: "login page - urlshortner",
       status: "error",
       message: err.message,
       data: null,

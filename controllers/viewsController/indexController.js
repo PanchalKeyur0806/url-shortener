@@ -3,6 +3,7 @@ import catchAsync from "../../utils/catchAsync.js";
 import Url from "../../models/urlModel.js";
 import AppError from "../../utils/appError.js";
 import * as urlServices from "../../services/urlServices.js";
+import User from "../../models/userModel.js";
 
 const homePage = (req, res) => {
   res.render("index", {

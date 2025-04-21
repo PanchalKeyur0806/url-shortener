@@ -18,10 +18,6 @@ const planSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
-  apiAccess: {
-    type: Boolean,
-    default: false,
-  },
   description: {
     type: String,
   },

@@ -21,7 +21,6 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, "please provide your password"],
       minlength: [8, "password must have atleast 8 characters"],
-      maxlength: [16, "password must have maximum 16 characters"],
     },
     plan: {
       type: mongoose.Schema.ObjectId,
