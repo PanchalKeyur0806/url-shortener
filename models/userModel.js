@@ -27,6 +27,10 @@ const userSchema = mongoose.Schema(
       ref: "Plan",
       required: true,
     },
+    remainingUrls: {
+      type: Number,
+      default: 0,
+    },
     planStartDate: {
       type: Date,
     },
