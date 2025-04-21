@@ -19,7 +19,8 @@ const homePage = (req, res) => {
 const createShortUrl = catchAsync(async (req, res, next) => {
   const { url } = req.body;
 
-  const result = await urlServices.createShortUrl(url);
+  const result = await urlServices.createShortUrl(url, req.user._id);
+
   const shortUrl = `${req.protocol}://${req.get("host")}/${result.shortId}`;
 
   res.render("index", {
