@@ -31,6 +31,10 @@ const userSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
+    remainingDays: {
+      type: Number,
+      default: 0,
+    },
     planStartDate: {
       type: Date,
     },

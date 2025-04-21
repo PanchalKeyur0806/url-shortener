@@ -34,6 +34,7 @@ export const registration = async (userData) => {
     password,
     confirmPassword,
     remainingUrls: freePlan.urlLimit,
+    remainingDays: freePlan.durationInDays,
     plan: freePlan._id,
     planStartDate: new Date(),
     planEndDate: new Date(

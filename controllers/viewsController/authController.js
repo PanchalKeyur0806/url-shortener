@@ -20,7 +20,7 @@ const handleRegistration = catchAsync(async (req, res, next) => {
   try {
     const { user, token } = await authServices.registration(req.body);
 
-    res.cookie("jwt", {
+    res.cookie("jwt", token, {
       httpOnly: true,
       expires: new Date(
         Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000
