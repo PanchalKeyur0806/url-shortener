@@ -17,20 +17,31 @@ const homePage = (req, res) => {
 };
 
 const createShortUrl = catchAsync(async (req, res, next) => {
-  const { url } = req.body;
+  try {
+    const { url } = req.body;
 
-  const result = await urlServices.createShortUrl(url, req.user._id);
+    const result = await urlServices.createShortUrl(url, req.user._id);
 
-  const shortUrl = `${req.protocol}://${req.get("host")}/${result.shortId}`;
+    const shortUrl = `${req.protocol}://${req.get("host")}/${result.shortId}`;
 
-  res.render("index", {
-    status: "success",
-    title: "Home page - url shortner",
-    message: "url created successfully",
-    url: shortUrl,
-    id: result.shortId,
-    createdUrl: result.newUrl,
-  });
+    res.render("index", {
+      status: "success",
+      title: "Home page - url shortner",
+      message: "url created successfully",
+      url: shortUrl,
+      id: result.shortId,
+      createdUrl: result.newUrl,
+    });
+  } catch (error) {
+    res.render("index", {
+      status: "error",
+      title: "Home page - url shortner",
+      message: error.message,
+      url: null,
+      id: null,
+      createdUrl: null,
+    });
+  }
 });
 
 // redirect the url
