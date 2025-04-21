@@ -3,6 +3,7 @@ import User from "../../models/userModel.js";
 import AppError from "../../utils/appError.js";
 import catchAsync from "../../utils/catchAsync.js";
 import * as authServices from "../../services/authServices.js";
+import { title } from "process";
 
 dotenv.config({ path: "./config.env" });
 
@@ -16,16 +17,25 @@ const renderRegisterPage = (req, res) => {
 };
 
 const handleRegistration = catchAsync(async (req, res, next) => {
-  const { user, token } = await authServices.registration(req.body);
+  try {
+    const { user, token } = await authServices.registration(req.body);
 
-  res.cookie("jwt", {
-    httpOnly: true,
-    expires: new Date(
-      Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-    ),
-  });
+    res.cookie("jwt", {
+      httpOnly: true,
+      expires: new Date(
+        Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+      ),
+    });
 
-  res.redirect("/");
+    res.redirect("/");
+  } catch (error) {
+    res.render("authentication/register", {
+      title: "register - url shortner",
+      status: "error",
+      message: error.message,
+      data: null,
+    });
+  }
 });
 
 const renderLoginPage = (req, res) => {

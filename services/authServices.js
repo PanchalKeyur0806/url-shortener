@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import User from "../models/userModel.js";
 import AppError from "../utils/appError.js";
+import { Plan } from "../models/planModel.js";
 
 dotenv.config({ path: "./config.env" });
 
@@ -14,6 +15,11 @@ const signToken = (id) => {
 export const registration = async (userData) => {
   const { name, email, password, confirmPassword } = userData;
 
+  const freePlan = await Plan.findOne({ name: "free" });
+  if (!freePlan) {
+    throw new AppError("free plan does not exists", 404);
+  }
+
   const existsUser = await User.findOne({ email });
   if (existsUser) {
     throw new AppError(
@@ -22,7 +28,17 @@ export const registration = async (userData) => {
     );
   }
 
-  const newUser = await User.create({ name, email, password, confirmPassword });
+  const newUser = await User.create({
+    name,
+    email,
+    password,
+    confirmPassword,
+    plan: freePlan._id,
+    planStartDate: new Date(),
+    planEndDate: new Date(
+      Date.now() + freePlan.durationInDays * 24 * 60 * 60 * 1000
+    ),
+  });
   const token = signToken(newUser._id);
 
   return {
