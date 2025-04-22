@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import User from "../models/userModel.js";
 import AppError from "../utils/appError.js";
 import { Plan } from "../models/planModel.js";
+import crypto from "crypto";
 
 dotenv.config({ path: "./config.env" });
 
@@ -12,7 +13,7 @@ const signToken = (id) => {
   });
 };
 
-export const registration = async (userData) => {
+export const registration = async (userData, role = "user") => {
   const { name, email, password, confirmPassword } = userData;
 
   const freePlan = await Plan.findOne({ name: "free" });
@@ -33,6 +34,7 @@ export const registration = async (userData) => {
     email,
     password,
     confirmPassword,
+    role,
     remainingUrls: freePlan.urlLimit,
     remainingDays: freePlan.durationInDays,
     plan: freePlan._id,
@@ -41,6 +43,11 @@ export const registration = async (userData) => {
       Date.now() + freePlan.durationInDays * 24 * 60 * 60 * 1000
     ),
   });
+
+  if (role === "developer") {
+    newUser.apiKey = crypto.randomBytes(32).toString("hex");
+    await newUser.save({ validateBeforeSave: false });
+  }
   const token = signToken(newUser._id);
 
   return {

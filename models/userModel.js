@@ -22,6 +22,16 @@ const userSchema = mongoose.Schema(
       required: [true, "please provide your password"],
       minlength: [8, "password must have atleast 8 characters"],
     },
+    role: {
+      type: String,
+      enum: ["user", "developer"],
+      default: "user",
+    },
+    apiKey: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
     plan: {
       type: mongoose.Schema.ObjectId,
       ref: "Plan",

@@ -18,7 +18,8 @@ const renderRegisterPage = (req, res) => {
 
 const handleRegistration = catchAsync(async (req, res, next) => {
   try {
-    const { user, token } = await authServices.registration(req.body);
+    const { role = "user" } = req.body;
+    const { user, token } = await authServices.registration(req.body, role);
 
     res.cookie("jwt", token, {
       httpOnly: true,
