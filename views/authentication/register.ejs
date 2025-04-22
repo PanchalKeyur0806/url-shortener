@@ -25,80 +25,76 @@
       <% } %>
     </div>
 
-    <main
-      class="mt-20 w-[95vw] md:w-[80vw] lg:w-[85vw] mx-auto flex flex-col lg:flex-row shadow inset-shadow-sm"
-    >
-      <div id="image" class="w-full lg:w-1/2 rounded-l-2xl overflow-hidden">
-        <img
-          src="http://localhost:3000/images/auth/login-image.avif"
-          alt="some login image"
-          class="w-full h-full object-cover"
-        />
-      </div>
+    <main class="container w-[95vw] md:w-[70vw] mx-auto my-5">
+      <section class="flex flex-col sm:flex-row">
+        <div id="register-img" class="w-full md:w-1/2">
+          <img
+            src="/images/auth/image.png"
+            alt="register image"
+            class="object-cover mx-auto my-5"
+          />
+        </div>
 
-      <div
-        id="form"
-        class="w-full lg:w-1/2 sm:h-full rounded-r-2xl overflow-hidden"
-      >
-        <form
-          onsubmit="handleRegister(event)"
-          method="post"
-          class="mt-2 mb-5 text-center"
-        >
-          <h1 class="text-3xl mb-10 font-bold">Don't have a account?</h1>
+        <form action="/" method="post" class="w-full md:w-1/2">
+          <h1 class="my-5 mx-4 font-medium text-3xl">Register</h1>
 
-          <div id="form-name" class="mt-4 grid grid-cols-2 gap-3">
-            <label for="name" class="font-medium">Enter you name : </label>
-            <input type="text" name="name" id="name" class="outline-1 mr-3" />
-          </div>
-
-          <br />
-
-          <div id="fomr-email" class="mt-4 grid grid-cols-2 gap-3">
-            <label for="email" class="font-medium">Enter your email</label>
+          <div class="grid gap-3 grid-cols-1 md:grid-cols-2 mx-5 mb-5">
             <input
+              class="border focus:outline-none border-gray-900 py-1 px-3 rounded-sm focus:bg-gray-100"
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Enter your name"
+              required
+            />
+            <input
+              class="border focus:outline-none border-gray-900 py-1 px-3 rounded-sm focus:bg-gray-100"
               type="email"
               name="email"
               id="email"
-              class="outline-1 mr-3"
+              placeholder="Enter your email id"
+              required
             />
           </div>
 
-          <br />
-
-          <div id="form-password" class="mt-4 grid grid-cols-2 gap-3">
-            <label for="password" class="font-medium">password</label>
+          <div class="grid grid-cols-1 mx-5 mb-5">
             <input
+              class="border focus:outline-none border-gray-900 py-1 px-3 rounded-sm focus:bg-gray-100"
               type="password"
               name="password"
               id="password"
-              class="outline-1 mr-3"
+              placeholder="Enter your password"
+              required
             />
           </div>
 
-          <br />
-
-          <div id="form-confirmpassword" class="mt-4 grid grid-cols-2 gap-3">
-            <label for="confirmPassword" class="font-medium"
-              >Conform your password</label
-            >
+          <div class="grid grid-cols-1 mx-5 mb-5">
             <input
+              class="border focus:outline-none border-gray-900 py-1 px-3 rounded-sm focus:bg-gray-100"
               type="password"
               name="confirmPassword"
               id="confirmPassword"
-              class="outline-1 mr-3"
+              placeholder="Confirm your password"
+              required
             />
           </div>
 
-          <br />
+          <div class="mx-4 py-2 text-center mb-5">
+            <input
+              type="submit"
+              value="create an account"
+              class="bg-blue-900 text-white px-2 cursor-pointer py-2 rounded hover:rounded-4xl transition-all duration-150 ease-in"
+            />
+          </div>
 
-          <input
-            type="submit"
-            value="Register"
-            class="border border-white rounded cursor-pointer mt-10 mb-3 px-3 py-1 bg-blue-700 text-white hover:bg-blue-600"
-          />
+          <div class="mx-4 mb-5 text-[17px]">
+            <p class="font-semibold mb-2">already have an account?</p>
+            <p>
+              click here to <a href="/login" class="text-blue-800">login</a>
+            </p>
+          </div>
         </form>
-      </div>
+      </section>
     </main>
     <script>
       const popup = document.getElementById("popup");
