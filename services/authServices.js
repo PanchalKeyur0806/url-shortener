@@ -34,7 +34,6 @@ export const registration = async (userData, role = "user") => {
     email,
     password,
     confirmPassword,
-    role,
     remainingUrls: freePlan.urlLimit,
     remainingDays: freePlan.durationInDays,
     plan: freePlan._id,
@@ -43,11 +42,6 @@ export const registration = async (userData, role = "user") => {
       Date.now() + freePlan.durationInDays * 24 * 60 * 60 * 1000
     ),
   });
-
-  if (role === "developer") {
-    newUser.apiKey = crypto.randomBytes(32).toString("hex");
-    await newUser.save({ validateBeforeSave: false });
-  }
   const token = signToken(newUser._id);
 
   return {

@@ -24,13 +24,8 @@ const userSchema = mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user", "developer"],
+      enum: ["user", "admin"],
       default: "user",
-    },
-    apiKey: {
-      type: String,
-      unique: true,
-      sparse: true,
     },
     plan: {
       type: mongoose.Schema.ObjectId,

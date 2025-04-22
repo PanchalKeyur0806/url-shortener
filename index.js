@@ -9,10 +9,8 @@ import ejs from "ejs";
 import cors from "cors";
 
 // custom modules
-import urlRoutes from "./routes/urlRoutes.js";
-import authRouter from "./routes/authRoutes.js";
-import viewsRouter from "./routes/viewsRoutes.js";
-import errorHandler from "./controllers/apiController/errorHandler.js";
+import indexRouter from "./routes/indexRoutes.js";
+import errorHandler from "./controllers/errorHandler.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,12 +34,8 @@ app.use(
   })
 );
 
-// routes for the application's api
-app.use("/urls", urlRoutes);
-app.use("/auth", authRouter);
-
 // get to the static page
-app.use("/", viewsRouter);
+app.use("/", indexRouter);
 
 // global error hadnling middleware
 app.all("*", (req, res) => {

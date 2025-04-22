@@ -3,16 +3,17 @@ import {
   homePage,
   createShortUrl,
   redirectToUrl,
-} from "../controllers/viewsController/indexController.js";
+} from "../controllers/indexController.js";
 
 import {
   renderRegisterPage,
   renderLoginPage,
   handleRegistration,
   handleLogin,
-} from "../controllers/viewsController/authController.js";
+  handleLogout,
+} from "../controllers/authController.js";
 
-import { createFreePlan } from "../controllers/viewsController/planController.js";
+import { createFreePlan } from "../controllers/planController.js";
 
 // validation middlewares
 import { validateUrl } from "../middleware/validateUrl.js";
@@ -28,6 +29,7 @@ router
   .get(renderRegisterPage)
   .post(validateRegisters, handleRegistration);
 router.route("/login").get(renderLoginPage).post(validateLogin, handleLogin);
+router.route("/logout").get(handleLogout);
 
 router.route("/").get(homePage).post(protect, validateUrl, createShortUrl);
 

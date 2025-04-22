@@ -1,9 +1,10 @@
 import dotenv from "dotenv";
-import User from "../../models/userModel.js";
-import AppError from "../../utils/appError.js";
-import catchAsync from "../../utils/catchAsync.js";
-import * as authServices from "../../services/authServices.js";
+import User from "../models/userModel.js";
+import AppError from "../utils/appError.js";
+import catchAsync from "../utils/catchAsync.js";
+import * as authServices from "../services/authServices.js";
 import { title } from "process";
+import { log } from "console";
 
 dotenv.config({ path: "./config.env" });
 
@@ -70,4 +71,32 @@ const handleLogin = catchAsync(async (req, res) => {
   }
 });
 
-export { renderRegisterPage, handleRegistration, renderLoginPage, handleLogin };
+const handleLogout = catchAsync(async (req, res, next) => {
+  try {
+    const jwt = req.cookies.jwt;
+    console.log(jwt);
+
+    if (!jwt) {
+      return next(new AppError("cookie not found", 404));
+    }
+
+    res.clearCookie("jwt");
+
+    res.redirect("/");
+  } catch (error) {
+    res.render("index", {
+      title: "",
+      status: "error",
+      message: error.message,
+      data: null,
+    });
+  }
+});
+
+export {
+  renderRegisterPage,
+  handleRegistration,
+  renderLoginPage,
+  handleLogin,
+  handleLogout,
+};

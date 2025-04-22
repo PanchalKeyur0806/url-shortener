@@ -1,6 +1,6 @@
-import { Plan } from "../../models/planModel.js";
-import catchAsync from "../../utils/catchAsync.js";
-import AppError from "../../utils/appError.js";
+import { Plan } from "../models/planModel.js";
+import catchAsync from "../utils/catchAsync.js";
+import AppError from "../utils/appError.js";
 
 const createFreePlan = catchAsync(async (req, res, next) => {
   const freePlan = await Plan.findOne({ name: "free" });
