@@ -11,6 +11,7 @@ import cors from "cors";
 // custom modules
 import indexRouter from "./routes/indexRoutes.js";
 import errorHandler from "./controllers/errorHandler.js";
+import subscriptionRoutes from "./routes/subscriptionRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,6 +37,7 @@ app.use(
 
 // get to the static page
 app.use("/", indexRouter);
+app.use("/subcription", subscriptionRoutes);
 
 // global error hadnling middleware
 app.all("*", (req, res) => {

@@ -19,4 +19,24 @@ const createFreePlan = catchAsync(async (req, res, next) => {
   console.log("free plan is created ", newFreePlan);
 });
 
-export { createFreePlan };
+const monthlyPlan = catchAsync(async (req, res, next) => {
+  const monthlPlan = await Plan.findOne({ name: "monthly" });
+  if (monthlPlan) {
+    return next(new AppError("monthly plan exists", 400));
+  }
+
+  const newMonthlyPlan = await Plan.create({
+    name: "monthly",
+    price: 99,
+    durationInDays: 90,
+    urlLimit: 100,
+    description: "Monthly plan with limited access and limited usage",
+  });
+
+  res.status(200).json({
+    status: "success",
+    message: "mohtly plan created successfully",
+  });
+});
+
+export { createFreePlan, monthlyPlan };

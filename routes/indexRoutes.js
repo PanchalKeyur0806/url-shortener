@@ -13,7 +13,7 @@ import {
   handleLogout,
 } from "../controllers/authController.js";
 
-import { createFreePlan } from "../controllers/planController.js";
+import { createFreePlan, monthlyPlan } from "../controllers/planController.js";
 
 // validation middlewares
 import { validateUrl } from "../middleware/validateUrl.js";
@@ -35,6 +35,7 @@ router.route("/").get(homePage).post(protect, validateUrl, createShortUrl);
 
 // need to change
 router.post("/free-plan", createFreePlan);
+router.post("/month-plan", monthlyPlan);
 
 router.get("/:urlid", redirectToUrl);
 
