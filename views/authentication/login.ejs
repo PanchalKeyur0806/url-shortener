@@ -27,77 +27,58 @@
     </div>
 
     <!-- Login Page -->
-    <main class="h-full flex items-center justify-center">
-      <div
-        class="flex flex-col sm:flex-row sm:w-[95vw] w-[70vw] rounded-2xl bg-white"
-      >
-        <div
-          id="img"
-          class="w-full sm:w-1/2 rounded-l-2xl overflow-hidden shadow-2xl"
-        >
-          <img
-            src="http://localhost:3000/images/auth/login-image.avif"
-            alt="some text"
-            class="w-full h-full object-cover z-10"
-          />
-        </div>
-
-        <form
-          onsubmit="handleLogin(event)"
-          method="post"
-          class="w-full sm:w-1/2 p-6 shadow-xl"
-        >
-          <div
-            class="text-center text-3xl font-extrabold pt-[10px] mb-[50px] font-mono"
-          >
-            Login page
+    <main class="container w-[95vw] md:w-[70vw] mx-auto my-10">
+      <section class="flex flex-col md:flex-row">
+        <div class="w-full md:w-1/2">
+          <div id="form-heading" class="mx-4 mb-5 mt-4">
+            <h1 class="text-3xl font-bold font-sans">Login</h1>
+            <p class="font-extralight mt-2">Login to access your account</p>
           </div>
-
-          <div class="space-y-4">
-            <div class="flex flex-col sm:items-center sm:flex-row">
-              <label for="email" class="w-full sm:w-1/3 font-medium"
-                >Enter your email
-              </label>
+          <form method="post" action="/" class="mt-10">
+            <div class="grid grid-cols-1 mb-5 mx-4">
               <input
+                class="border focus:outline-none focus:bg-gray-100 py-1 px-3 rounded-sm"
                 type="email"
                 name="email"
                 id="email"
-                class="w-full sm:w-2/3 p-2 border rounded enabled:bg-gray-200"
+                placeholder="Enter your email id here"
               />
             </div>
-            <br />
-
-            <div class="flex flex-col sm:flex-row sm:items-center">
-              <label for="password" class="w-full sm:w-1/3 font-medium"
-                >Enter your password
-              </label>
+            <div class="grid grid-cols-1 mb-5 mx-4">
               <input
+                class="border focus:outline-none focus:bg-gray-100 py-1 px-3 rounded-sm"
                 type="password"
                 name="password"
                 id="password"
-                class="w-full sm:w-2/3 p-2 border rounded enabled:bg-gray-200"
+                placeholder="Enter your password here"
               />
             </div>
-            <br />
-
-            <div class="flex justify-between mt-4">
-              <p
-                class="cursor-pointer text-blue-600 underline underline-offset-4"
-              >
-                Forgot password?
+            <div class="flex flex-row-reverse mx-4 mb-5">
+              <p class="text-blue-900 cursor-pointer px-2 py-1">
+                forgot password?
               </p>
             </div>
-
-            <div class="mx-6 text-center">
+            <div class="mx-4 mb-5 text-center py-2">
               <input
                 type="submit"
-                value="submit your form"
-                class="px-6 py-2 bg-blue-700 text-white rounded hover:bg-blue-800 cursor-pointer"
+                value="login"
+                class="px-5 cursor-pointer py-2 bg-blue-950 text-white rounded hover:rounded-3xl transition-all duration-150 ease-in"
               />
             </div>
-          </div>
-        </form>
-      </div>
+            <div class="mb-5 mx-4">
+              <p>
+                don't have account?
+                <a href="/register" class="text-blue-950 font-medium"
+                  >register</a
+                >
+              </p>
+            </div>
+          </form>
+        </div>
+        <div id="login-img" class="w-full md:w-1/2 flex justify-center mt-8">
+          <img src="/images/auth/login.png" alt="login image" class="mx-5" />
+        </div>
+      </section>
     </main>
 
     <script>
