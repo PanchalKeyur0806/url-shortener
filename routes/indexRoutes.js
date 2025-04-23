@@ -13,6 +13,8 @@ import {
   handleLogout,
 } from "../controllers/authController.js";
 
+import { renderPricing } from "../controllers/subscriptionsController.js";
+
 import { createFreePlan, monthlyPlan } from "../controllers/planController.js";
 
 // validation middlewares
@@ -32,6 +34,9 @@ router.route("/login").get(renderLoginPage).post(validateLogin, handleLogin);
 router.route("/logout").get(handleLogout);
 
 router.route("/").get(homePage).post(protect, validateUrl, createShortUrl);
+
+// our pricing page
+router.get("/pricing", renderPricing);
 
 // need to change
 router.post("/free-plan", createFreePlan);
