@@ -10,7 +10,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const createCheckoutSession = catchAsync(async (req, res, next) => {
   const currentUser = req.user;
-  console.log(currentUser);
 
   const monthlyPlan = await Plan.findOne({ name: "monthly" });
   if (!monthlyPlan) {
