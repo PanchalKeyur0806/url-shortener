@@ -7,11 +7,14 @@ import express, { urlencoded } from "express";
 import cookieParser from "cookie-parser";
 import ejs from "ejs";
 import cors from "cors";
+import bodyParser from "body-parser";
 
 // custom modules
 import indexRouter from "./routes/indexRoutes.js";
 import errorHandler from "./controllers/errorHandler.js";
 import subscriptionRoutes from "./routes/subscriptionRoutes.js";
+
+import { stripeWebhook } from "./controllers/stripeController.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,6 +25,12 @@ const app = express();
 // setting up template engine
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
+app.post(
+  "/webhook",
+  bodyParser.raw({ type: "application/json" }),
+  stripeWebhook
+);
 
 // global middlewares
 app.use(cookieParser());
@@ -37,7 +46,7 @@ app.use(
 
 // get to the static page
 app.use("/", indexRouter);
-app.use("/subcription", subscriptionRoutes);
+app.use("/subscription", subscriptionRoutes);
 
 // global error hadnling middleware
 app.all("*", (req, res) => {

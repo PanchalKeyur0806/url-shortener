@@ -36,19 +36,11 @@ export const registration = async (userData, role = "user") => {
     confirmPassword,
     remainingUrls: freePlan.urlLimit,
     remainingDays: freePlan.durationInDays,
-    plan: {
-      name: freePlan.name,
-      price: freePlan.price,
-      durationInDays: freePlan.durationInDays,
-      urlLimit: freePlan.urlLimit,
-      description: freePlan.description,
-      stripeProductId: freePlan.stripeProductId,
-      stripePriceId: freePlan.stripePriceId,
-      startDate: new Date(),
-      endDate: new Date(
-        Date.now() + freePlan.durationInDays * 24 * 60 * 60 * 1000
-      ),
-    },
+    plan: freePlan._id,
+    planStartDate: new Date(),
+    planEndDate: new Date(
+      Date.now() + freePlan.durationInDays * 24 * 60 * 60 * 1000
+    ),
   });
   const token = signToken(newUser._id);
 
