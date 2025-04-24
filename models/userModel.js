@@ -28,9 +28,15 @@ const userSchema = mongoose.Schema(
       default: "user",
     },
     plan: {
-      type: mongoose.Schema.ObjectId,
-      ref: "Plan",
-      required: true,
+      name: String,
+      price: Number,
+      durationInDays: Number,
+      urlLimit: Number,
+      description: String,
+      stripeProductId: String,
+      stripePriceId: String,
+      startDate: Date,
+      endDate: Date,
     },
     remainingUrls: {
       type: Number,
@@ -40,15 +46,22 @@ const userSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
-    planStartDate: {
-      type: Date,
-    },
-    planEndDate: {
-      type: Date,
-    },
     isActive: {
       type: Boolean,
       default: true,
+    },
+    stripeCustomerId: {
+      type: String,
+      default: null,
+    },
+    stripeSubcriptionId: {
+      type: String,
+      default: null,
+    },
+    stripeSubcriptionStatus: {
+      type: String,
+      enum: ["active", "canceled", "incomplete", "past_due", "unpaid"],
+      default: null,
     },
     urls: [
       {
@@ -60,7 +73,6 @@ const userSchema = mongoose.Schema(
       type: Date,
       default: Date.now(),
     },
-    
   },
   {
     timestamps: true,

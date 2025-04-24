@@ -10,7 +10,7 @@ export const createShortUrl = async (originalUrl, userid) => {
 
   // get today and end date for free-plan model
   const todayDate = new Date();
-  const endDate = new Date(user.planEndDate);
+  const endDate = new Date(user.plan.endDate);
 
   // calculate the reamining days
   const remainingDays = Math.ceil(
