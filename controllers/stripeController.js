@@ -4,6 +4,7 @@ import { Plan } from "../models/planModel.js";
 import User from "../models/userModel.js";
 import catchAsync from "../utils/catchAsync.js";
 import AppError from "../utils/appError.js";
+import { name } from "ejs";
 
 dotenv.config({ path: "./config.env" });
 
@@ -72,9 +73,26 @@ const cancel = catchAsync(async (req, res, next) => {
   res.redirect("/");
 });
 
+// get information about purchased the items of users
+const getSubscriptionInfo = catchAsync(async (req, res, next) => {
+  const currentUser = req.user.stripeCustomerId;
+
+  if (!currentUser) {
+    return next(new AppError("please login and try again", 403));
+  }
+
+  const portalSessions = await stripe.billingPortal.sessions.create({
+    customer: currentUser,
+    return_url: `${req.protocol}://${req.get("host")}/`,
+  });
+
+  res.redirect(portalSessions.url);
+});
+
 // check the webhook
 const stripeWebhook = catchAsync(async (req, res, next) => {
   console.log("Inside the webhook");
+  // get the signature form the headers
   const sig = req.headers["stripe-signature"];
   let event;
 
@@ -88,9 +106,11 @@ const stripeWebhook = catchAsync(async (req, res, next) => {
     return next(new AppError(`Webhook Error: ${err.message}`, 400));
   }
 
+  // check that event is completed or not
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
 
+    // find the user
     const user = await User.findOne({ email: session.customer_email });
     if (!user) {
       return next(
@@ -98,23 +118,45 @@ const stripeWebhook = catchAsync(async (req, res, next) => {
       );
     }
 
-    const plan = await Plan.findOne({ name: "monthly" });
-    if (!plan) {
-      return next(new AppError("Monthly plan not found", 400));
-    }
+    // finding the monthly plan and yearly plan
+    const monthlyPlan = await Plan.findOne({ name: "monthly" });
+    const yearlyPlan = await Plan.findOne({ name: "yearly" });
 
-    const now = new Date();
-    const end = new Date(now);
-    end.setDate(now.getDate() + 30);
-
+    // retrieving the subscription
     const subscription = await stripe.subscriptions.retrieve(
       session.subscription
     );
 
+    // getting priceId and productId from the subscription variable
+    const item = subscription.items.data[0];
+    const priceId = item.price.id;
+    const productId = item.price.product;
+
+    // declare two variable for setting up duration and plan type
+    // EX:- monthly or yearly
+    let selectedPlan, durationInDays;
+
+    // check that price id is available
+    // if yes then set the variable according to the that plan
+    if (priceId === process.env.STRIPE_MONTHLY_PRICE_ID) {
+      selectedPlan = monthlyPlan;
+      durationInDays = 30;
+    } else if (priceId === process.env.STRIPE_YEARLY_PRICE_ID) {
+      selectedPlan = yearlyPlan;
+      durationInDays = 365;
+    } else {
+      return next(new AppError("Invalid price id received", 400));
+    }
+
+    // getting todays date and end date of the plan
+    const now = new Date();
+    const end = new Date(now);
+    end.setDate(now.getDate() + durationInDays);
+
     // storing the user
-    user.plan = plan._id;
-    user.remainingUrls = plan.totalUrls || 100;
-    user.remainingDays = 30;
+    user.plan = selectedPlan._id;
+    user.remainingUrls = selectedPlan.urlLimit;
+    user.remainingDays = selectedPlan.durationInDays;
     user.planStartDate = now;
     user.planEndDate = end;
     user.isActive = true;
@@ -123,13 +165,20 @@ const stripeWebhook = catchAsync(async (req, res, next) => {
     user.stripeSubcriptionId = session.subscription.id;
     user.stripeSubcriptionStatus = session.subscription.status;
     // store the product and price in the user
-    user.stripeProductId = subscription.items.data[0].price.product;
-    user.stripePriceId = subscription.items.data[0].price.id;
+    user.stripeProductId = productId;
+    user.stripePriceId = priceId;
 
+    // saving the user
     await user.save();
   }
 
   res.status(200).json({ received: true });
 });
 
-export { createCheckoutSession, stripeWebhook, success, cancel };
+export {
+  createCheckoutSession,
+  stripeWebhook,
+  success,
+  cancel,
+  getSubscriptionInfo,
+};

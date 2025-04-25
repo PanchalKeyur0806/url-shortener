@@ -15,7 +15,11 @@ import {
 
 import { renderPricing } from "../controllers/subscriptionsController.js";
 
-import { createFreePlan, monthlyPlan } from "../controllers/planController.js";
+import {
+  createFreePlan,
+  monthlyPlan,
+  yearlyPlan,
+} from "../controllers/planController.js";
 
 // validation middlewares
 import { validateUrl } from "../middleware/validateUrl.js";
@@ -41,6 +45,7 @@ router.get("/pricing", renderPricing);
 // need to change
 router.post("/free-plan", createFreePlan);
 router.post("/month-plan", monthlyPlan);
+router.post("/yearly-plan", yearlyPlan);
 
 router.get("/:urlid", redirectToUrl);
 
