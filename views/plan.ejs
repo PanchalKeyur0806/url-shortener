@@ -118,11 +118,13 @@
             </p>
           </div>
           <div class="mt-2 ml-6 mb-5 absolute bottom-1 text-center">
-            <a
-              href="#"
-              class="px-3 py-2 bg-white text-blue-900 shadow hover:bg-blue-900 hover:text-white roudned hover:rounded-4xl transition-all duration-150 ease-in cursor-pointer"
-              >Get a Monthly Plan</a
-            >
+            <form action="/subscription/create-checkout-session" method="post">
+              <input
+                type="submit"
+                value="get Monthly Plan"
+                class="px-3 py-2 bg-white text-blue-900 shadow hover:bg-blue-900 hover:text-white roudned hover:rounded-4xl transition-all duration-150 ease-in cursor-pointer"
+              />
+            </form>
           </div>
         </div>
         <div
