@@ -13,6 +13,7 @@ import bodyParser from "body-parser";
 import indexRouter from "./routes/indexRoutes.js";
 import errorHandler from "./controllers/errorHandler.js";
 import subscriptionRoutes from "./routes/subscriptionRoutes.js";
+import invoiceRoutes from "./routes/invoiceRoutes.js";
 
 import { stripeWebhook } from "./controllers/stripeController.js";
 
@@ -46,6 +47,7 @@ app.use(
 
 // get to the static page
 app.use("/", indexRouter);
+app.use("/invoices", invoiceRoutes);
 app.use("/subscription", subscriptionRoutes);
 
 // global error hadnling middleware

@@ -1,0 +1,64 @@
+<!-- views/invoices.ejs -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <style>
+      table {
+        width: 80%;
+        margin: 40px auto;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 12px;
+        border: 1px solid #ccc;
+        text-align: center;
+      }
+      th {
+        background-color: #f8f8f8;
+      }
+      a.btn {
+        background-color: #4caf50;
+        color: white;
+        padding: 6px 12px;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+      a.btn:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <h2 style="text-align: center">My Invoices</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Invoice ID</th>
+          <th>Amount</th>
+          <th>Currency</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Download</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% invoices.forEach(invoice => { %>
+        <tr>
+          <td><%= invoice.id %></td>
+          <td><%= invoice.amount_due %></td>
+          <td><%= invoice.currency %></td>
+          <td><%= invoice.created %></td>
+          <td><%= invoice.status %></td>
+          <td>
+            <a class="btn" href="<%= invoice.invoice_pdf %>" target="_blank"
+              >Download PDF</a
+            >
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </body>
+</html>

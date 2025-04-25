@@ -4,7 +4,6 @@ import { Plan } from "../models/planModel.js";
 import User from "../models/userModel.js";
 import catchAsync from "../utils/catchAsync.js";
 import AppError from "../utils/appError.js";
-import { name } from "ejs";
 
 dotenv.config({ path: "./config.env" });
 
