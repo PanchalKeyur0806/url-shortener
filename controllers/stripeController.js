@@ -11,6 +11,25 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const createCheckoutSession = catchAsync(async (req, res, next) => {
   const currentUser = req.user;
+  const plan = req.query.plan;
+
+  if (!plan) {
+    return next(new AppError("subscription plan not found"));
+  }
+
+  let priceId;
+  switch (plan.toLowerCase()) {
+    case "monthly":
+      priceId = "price_1RHNXoCEBeUXy0V2y9tQckfz";
+      break;
+
+    case "yearly":
+      priceId = "price_1RHNYYCEBeUXy0V2cEdEoNV0";
+      break;
+
+    default:
+      break;
+  }
 
   const monthlyPlan = await Plan.findOne({ name: "monthly" });
   if (!monthlyPlan) {
@@ -24,7 +43,7 @@ const createCheckoutSession = catchAsync(async (req, res, next) => {
     mode: "subscription",
     line_items: [
       {
-        price: "price_1RHNXoCEBeUXy0V2y9tQckfz",
+        price: priceId,
         quantity: 1,
       },
     ],
