@@ -16,6 +16,15 @@ const renderInvoices = catchAsync(async (req, res, next) => {
     return next(new AppError("user not found, please login first", 401));
   }
 
+  if (currentUser.stripeCustomerId === null) {
+    return next(
+      new AppError(
+        "you haven't purchased any subscription pack, please purchase a subscription first",
+        404
+      )
+    );
+  }
+
   const invoices = await stripe.invoices.list({
     customer: currentUser.stripeCustomerId,
     limit: 10,

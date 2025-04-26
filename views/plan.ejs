@@ -14,12 +14,28 @@
           readable content of a page when looking at its layout.
         </p>
       </div>
+
+      <!-- Spinner (only one, shared for all forms) -->
+      <div
+        id="spinner-overlay"
+        class="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center hidden"
+      >
+        <div class="flex flex-col items-center space-y-3">
+          <!-- Tailwind Spinner -->
+          <div
+            class="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin"
+          ></div>
+          <p class="text-white text-lg">Redirecting to Stripe Checkout...</p>
+        </div>
+      </div>
+
+      <!-- anotehr -->
       <section
-        class="flex flex-col md:flex-row gap-3 container w-[95vw] md:w-[80vw] mt-10 mx-auto"
+        class="flex flex-col lg:flex-row gap-3 container w-[95vw] md:w-[60vw] md:mx-auto lg:w-[80vw] mt-10 mx-auto"
       >
         <div
           id="free-plan"
-          class="w-full md:w-1/3 mb-5 shadow hover:shadow-2xl cursor-pointer rounded-2xl min-h-140 relative"
+          class="w-full lg:w-1/3 mb-5 shadow hover:shadow-2xl cursor-pointer rounded-2xl min-h-140 relative"
         >
           <div class="mx-4 mt-5 text-sm font-bold">
             <p id="plan-name">Free Plan</p>
@@ -70,7 +86,7 @@
         </div>
         <div
           id="monthly-play"
-          class="w-full md:w-1/3 rounded-2xl shadow cursor-pointer min-h-125 relative bg-blue-900 text-white"
+          class="w-full lg:w-1/3 rounded-2xl shadow cursor-pointer min-h-125 relative bg-blue-900 text-white"
         >
           <div id="plan-name" class="mx-4 mt-5 text-sm font-bold">
             <p>Monthyl Plan</p>
@@ -104,6 +120,7 @@
             class="mt-2 ml-6 mb-5 absolute bottom-1 left-1 right-1 text-center"
           >
             <form
+              class="checkout-form"
               action="/subscription/create-checkout-session?plan=monthly"
               method="post"
             >
@@ -117,7 +134,7 @@
         </div>
         <div
           id="yearly-plan"
-          class="w-full md:w-1/3 shadow hover:shadow-2xl rounded-2xl relative min-h-125"
+          class="w-full lg:w-1/3 shadow hover:shadow-2xl rounded-2xl relative min-h-125"
         >
           <div id="plan-name" class="text-sm font-bold mt-5 mx-4">
             <p>Yearly Plan</p>
@@ -178,6 +195,7 @@
             class="ml-6 mt-2 mb-5 absolute bottom-1 left-1 right-1 text-center"
           >
             <form
+              class="checkout-form"
               action="/subscription/create-checkout-session?plan=yearly"
               method="post"
             >
@@ -191,6 +209,19 @@
         </div>
       </section>
     </main>
+
+    <script>
+      const spinnerOverlay = document.getElementById("spinner-overlay");
+      const pageContent = document.getElementById("page-content");
+      const forms = document.querySelectorAll(".checkout-form");
+
+      forms.forEach((form) => {
+        form.addEventListener("submit", function () {
+          spinnerOverlay.classList.remove("hidden");
+          pageContent.classList.add("blur-sm"); // Apply blur to page content
+        });
+      });
+    </script>
 
     <%- include("partials/footer") %>
   </body>
