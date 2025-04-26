@@ -1,64 +1,202 @@
 <!-- views/invoices.ejs -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title><%= title %></title>
-    <style>
-      table {
-        width: 80%;
-        margin: 40px auto;
-        border-collapse: collapse;
-      }
-      th,
-      td {
-        padding: 12px;
-        border: 1px solid #ccc;
-        text-align: center;
-      }
-      th {
-        background-color: #f8f8f8;
-      }
-      a.btn {
-        background-color: #4caf50;
-        color: white;
-        padding: 6px 12px;
-        text-decoration: none;
-        border-radius: 5px;
-      }
-      a.btn:hover {
-        background-color: #45a049;
-      }
-    </style>
+    <%- include("partials/head") %>
   </head>
-  <body>
-    <h2 style="text-align: center">My Invoices</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Invoice ID</th>
-          <th>Amount</th>
-          <th>Currency</th>
-          <th>Date</th>
-          <th>Status</th>
-          <th>Download</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% invoices.forEach(invoice => { %>
-        <tr>
-          <td><%= invoice.id %></td>
-          <td><%= invoice.amount_due %></td>
-          <td><%= invoice.currency %></td>
-          <td><%= invoice.created %></td>
-          <td><%= invoice.status %></td>
-          <td>
-            <a class="btn" href="<%= invoice.invoice_pdf %>" target="_blank"
-              >Download PDF</a
+  <body class="bg-gray-50 min-h-screen flex flex-col">
+    <!-- Include navbar from partials -->
+    <%- include('partials/navbar') %>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+      <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">
+        My Invoices
+      </h2>
+
+      <!-- Responsive Table -->
+      <div class="overflow-x-auto shadow-md rounded-lg">
+        <table class="min-w-full bg-white">
+          <thead class="bg-gray-100">
+            <tr>
+              <th
+                class="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+              >
+                Invoice ID
+              </th>
+              <th
+                class="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+              >
+                Amount
+              </th>
+              <th
+                class="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+              >
+                Currency
+              </th>
+              <th
+                class="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+              >
+                Date
+              </th>
+              <th
+                class="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+              >
+                Status
+              </th>
+              <th
+                class="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+              >
+                Download
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <% if (invoices && invoices.length > 0) { %> <%
+            invoices.forEach(function(invoice) { %>
+            <tr class="hover:bg-gray-50">
+              <td class="py-4 px-4 whitespace-nowrap text-sm text-gray-700">
+                <%= invoice.id %>
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap text-sm text-gray-700">
+                <%= invoice.amount_due %>
+              </td>
+              <td
+                class="py-4 px-4 whitespace-nowrap text-sm text-gray-700 uppercase"
+              >
+                <%= invoice.currency %>
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap text-sm text-gray-700">
+                <%= invoice.created %>
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap">
+                <% if (invoice.status === 'paid') { %>
+                <span
+                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                >
+                  Paid
+                </span>
+                <% } else if (invoice.status === 'pending') { %>
+                <span
+                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800"
+                >
+                  Pending
+                </span>
+                <% } else { %>
+                <span
+                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800"
+                >
+                  <%= invoice.status %>
+                </span>
+                <% } %>
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap text-sm font-medium">
+                <a
+                  href="<%= invoice.invoice_pdf %>"
+                  target="_blank"
+                  class="text-white bg-green-600 hover:bg-green-700 py-1 px-3 rounded text-sm transition duration-150 ease-in-out"
+                >
+                  Download PDF
+                </a>
+              </td>
+            </tr>
+            <% }); %> <% } else { %>
+            <tr>
+              <td colspan="6" class="py-8 text-center text-gray-500">
+                No invoices found
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Mobile Responsive Cards (Visible on small screens) -->
+      <div class="md:hidden mt-4 space-y-4">
+        <% if (invoices && invoices.length > 0) { %> <%
+        invoices.forEach(function(invoice) { %>
+        <div class="bg-white rounded-lg shadow p-4">
+          <div class="flex justify-between border-b pb-2">
+            <div class="text-sm font-medium text-gray-600">Invoice ID</div>
+            <div class="text-sm text-gray-800"><%= invoice.id %></div>
+          </div>
+          <div class="flex justify-between border-b py-2">
+            <div class="text-sm font-medium text-gray-600">Amount</div>
+            <div class="text-sm text-gray-800">
+              <%= invoice.amount_due %> <%= invoice.currency.toUpperCase() %>
+            </div>
+          </div>
+          <div class="flex justify-between border-b py-2">
+            <div class="text-sm font-medium text-gray-600">Date</div>
+            <div class="text-sm text-gray-800"><%= invoice.created %></div>
+          </div>
+          <div class="flex justify-between border-b py-2">
+            <div class="text-sm font-medium text-gray-600">Status</div>
+            <div>
+              <% if (invoice.status === 'paid') { %>
+              <span
+                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+              >
+                Paid
+              </span>
+              <% } else if (invoice.status === 'pending') { %>
+              <span
+                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800"
+              >
+                Pending
+              </span>
+              <% } else { %>
+              <span
+                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800"
+              >
+                <%= invoice.status %>
+              </span>
+              <% } %>
+            </div>
+          </div>
+          <div class="pt-3 flex justify-center">
+            <a
+              href="<%= invoice.invoice_pdf %>"
+              target="_blank"
+              class="w-full text-center text-white bg-green-600 hover:bg-green-700 py-2 px-4 rounded text-sm transition duration-150 ease-in-out"
             >
-          </td>
-        </tr>
-        <% }) %>
-      </tbody>
-    </table>
+              Download PDF
+            </a>
+          </div>
+        </div>
+        <% }); %> <% } else { %>
+        <div class="bg-white rounded-lg shadow p-6 text-center text-gray-500">
+          No invoices found
+        </div>
+        <% } %>
+      </div>
+    </main>
+
+    <!-- Include footer from partials -->
+    <%- include('partials/footer') %>
+
+    <script>
+      // Hide the table on small screens and show cards instead
+      const mediaQuery = window.matchMedia("(max-width: 768px)");
+      const table = document.querySelector("table").parentElement;
+      const cards = document.querySelector(".md\\:hidden");
+
+      function handleScreenChange(e) {
+        if (e.matches) {
+          // Small screen
+          table.style.display = "none";
+          cards.style.display = "block";
+        } else {
+          // Larger screen
+          table.style.display = "block";
+          cards.style.display = "none";
+        }
+      }
+
+      // Changed this line to prevent the error
+      mediaQuery.addEventListener("change", handleScreenChange);
+
+      // Initial check
+      handleScreenChange(mediaQuery);
+    </script>
   </body>
 </html>

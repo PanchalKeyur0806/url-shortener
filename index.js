@@ -45,6 +45,17 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  const originalRender = res.render;
+  res.render = function (view, options, callback) {
+    const isLoggedIn = req.cookies.jwt ? true : false; // Adjust based on how you store user login status
+    options = options || {};
+    options.isLoggedIn = isLoggedIn;
+    originalRender.call(this, view, options, callback);
+  };
+  next();
+});
+
 // get to the static page
 app.use("/", indexRouter);
 app.use("/invoices", invoiceRoutes);

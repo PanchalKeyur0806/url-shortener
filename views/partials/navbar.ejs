@@ -34,11 +34,15 @@
     </div>
 
     <div class="flex gap-2 items-center">
+      <% if ( isLoggedIn) { %>
+      <a href="/profile" class="hover:text-gray-300 cursor-pointer">Profile</a>
+      <a href="/logout" id="logout" class="mr-5 hover:text-gray-300">Logout</a>
+      <% } else { %>
       <a href="/register" class="hover:text-gray-300 cursor-pointer"
-        >register</a
+        >Register</a
       >
-      <a href="/login" class="hover:text-gray-300 cursor-pointer">login</a>
-      <a href="/" id="logout" class="mr-5 hover:text-gray-300">logout</a>
+      <a href="/login" class="hover:text-gray-300 cursor-pointer mr-5">Login</a>
+      <% } %>
 
       <ion-icon
         name="menu"
@@ -57,23 +61,4 @@
     e.name = e.name === "menu" ? "close" : "menu";
     navLink.classList.toggle("hidden");
   }
-  document.getElementById("logout").addEventListener("click", async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/logout", {
-        withCredentials: true,
-      });
-
-      console.log(response.data.status);
-
-      if (response.data.status === "success") {
-        alert("logout successfull");
-        window.location.href = "/login";
-      }
-    } catch (err) {
-      alert(err.response.data.message);
-      console.log(err.response.data.message);
-
-      console.log(err.response);
-    }
-  });
 </script>
