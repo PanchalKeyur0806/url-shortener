@@ -14,6 +14,7 @@ import indexRouter from "./routes/indexRoutes.js";
 import errorHandler from "./controllers/errorHandler.js";
 import subscriptionRoutes from "./routes/subscriptionRoutes.js";
 import invoiceRoutes from "./routes/invoiceRoutes.js";
+import userDashboardRoutes from "./routes/userDashboardRoutes.js";
 
 import { stripeWebhook } from "./controllers/stripeController.js";
 
@@ -57,9 +58,10 @@ app.use((req, res, next) => {
 });
 
 // get to the static page
-app.use("/", indexRouter);
+app.use("/dashboard", userDashboardRoutes);
 app.use("/invoices", invoiceRoutes);
 app.use("/subscription", subscriptionRoutes);
+app.use("/", indexRouter);
 
 // global error hadnling middleware
 app.all("*", (req, res) => {
