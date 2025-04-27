@@ -28,7 +28,9 @@
         </div>
       </nav>
     </header>
-    <main>
+
+    <!-- sidebar and table section -->
+    <main class="flex">
       <aside class="h-screen bg-blue-900 w-1/5 py-0.5 font-medium text-white">
         <p class="font-light my-3 text-center">Menu</p>
         <div class="py-5">
@@ -78,6 +80,41 @@
           </p>
         </div>
       </aside>
+
+      <section class="w-4/5 bg-blue-50">
+        <table class="w-full mt-3">
+          <caption class="text-center text-3xl font-medium font-mono">
+            All url listing
+          </caption>
+          <thead>
+            <tr>
+              <th class="pt-5">Original URL</th>
+              <th class="pt-5">Short URL</th>
+              <th class="pt-5">Created At</th>
+              <th class="pt-5">Clicks</th>
+              <th class="pt-5">Copy the Url</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%# check that data is exists or not %> <% if (data || data.length >
+            0) { %> <%# for loop to data item %> <% data.forEach(item => { %>
+            <tr>
+              <td><%= item.redirectUrl %></td>
+              <td><%= item.shortId %></td>
+              <td><%= item.createdAtIst %></td>
+              <td><%= item.visitHistory.length %></td>
+              <td>
+                <%= `${req.protocol}://${req.get("host")}/${item.shortId}` %>
+              </td>
+            </tr>
+            <% }) %> <% } else {%>
+            <tr>
+              <td colspan="5">There is not data about your urls</td>
+            </tr>
+            <% }%>
+          </tbody>
+        </table>
+      </section>
     </main>
   </body>
 </html>
