@@ -81,39 +81,36 @@
         </div>
       </aside>
 
-      <section class="w-4/5 bg-blue-50">
-        <table class="w-full mt-3">
-          <caption class="text-center text-3xl font-medium font-mono">
-            All url listing
-          </caption>
-          <thead>
-            <tr>
-              <th class="pt-5">Original URL</th>
-              <th class="pt-5">Short URL</th>
-              <th class="pt-5">Created At</th>
-              <th class="pt-5">Clicks</th>
-              <th class="pt-5">Copy the Url</th>
-            </tr>
-          </thead>
-          <tbody>
-            <%# check that data is exists or not %> <% if (data || data.length >
-            0) { %> <%# for loop to data item %> <% data.forEach(item => { %>
-            <tr>
-              <td><%= item.redirectUrl %></td>
-              <td><%= item.shortId %></td>
-              <td><%= item.createdAtIst %></td>
-              <td><%= item.visitHistory.length %></td>
-              <td>
-                <%= `${req.protocol}://${req.get("host")}/${item.shortId}` %>
-              </td>
-            </tr>
-            <% }) %> <% } else {%>
-            <tr>
-              <td colspan="5">There is not data about your urls</td>
-            </tr>
-            <% }%>
-          </tbody>
-        </table>
+      <section class="w-4/5 bg-white">
+        <div id="heading" class="my-10 text-3xl font-extralight text-center">
+          All your shorten Urls
+        </div>
+        <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <% if (data || data.length > 0) { %> <% data.forEach(items => { %>
+          <div class="bg-blue-50 w-full rounded-sm">
+            <div id="heading" class="text-xl font-medium font-sans px-5 py-3">
+              <span>Short id :- </span> <span> <%= items.shortId %> </span>
+            </div>
+            <div id="info" class="px-5">
+              <p class="my-2 text-light">
+                Redirect Url :-
+                <span class="text-blue-600"><%= items.redirectUrl %></span>
+              </p>
+              <p class="my-2 text-light">
+                Created At :-
+                <span class="text-blue-600"><%= items.createdAtIst %></span>
+              </p>
+              <button
+                class="my-2 bg-blue-900 text-white px-3 py-0.5 cursor-pointer rounded-sm hover:rounded-2xl transition-all duration-150 ease-in-out"
+              >
+                Copy the url
+              </button>
+            </div>
+          </div>
+          <% }) %> <% } else {%>
+          <div class="bg-red-200 text-red-900">No data found</div>
+          <% }%>
+        </div>
       </section>
     </main>
   </body>
