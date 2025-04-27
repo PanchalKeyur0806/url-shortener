@@ -4,32 +4,6 @@
     <%- include("../partials/head") %>
   </head>
   <body>
-    <header class="">
-      <nav
-        class="flex justify-between items-center mt-2 px-3 border-b-2 border-red-900 py-3"
-      >
-        <div id="name" class="w-1/5 text-center font-medium px-3 py-0.5">
-          <p>Url shortner</p>
-        </div>
-        <div id="search" class="w-3/5 text-center text-black">
-          <input
-            type="text"
-            name="search"
-            id="search"
-            placeholder="search"
-            class="outline-1 w-[30vw] rounded-sm px-3 py-0.5 bg-[#D1D3E2] font-extralight"
-          />
-        </div>
-        <div
-          id="home page"
-          class="w-1/5 text-center bg-blue-900 text-white px-3 py-0.5"
-        >
-          <p><a href="/">Go to home page</a></p>
-        </div>
-      </nav>
-    </header>
-
-    <!-- sidebar and table section -->
     <main class="flex">
       <aside
         class="h-screen hidden lg:block w-1/5 py-0.5 font-medium bg-blue-900 text-white"
@@ -83,35 +57,38 @@
         </div>
       </aside>
 
-      <section class="lg:w-4/5 w-[95vw] mx-auto lg:mx-0 bg-white">
-        <div id="heading" class="my-10 text-3xl font-extralight text-center">
-          All your shorten Urls
-        </div>
-        <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          <% if (data || data.length > 0) { %> <% data.forEach(items => { %>
-          <div class="bg-blue-50 w-full rounded-sm">
-            <div id="heading" class="text-xl font-medium font-sans px-5 py-3">
-              <span>Short id :- </span> <span> <%= items.shortId %> </span>
+      <section class="lg:w-4/5 w-[95vw] mx-auto lg:mx-0 bg-white mt-10">
+        <div class="max-w-2xl mx-auto p-6 bg-white rounded shadow">
+          <h1 class="text-2xl font-bold mb-4">My Subscription</h1>
+
+          <div class="space-y-4">
+            <div>
+              <h2 class="text-gray-700 font-semibold">Current Plan:</h2>
+              <p><%= currentPlan %></p>
             </div>
-            <div id="info" class="px-5">
-              <p class="my-2 text-light">
-                Redirect Url :-
-                <span class="text-blue-600"><%= items.redirectUrl %></span>
-              </p>
-              <p class="my-2 text-light">
-                Created At :-
-                <span class="text-blue-600"><%= items.createdAtIst %></span>
-              </p>
-              <button
-                class="my-2 bg-blue-900 text-white px-3 py-0.5 cursor-pointer rounded-sm hover:rounded-2xl transition-all duration-150 ease-in-out"
+
+            <div>
+              <h2 class="text-gray-700 font-semibold">Subscription ID:</h2>
+              <p><%= userSubscription %></p>
+            </div>
+
+            <% if (nextBillingDate) { %>
+            <div>
+              <h2 class="text-gray-700 font-semibold">Next Billing Date:</h2>
+              <p><%= nextBillingDate %></p>
+            </div>
+            <% } %>
+
+            <div class="mt-6">
+              <a
+                href="/subscription/user"
+                target="_blank"
+                class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
               >
-                Copy the url
-              </button>
+                Manage Subscription
+              </a>
             </div>
           </div>
-          <% }) %> <% } else {%>
-          <div class="bg-red-200 text-red-900">No data found</div>
-          <% }%>
         </div>
       </section>
     </main>

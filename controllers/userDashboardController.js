@@ -4,6 +4,7 @@ import moment from "moment-timezone";
 import Url from "../models/urlModel.js";
 import AppError from "../utils/appError.js";
 import catchAsync from "../utils/catchAsync.js";
+import User from "../models/userModel.js";
 
 // render user dashboard
 const renderDashboard = catchAsync(async (req, res) => {
@@ -33,4 +34,27 @@ const renderDashboard = catchAsync(async (req, res) => {
   });
 });
 
-export { renderDashboard };
+const userSubscription = catchAsync(async (req, res, next) => {
+  // get the logged in user
+  const currentUser = req.user;
+
+  // give the user plan and end date of the plan
+  const usersPlan = await User.findById(currentUser._id).populate("plan");
+  const endDate = usersPlan.planEndDate;
+
+  // get user subscription id and plan name
+  const userSubscription = currentUser.stripeSubcriptionId;
+  const currentPlan = currentUser.plan.name;
+
+  // set a renew Date
+  const renewDate = endDate.setDate(endDate.getDate() + 1);
+  const nextBillingDate = new Date(1777270512257);
+
+  res.render("userDashboard/subscription", {
+    title: "user subscription",
+    userSubscription,
+    currentPlan,
+    nextBillingDate,
+  });
+});
+export { renderDashboard, userSubscription };
