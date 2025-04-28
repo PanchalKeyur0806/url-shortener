@@ -1,12 +1,14 @@
-<header class="bg-gradient-to-t from-blue-950 to-blue-900 text-white">
+<header class="bg-gradient-to-t from-blue-950 to-blue-900 text-white relative">
   <nav class="flex justify-between items-center relative">
-    <div class="flex items-center cursor-pointer">
-      <img
-        class="w-20"
-        src="https://free-url-shortener.rb.gy/url-shortener.png"
-        alt=""
-      />
-      <span class="hidden md:block">Url shortner</span>
+    <div>
+      <a href="/" class="flex items-center cursor-pointer">
+        <img
+          class="w-20"
+          src="https://free-url-shortener.rb.gy/url-shortener.png"
+          alt="Logo of website"
+        />
+        <span> Url shortner</span>
+      </a>
     </div>
 
     <div
@@ -34,11 +36,14 @@
     </div>
 
     <div class="flex gap-2 items-center">
-      <% if ( isLoggedIn) { %>
-      <a href="/dashboard" class="hover:text-gray-300 cursor-pointer"
-        >Profile</a
-      >
+      <% if (isLoggedIn) { %>
+
+      <div>
+        <p id="profile" class="hover:text-gray-300 cursor-pointer">Profile</p>
+      </div>
+
       <a href="/logout" id="logout" class="mr-5 hover:text-gray-300">Logout</a>
+
       <% } else { %>
       <a href="/register" class="hover:text-gray-300 cursor-pointer"
         >Register</a
@@ -53,11 +58,27 @@
       ></ion-icon>
     </div>
   </nav>
+  <div
+    id="popupProfile"
+    class="hidden mt-2 px-5 py-3 absolute right-10 top-full bg-blue-900 text-white rounded-sm"
+  >
+    <p><a href="/dashboard">Go to Dashboard</a></p>
+    <p><a href="/dashboard/subscription">Go to Subscription</a></p>
+    <p><a href="/invoices/my-invoices">Go to Invoice</a></p>
+    <p><a href="/profile">Go to Profile</a></p>
+  </div>
 </header>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
   const navLink = document.getElementById("nav-link");
+
+  const profileEle = document.getElementById("profile");
+  const popupProfile = document.getElementById("popupProfile");
+
+  profileEle.addEventListener("click", (e) => {
+    popupProfile.classList.toggle("hidden");
+  });
 
   function onToggle(e) {
     e.name = e.name === "menu" ? "close" : "menu";

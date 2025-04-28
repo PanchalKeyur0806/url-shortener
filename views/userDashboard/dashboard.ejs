@@ -3,87 +3,12 @@
   <head>
     <%- include("../partials/head") %>
   </head>
-  <body>
-    <header class="">
-      <nav
-        class="flex justify-between items-center mt-2 px-3 border-b-2 border-red-900 py-3"
-      >
-        <div id="name" class="w-1/5 text-center font-medium px-3 py-0.5">
-          <p>Url shortner</p>
-        </div>
-        <div id="search" class="w-3/5 text-center text-black">
-          <input
-            type="text"
-            name="search"
-            id="search"
-            placeholder="search"
-            class="outline-1 w-[30vw] rounded-sm px-3 py-0.5 bg-[#D1D3E2] font-extralight"
-          />
-        </div>
-        <div
-          id="home page"
-          class="w-1/5 text-center bg-blue-900 text-white px-3 py-0.5"
-        >
-          <p><a href="/">Go to home page</a></p>
-        </div>
-      </nav>
-    </header>
+  <body class="min-h-screen flex flex-col">
+    <%- include("../partials/navbar") %>
 
     <!-- sidebar and table section -->
-    <main class="flex">
-      <aside
-        class="h-screen hidden lg:block w-1/5 py-0.5 font-medium bg-blue-900 text-white"
-      >
-        <p class="font-light my-3 text-center">Menu</p>
-        <div class="py-5">
-          <p
-            class="mt-6 py-3 flex items-center justify-center cursor-pointer hover:bg-slate-100 hover:text-blue-900"
-          >
-            <ion-icon
-              name="analytics-outline"
-              class="font-bold text-xl"
-            ></ion-icon>
-            <span
-              class="px-2 py-1 rounded-sm transition-all duration-200 ease-in-out"
-            >
-              <a href="/dashboard">Total Urls</a></span
-            >
-          </p>
-          <p
-            class="mt-6 py-3 flex items-center justify-center cursor-pointer hover:bg-slate-100 hover:text-blue-900"
-          >
-            <ion-icon name="cash-outline" class="font-bold text-xl"></ion-icon>
-            <span
-              class="px-2 py-1 rounded-sm transition-all duration-200 ease-in-out"
-              ><a href="/dashboard/subscription">Subscription Section</a></span
-            >
-          </p>
-          <p
-            class="mt-6 py-3 flex items-center justify-center cursor-pointer hover:bg-slate-100 hover:text-blue-900"
-          >
-            <ion-icon name="grid-outline" class="font-bold text-xl"></ion-icon>
-            <span
-              class="px-2 py-1 rounded-sm transition-all duration-200 ease-in-out"
-              ><a href="">Invoice Section</a></span
-            >
-          </p>
-          <p
-            class="mt-6 py-3 flex items-center justify-center cursor-pointer hover:bg-slate-100 hover:text-blue-900"
-          >
-            <ion-icon
-              name="person-circle-outline"
-              class="font-bold text-xl"
-            ></ion-icon>
-            <span
-              class="px-2 py-1 rounded-sm transition-all duration-200 ease-in-out"
-            >
-              <a href="">Profile Section</a></span
-            >
-          </p>
-        </div>
-      </aside>
-
-      <section class="lg:w-4/5 w-[95vw] mx-auto lg:mx-0 bg-white">
+    <main class="lg:w-4/5 w-[95vw] mx-auto bg-white">
+      <section class="">
         <div id="heading" class="my-10 text-3xl font-extralight text-center">
           All your shorten Urls
         </div>
@@ -115,5 +40,6 @@
         </div>
       </section>
     </main>
+    <%- include("../partials/footer") %>
   </body>
 </html>
