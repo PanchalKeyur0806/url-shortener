@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include("partials/head") %>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <%- include("partials/navbar") %>
+    <main class="w-[95vw] md:w-[75vw] lg:w-[60vw] mx-auto">
+      <section>
+        <div class="font-extralight text-3xl text-center my-5">
+          <h1>Your Profile</h1>
+        </div>
+        <form action="/profile" method="post">
+          <div class="flex flex-row-reverse">
+            <button
+              id="edit"
+              class="px-3 py-1 bg-green-600 text-white rounded-sm md:hover:rounded-2xl md:transition-all md:duration-150 md:ease-in-out md:cursor-pointer"
+            >
+              Edit
+            </button>
+            <button
+              id="cancel"
+              class="hidden px-3 py-1 bg-red-600 text-white rounded-sm md:hover:rounded-2xl md:transition-all md:duration-150 md:ease-in-out md:cursor-pointer"
+            >
+              Cancel
+            </button>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-3 my-10">
+            <div class="flex flex-col justify-center gap-1 mx-5">
+              <label for="name">Chnage your email</label>
+              <input
+                class="outline-1 hover:bg-slate-100 outline-black px-3 py-0.5 text-sm rounded-sm"
+                type="text"
+                name="name"
+                id="name"
+                data-editable-fields="name"
+                placeholder="Change your name "
+                readonly
+              />
+            </div>
+            <div class="flex flex-col justify-center gap-1 mx-5">
+              <label for="email">Change your Email</label>
+              <input
+                class="outline-1 hover:bg-slate-100 outline-black px-3 py-0.5 text-sm rounded-sm"
+                type="text"
+                name="email"
+                id="email"
+                data-editable-fields="email"
+                placeholder="Change your email"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="flex flex-col justify-center gap-1 mx-5">
+            <label for="password">Chnage your password</label>
+            <input
+              class="grid grid-cols-1 outline-1 outline-black hover:bg-slate-100 text-sm px-3 py-0.5 rounded-sm"
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Change your password"
+              data-editable-fields="password"
+              readonly
+            />
+          </div>
+
+          <div class="my-5 mx-5 text-center">
+            <input
+              type="submit"
+              value="save"
+              class="px-4 py-1 cursor-pointer bg-blue-900 text-white rounded-sm hover:rounded-3xl transition-all duration-150 ease-in-out"
+            />
+          </div>
+        </form>
+      </section>
+
+      <script>
+        const edit = document.getElementById("edit");
+        const cancel = document.getElementById("cancel");
+        const getAllEditEle = document.querySelectorAll(
+          "[data-editable-fields]"
+        );
+
+        // edit button logic
+        // when click on edit button
+        // all the elements that are inside the "getAllEditEle" variable, their readonly attriblues will be removed
+        edit.addEventListener("click", (e) => {
+          e.preventDefault();
+
+          getAllEditEle.forEach((ele) => {
+            ele.removeAttribute("readonly");
+          });
+
+          // display the cancel button when clicked on edit button
+          edit.classList.toggle("hidden");
+          cancel.classList.toggle("hidden");
+        });
+
+        // cancel button logic
+        // when click on cancel button
+        // all the elements that are inside the "getAllEditEle" variable, their attriblue will set to readonly
+        cancel.addEventListener("click", (e) => {
+          e.preventDefault();
+
+          getAllEditEle.forEach((ele) => {
+            ele.setAttribute("readonly", "readonly");
+          });
+
+          // display the edit button when clicked on cancel button
+          edit.classList.toggle("hidden");
+          cancel.classList.toggle("hidden");
+        });
+      </script>
+    </main>
+    <%- include("partials/footer") %>
+  </body>
+</html>

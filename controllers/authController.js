@@ -93,10 +93,21 @@ const handleLogout = catchAsync(async (req, res, next) => {
   }
 });
 
+// display information about the logged in user
+const profile = catchAsync(async (req, res, next) => {
+  const currentUser = req.user;
+
+  res.render("profile", {
+    title: "Profile page - url shortner",
+    data: currentUser,
+  });
+});
+
 export {
   renderRegisterPage,
   handleRegistration,
   renderLoginPage,
   handleLogin,
   handleLogout,
+  profile,
 };
