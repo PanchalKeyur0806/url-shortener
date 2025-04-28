@@ -39,7 +39,8 @@ const renderDashboard = catchAsync(async (req, res) => {
 const userSubscription = catchAsync(async (req, res, next) => {
   // get the logged in user
   const currentUser = req.user;
-  if (currentUser.stripeSubcriptionId === null) {
+
+  if (currentUser.stripePriceId === null) {
     return next(new AppError("you haven't purchased any subscription", 404));
   }
 
@@ -48,8 +49,8 @@ const userSubscription = catchAsync(async (req, res, next) => {
   const endDate = usersPlan.planEndDate;
 
   // get user subscription id and plan name
-  const userSubscription = currentUser.stripeSubcriptionId;
-  const currentPlan = currentUser.plan.name;
+  const userSubscription = currentUser.stripeSubscriptionId;
+  const currentPlan = usersPlan.plan.name;
 
   // set a renew Date
   const renewDate = endDate.setDate(endDate.getDate() + 1);

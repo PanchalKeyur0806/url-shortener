@@ -4,6 +4,7 @@ import { Plan } from "../models/planModel.js";
 import User from "../models/userModel.js";
 import catchAsync from "../utils/catchAsync.js";
 import AppError from "../utils/appError.js";
+import { log } from "console";
 
 dotenv.config({ path: "./config.env" });
 
@@ -90,7 +91,6 @@ const getSubscriptionInfo = catchAsync(async (req, res, next) => {
 
 // check the webhook
 const stripeWebhook = catchAsync(async (req, res, next) => {
-  console.log("Inside the webhook");
   // get the signature form the headers
   const sig = req.headers["stripe-signature"];
   let event;
@@ -161,16 +161,43 @@ const stripeWebhook = catchAsync(async (req, res, next) => {
     user.isActive = true;
     // store subscription related fields
     user.stripeCustomerId = session.customer;
-    user.stripeSubcriptionId = session.subscription.id;
-    user.stripeSubcriptionStatus = session.subscription.status;
+    user.stripeSubscriptionId = subscription.id;
+    user.stripeSubscriptionStatus = subscription.status;
     // store the product and price in the user
     user.stripeProductId = productId;
     user.stripePriceId = priceId;
 
     // saving the user
     await user.save();
-  }
+  } else if (event.type === "checkout.subscription.deleted") {
+    const subscription = event.data.object;
 
+    const findUser = await User.findOne({
+      stripeSubscriptionId: subscription.id,
+    });
+
+    if (!findUser) {
+      return next(
+        new AppError(`no user found with subscription id ${subscription.id}`)
+      );
+    }
+
+    findUser.stripeSubscriptionStatus = "canceled";
+
+    await findUser.save();
+
+    console.log(`User ${findUser.email}'s subscription canceled successfully.`);
+  } else if (event.type === "customer.subscription.updated") {
+    const subscription = event.data.object;
+    const findUser = await User.findOne({
+      stripeSubscriptionId: subscription.id,
+    });
+
+    if (findUser) {
+      findUser.stripeSubscriptionStatus = "canceled";
+      await findUser.save();
+    }
+  }
   res.status(200).json({ received: true });
 });
 
