@@ -94,13 +94,54 @@ const handleLogout = catchAsync(async (req, res, next) => {
 });
 
 // display information about the logged in user
-const profile = catchAsync(async (req, res, next) => {
+const renderProfile = catchAsync(async (req, res, next) => {
   const currentUser = req.user;
 
   res.render("profile", {
     title: "Profile page - url shortner",
+    status: null,
+    message: null,
     data: currentUser,
   });
+});
+
+// change the profile information based on the user input
+const changeProfile = catchAsync(async (req, res, next) => {
+  try {
+    const { name, email, password, confirmPassword } = req.body;
+    if (!name) {
+      throw new AppError("please enter your name", 400);
+    }
+
+    if (!email) {
+      new AppError("please enter your email", 400);
+    }
+
+    if (!password) {
+      new AppError("please enter your password", 400);
+    }
+
+    const currentUser = req.user;
+    const findUser = await User.findById(currentUser._id);
+
+    findUser.name = name;
+    findUser.email = email;
+    findUser.password = password;
+    findUser.confirmPassword = confirmPassword;
+    await findUser.save();
+
+    res.render("profile", {
+      title: "Profile - url shortner",
+      status: "success",
+      message: "profile updated successfully",
+    });
+  } catch (error) {
+    res.render("profile", {
+      title: "Profile - url shortner",
+      status: "error",
+      message: error.message,
+    });
+  }
 });
 
 export {
@@ -109,5 +150,6 @@ export {
   renderLoginPage,
   handleLogin,
   handleLogout,
-  profile,
+  renderProfile,
+  changeProfile,
 };

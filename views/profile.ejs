@@ -5,6 +5,25 @@
   </head>
   <body class="min-h-screen flex flex-col">
     <%- include("partials/navbar") %>
+
+    <div id="popup">
+      <% if (status === "success") { %>
+      <div
+        class="w-[95vw] md:w-[60vw] mx-auto mt-5 p-4 flex justify-between items-center bg-green-100 text-green-800 rounded-lg"
+      >
+        <p><%= message %></p>
+        <p class="cursor-pointer dismiss-btn">X</p>
+      </div>
+      <% } else if(status === "error"){ %>
+      <div
+        class="w-[95vw] md:w-[60vw] mx-auto mt-5 p-4 flex justify-between items-center bg-red-100 text-red-800 rounded-lg"
+      >
+        <p><%= message %></p>
+        <p class="cursor-pointer dismiss-btn">X</p>
+      </div>
+      <% } %>
+    </div>
+
     <main class="w-[95vw] md:w-[75vw] lg:w-[60vw] mx-auto">
       <section>
         <div class="font-extralight text-3xl text-center my-5">
@@ -38,7 +57,7 @@
                 readonly
               />
             </div>
-            <div class="flex flex-col justify-center gap-1 mx-5">
+            <div class="flex flex-col justify-center gap-1 mx-5 mt-5 lg:mt-0">
               <label for="email">Change your Email</label>
               <input
                 class="outline-1 hover:bg-slate-100 outline-black px-3 py-0.5 text-sm rounded-sm"
@@ -63,6 +82,18 @@
               readonly
             />
           </div>
+          <div class="flex flex-col justify-center gap-1 mx-5 my-5">
+            <label for="confirmPassword">Confirm your password password</label>
+            <input
+              class="grid grid-cols-1 outline-1 outline-black hover:bg-slate-100 text-sm px-3 py-0.5 rounded-sm"
+              type="password"
+              name="confirmPassword"
+              id="confirmPassword"
+              placeholder="Confirm your password"
+              data-editable-fields="password"
+              readonly
+            />
+          </div>
 
           <div class="my-5 mx-5 text-center">
             <input
@@ -73,6 +104,20 @@
           </div>
         </form>
       </section>
+      <script>
+        const popup = document.getElementById("popup");
+        const dismiss_btn = document.querySelector(".dismiss-btn");
+
+        if (dismiss_btn) {
+          dismiss_btn.addEventListener("click", () => {
+            popup.remove();
+          });
+
+          setTimeout(() => {
+            popup.style.display = "none";
+          }, 5000);
+        }
+      </script>
 
       <script>
         const edit = document.getElementById("edit");

@@ -11,7 +11,8 @@ import {
   handleRegistration,
   handleLogin,
   handleLogout,
-  profile,
+  renderProfile,
+  changeProfile,
 } from "../controllers/authController.js";
 
 import { renderPricing } from "../controllers/subscriptionsController.js";
@@ -37,7 +38,10 @@ router
   .post(validateRegisters, handleRegistration);
 router.route("/login").get(renderLoginPage).post(validateLogin, handleLogin);
 router.route("/logout").get(handleLogout);
-router.route("/profile").get(protect, profile);
+router
+  .route("/profile")
+  .get(protect, renderProfile)
+  .post(protect, changeProfile);
 
 router.route("/").get(homePage).post(protect, validateUrl, createShortUrl);
 
