@@ -25,6 +25,7 @@ export const validateRegisters = [
     if (!errors.isEmpty()) {
       return res.status(400).render("authentication/register", {
         status: "error",
+        title: "Some error occured",
         message: errors.array()[0].msg,
       });
     }

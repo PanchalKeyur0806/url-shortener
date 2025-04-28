@@ -15,6 +15,7 @@ export const validateUrl = [
     if (!errors.isEmpty()) {
       return res.status(400).render("index", {
         status: "error",
+        title: "Some error occured",
         message: errors.array()[0].msg,
         data: null,
       });

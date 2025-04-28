@@ -17,6 +17,7 @@ export const validateLogin = [
     if (!errors.isEmpty()) {
       return res.render("authentication/login", {
         status: "error",
+        title: "Some error occured",
         message: errors.array()[0].msg,
       });
     }

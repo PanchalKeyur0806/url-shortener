@@ -114,11 +114,11 @@ const changeProfile = catchAsync(async (req, res, next) => {
     }
 
     if (!email) {
-      new AppError("please enter your email", 400);
+      throw new AppError("please enter your email", 400);
     }
 
     if (!password) {
-      new AppError("please enter your password", 400);
+      throw new AppError("please enter your password", 400);
     }
 
     const currentUser = req.user;

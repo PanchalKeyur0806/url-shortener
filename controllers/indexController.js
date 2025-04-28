@@ -16,7 +16,7 @@ const homePage = (req, res) => {
   });
 };
 
-const createShortUrl = catchAsync(async (req, res, next) => {
+const createShortUrl = async (req, res, next) => {
   try {
     const { url } = req.body;
 
@@ -33,16 +33,19 @@ const createShortUrl = catchAsync(async (req, res, next) => {
       createdUrl: result.newUrl,
     });
   } catch (error) {
+    const queryMessage = req.query.message;
+    console.log(queryMessage);
+
     res.render("index", {
       status: "error",
       title: "Home page - url shortner",
-      message: error.message,
+      message: queryMessage ? queryMessage : error.message,
       url: null,
       id: null,
       createdUrl: null,
     });
   }
-});
+};
 
 // redirect the url
 const redirectToUrl = catchAsync(async (req, res, next) => {

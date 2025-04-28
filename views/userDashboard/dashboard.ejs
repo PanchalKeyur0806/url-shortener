@@ -27,8 +27,13 @@
                 Created At :-
                 <span class="text-blue-600"><%= items.createdAtIst %></span>
               </p>
+              <p class="my-2 text-light">
+                Times visited :-
+                <span class="text-blue-600"><%= items.clicked %></span>
+              </p>
               <button
-                class="my-2 bg-blue-900 text-white px-3 py-0.5 cursor-pointer rounded-sm hover:rounded-2xl transition-all duration-150 ease-in-out"
+                data-copyurl="<%= items.originalUrl%>"
+                class="copyBtn my-2 bg-blue-900 text-white px-3 py-0.5 cursor-pointer rounded-sm hover:rounded-2xl transition-all duration-150 ease-in-out"
               >
                 Copy the url
               </button>
@@ -40,6 +45,32 @@
         </div>
       </section>
     </main>
+
+    <script>
+      // get the all element that has a data attriblue
+      const getCopyEles = document.querySelectorAll(".copyBtn");
+
+      // loop through all the elements
+      getCopyEles.forEach((item) => {
+        // added a event listener
+        item.addEventListener("click", (e) => {
+          // store data attriblue value to the variable
+          const copiedText = e.target.attributes[0].value;
+          // copy the text using navigator
+          navigator.clipboard
+            .writeText(copiedText)
+            .then(() => {
+              setTimeout(() => {
+                item.innerHTML = "Copy the url";
+              }, 2000);
+              item.innerHTML = "copied";
+            })
+            .catch((err) => {
+              console.log("some error occured", err);
+            });
+        });
+      });
+    </script>
     <%- include("../partials/footer") %>
   </body>
 </html>

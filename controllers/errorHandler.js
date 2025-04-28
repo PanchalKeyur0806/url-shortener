@@ -13,10 +13,11 @@ const errorHandler = (err, req, res, next) => {
   statusCode = statusCode || 500;
   message = message || "Internal server error";
 
-  res.status(statusCode).render("index", {
+  res.status(statusCode).render("error", {
     status: "error",
     title: "Error - URL Shortener",
     message: message,
+    statusCode: statusCode, // Added statusCode to be displayed in the template
     url: null,
     id: null,
     createdUrl: null,

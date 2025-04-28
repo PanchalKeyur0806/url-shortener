@@ -20,6 +20,8 @@ const renderDashboard = catchAsync(async (req, res) => {
   const urlWithIst = usersURl.map((item) => {
     return {
       ...item._doc,
+      clicked: item.visitHistory.length,
+      originalUrl: `${req.protocol}://${req.get("host")}/${item.shortId}`,
       createdAtIst: moment(item.createdAt)
         .tz("Asia/Kolkata")
         .format("DD-MM-YYYY hh:mm A"),
@@ -37,6 +39,9 @@ const renderDashboard = catchAsync(async (req, res) => {
 const userSubscription = catchAsync(async (req, res, next) => {
   // get the logged in user
   const currentUser = req.user;
+  if (currentUser.stripeSubcriptionId === null) {
+    return next(new AppError("you haven't purchased any subscription", 404));
+  }
 
   // give the user plan and end date of the plan
   const usersPlan = await User.findById(currentUser._id).populate("plan");
