@@ -4,6 +4,85 @@
     <%- include("../partials/head") %>
   </head>
   <body>
-    <h1>hello admin</h1>
+    <main class="flex">
+      <%- include("../partials/aside") %>
+      <section class="min-h-screen w-4/5 bg-gray-200">
+        <div
+          id="cards"
+          class="mx-5 my-5 grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
+        >
+          <div class="pr-3 cursor-pointer rounded-2xl bg-white shadow relative">
+            <h2 class="text-right font-extralight text-gray-500 pb-1 mt-2">
+              Todays moneys
+            </h2>
+            <% if (data || data.length > 0) { %> <% data.forEach(entry => { %>
+            <p class="text-right font-bold mb-4"><%= entry.totalRevenue %></p>
+            <% }) %> <% } %>
+
+            <p class="pl-3 font-medium mb-3">+5% from this week</p>
+            <div
+              class="flex items-center justify-center text-2xl absolute left-5 -top-2 bg-green-800 text-white rounded size-10"
+            >
+              <ion-icon name="cash-outline"></ion-icon>
+            </div>
+          </div>
+
+          <!-- users -->
+          <div class="pr-3 cursor-pointer rounded-2xl bg-white shadow relative">
+            <h2 class="text-right font-extralight text-gray-500 pb-1 mt-2">
+              Total Users
+            </h2>
+            <% if (totalUsers) { %>
+            <p class="text-right font-bold mb-4">
+              <%= totalUsers[0].userCount %>
+            </p>
+            <% } %>
+
+            <p class="pl-3 font-medium mb-3">+5% from this week</p>
+            <div
+              class="flex items-center justify-center text-2xl absolute left-5 -top-2 bg-blue-800 text-white rounded size-10"
+            >
+              <ion-icon name="person-circle-outline"></ion-icon>
+            </div>
+          </div>
+
+          <!-- URls -->
+          <div class="pr-3 cursor-pointer rounded-2xl bg-white shadow relative">
+            <h2 class="text-right font-extralight text-gray-500 pb-1 mt-2">
+              Total Urls
+            </h2>
+            <% if (totalUrls) { %>
+            <p class="text-right font-bold mb-4">
+              <%= totalUrls[0].totalUrls %>
+            </p>
+            <% } %>
+
+            <p class="pl-3 font-medium mb-3">+5% from this week</p>
+            <div
+              class="flex items-center justify-center text-2xl absolute left-5 -top-2 bg-red-800 text-white rounded size-10"
+            >
+              <ion-icon name="link-outline"></ion-icon>
+            </div>
+          </div>
+
+          <!-- subscription -->
+          <div class="pr-3 cursor-pointer rounded-2xl bg-white shadow relative">
+            <h2 class="text-right font-extralight text-gray-500 pb-1 mt-2">
+              Total subscription
+            </h2>
+            <p class="text-right font-bold mb-4">5500</p>
+
+            <p class="pl-3 font-medium mb-3">+5% from this week</p>
+            <div
+              class="flex items-center justify-center text-2xl absolute left-5 -top-2 bg-green-800 text-white rounded size-10"
+            >
+              <ion-icon name="card-outline"></ion-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- charts -->
+      </section>
+    </main>
   </body>
 </html>
