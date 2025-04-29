@@ -169,6 +169,8 @@ const stripeWebhook = catchAsync(async (req, res, next) => {
 
     // saving the user
     await user.save();
+
+    // if user subscription automatically canceled
   } else if (event.type === "checkout.subscription.deleted") {
     const subscription = event.data.object;
 
@@ -188,15 +190,25 @@ const stripeWebhook = catchAsync(async (req, res, next) => {
 
     console.log(`User ${findUser.email}'s subscription canceled successfully.`);
   } else if (event.type === "customer.subscription.updated") {
+    // get the subscription info
     const subscription = event.data.object;
+
+    // find the user
     const findUser = await User.findOne({
       stripeSubscriptionId: subscription.id,
     });
 
+    // if user exists then store infor regading the user request
     if (findUser) {
-      findUser.stripeSubscriptionStatus = "canceled";
-      await findUser.save();
+      if (subscription.canceled_at !== null) {
+        findUser.stripeSubscriptionStatus = "canceled";
+      } else {
+        findUser.stripeSubscriptionStatus = "active";
+      }
     }
+
+    // save the user
+    await findUser.save();
   }
   res.status(200).json({ received: true });
 });
