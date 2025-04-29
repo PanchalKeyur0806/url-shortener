@@ -1,6 +1,8 @@
 // core modules
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
+import morgan from "morgan";
 
 // installed modules
 import express, { urlencoded } from "express";
@@ -45,6 +47,15 @@ app.use(
     credentials: true,
   })
 );
+
+// 1. Create a writable stream (open "access.log" file for writing logs)
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" } // 'a' means append mode, it doesn't overwrite
+);
+
+// 2. Setup Morgan middleware to log in 'combined' format and save into access.log
+app.use(morgan("combined", { stream: accessLogStream }));
 
 app.use((req, res, next) => {
   const originalRender = res.render;
