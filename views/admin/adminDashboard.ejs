@@ -57,7 +57,9 @@
             </p>
             <% } %>
 
-            <p class="pl-3 font-medium mb-3">+5% from this week</p>
+            <p class="pl-3 font-medium mb-3">
+              +<%= latestData.percentage %>% from this week
+            </p>
             <div
               class="flex items-center justify-center text-2xl absolute left-5 -top-2 bg-red-800 text-white rounded size-10"
             >
@@ -82,7 +84,98 @@
         </div>
 
         <!-- charts -->
+        <div class="flex flex-col lg:flex-row gap-3">
+          <div
+            class="chart-container lg:w-1/2 w-full"
+            data-labels="<%=labels%>"
+            data-datas="<%=datas%>"
+          >
+            <div
+              id="heading"
+              class="text-2xl font-bold mx-5 mt-3 text-blue-950"
+            >
+              Url charts
+            </div>
+            <div id="myChart"></div>
+          </div>
+
+          <div
+            class="chart-container lg:w-1/2 w-full"
+            data-labels="<%=userLabels%>"
+            data-datas="<%=userData%>"
+          >
+            <div
+              id="heading"
+              class="text-2xl font-bold mx-5 mt-3 text-blue-950"
+            >
+              User Weekly charts
+            </div>
+            <div id="myChart2"></div>
+          </div>
+        </div>
       </section>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+      const chartContainer = document.querySelector(".chart-container");
+      console.log(chartContainer);
+
+      const label = JSON.parse(chartContainer.dataset.labels);
+      const data = JSON.parse(chartContainer.dataset.datas);
+
+      console.log(label);
+
+      var options = {
+        chart: {
+          type: "line",
+        },
+        series: [
+          {
+            name: "sales",
+            data: data,
+          },
+        ],
+        xaxis: {
+          categories: label,
+        },
+      };
+
+      var chart = new ApexCharts(document.querySelector("#myChart"), options);
+
+      chart.render();
+
+      // some comments
+
+      const chartContainers = document.querySelectorAll(".chart-container")[1];
+      console.log(chartContainer);
+
+      const userlabel = JSON.parse(chartContainers.dataset.labels);
+      const userdata = JSON.parse(chartContainers.dataset.datas);
+
+      console.log(userlabel);
+
+      let userChartsOptions = {
+        chart: {
+          type: "line",
+        },
+        series: [
+          {
+            name: "sales",
+            data: userdata,
+          },
+        ],
+        xaxis: {
+          categories: userlabel,
+        },
+      };
+
+      var charts = new ApexCharts(
+        document.querySelector("#myChart2"),
+        userChartsOptions
+      );
+
+      charts.render();
+    </script>
   </body>
 </html>
