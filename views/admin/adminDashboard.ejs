@@ -6,7 +6,7 @@
   <body>
     <main class="flex">
       <%- include("../partials/aside") %>
-      <section class="min-h-screen w-4/5 bg-gray-200">
+      <section class="h-screen w-4/5 bg-gray-200 overflow-y-auto">
         <div
           id="cards"
           class="mx-5 my-5 grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
@@ -84,34 +84,99 @@
         </div>
 
         <!-- charts -->
-        <div class="flex flex-col lg:flex-row gap-3">
+        <div class="flex flex-col lg:flex-row gap-5 mx-5">
           <div
-            class="chart-container lg:w-1/2 w-full"
+            class="chart-container lg:w-1/2 w-full shadow bg-white rounded-2xl hover:shadow-xl"
             data-labels="<%=labels%>"
             data-datas="<%=datas%>"
           >
+            <div id="myChart" class="mx-5 mt-3"></div>
             <div
               id="heading"
-              class="text-2xl font-bold mx-5 mt-3 text-blue-950"
+              class="text-2xl font-bold mx-5 my-3 text-blue-950"
             >
-              Url charts
+              Weekly Url charts
             </div>
-            <div id="myChart"></div>
           </div>
 
           <div
-            class="chart-container lg:w-1/2 w-full"
+            class="chart-container lg:w-1/2 w-full shadow bg-white rounded-2xl hover:shadow-xl"
             data-labels="<%=userLabels%>"
             data-datas="<%=userData%>"
           >
+            <div id="myChart2" class="mx-5 mt-3"></div>
             <div
               id="heading"
-              class="text-2xl font-bold mx-5 mt-3 text-blue-950"
+              class="text-2xl font-bold mx-5 my-3 text-blue-950"
             >
-              User Weekly charts
+              Weekly User charts
             </div>
-            <div id="myChart2"></div>
           </div>
+        </div>
+
+        <!-- overflow auto -->
+        <div>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo, cum!
+            Fuga accusamus praesentium dolorem animi asperiores fugiat tempora,
+            harum iure eveniet quod atque quia facilis quae nulla ad sed amet
+            ratione quo dolore assumenda labore corporis minus. Architecto
+            eveniet labore velit obcaecati repellat est dolore debitis animi
+            temporibus molestiae officia optio maiores, exercitationem amet
+            laboriosam laborum perspiciatis? Pariatur expedita, consectetur
+            fugit voluptatibus inventore odit laborum vitae eos veniam, maiores
+            mollitia facere ipsam deleniti autem atque eaque sunt minima. Vel
+            veniam hic quasi sapiente, qui illum, consequatur corrupti, error
+            eligendi libero ratione et aspernatur commodi sint maxime.
+            Architecto provident magnam debitis sapiente cumque dolorum
+            similique? Magni consequatur officia exercitationem error dicta
+            ratione maiores voluptatum soluta assumenda, repudiandae,
+            architecto, molestiae quod. Blanditiis, inventore necessitatibus eum
+            magnam quaerat dicta ipsum commodi quasi. Repudiandae quae dolorum
+            error cum, recusandae, saepe quisquam vel maxime possimus nostrum
+            beatae dolores dolor totam in. Deleniti repellendus nemo distinctio
+            soluta possimus, dignissimos et sequi non voluptate earum nesciunt
+            omnis, quos iste ratione accusantium facilis totam cumque est labore
+            animi adipisci placeat ipsum odit sed. Velit eveniet sit quod,
+            consequatur ipsam officiis maiores necessitatibus aut corrupti.
+            Mollitia aut est tempore voluptate. Obcaecati doloremque voluptas
+            voluptatum cupiditate commodi laboriosam minus assumenda ea
+            perspiciatis similique tempore sint harum, ducimus voluptate minima
+            magnam rem nostrum, odit laudantium, nemo vel sequi provident.
+            Voluptates optio corporis similique a quibusdam voluptas corrupti
+            natus facere! Neque eaque atque, dolorem eius et quo architecto.
+            Officia dolorum delectus odio maxime, commodi ducimus architecto
+            necessitatibus voluptate et praesentium, a molestias inventore optio
+            excepturi fugit veniam itaque nesciunt quas iusto ipsum accusamus
+            sed, similique placeat vel. Officiis rem deleniti tempore!
+            Reprehenderit accusantium dicta iusto libero incidunt? Possimus
+            alias vero impedit, modi vitae numquam facere sint ullam soluta
+            deleniti repudiandae nemo earum eveniet, autem error dolorum
+            perspiciatis ea voluptatibus, sequi dolor itaque. Aliquam expedita
+            provident ipsum facere ullam eum repellendus illo delectus ipsa
+            ratione dignissimos, veritatis repellat omnis impedit harum
+            assumenda a commodi! Optio adipisci quasi cum neque distinctio
+            consequatur enim facere recusandae eveniet, harum natus quaerat nam
+            id. Impedit debitis laborum animi reiciendis itaque? Deserunt ut qui
+            totam atque itaque. Aliquam animi nihil explicabo, rerum aspernatur
+            quia in. Consectetur, quam possimus! Minus odit maiores officiis
+            quod earum minima hic voluptatum et ipsum omnis commodi rerum veniam
+            nemo recusandae dolorem, ea inventore. Est voluptatem eos, dolor
+            perspiciatis, quibusdam odio culpa incidunt veritatis, et quasi
+            adipisci! Earum ratione vitae alias eum deleniti consectetur odio
+            culpa harum repellendus. Non ducimus, rerum eveniet temporibus
+            dolorum nesciunt culpa tempore odio rem architecto eaque pariatur?
+            Nisi maxime placeat cum fugiat hic reiciendis aut adipisci
+            consequatur, doloribus, sunt quidem perferendis quis rerum?
+            Doloribus inventore debitis maxime explicabo ad? Nemo, aliquam sunt
+            eos magnam ex inventore quod quae provident mollitia error
+            consequuntur molestiae doloribus et iste distinctio quos voluptatem
+            officiis voluptas at est deserunt! Error exercitationem repellendus
+            hic consequuntur, ea excepturi consequatur voluptate officiis, totam
+            iure rerum, accusamus voluptates veritatis tempora quia incidunt
+            labore asperiores quam nulla iste in fuga animi. Voluptatem earum
+            expedita porro similique quidem saepe vero.
+          </p>
         </div>
       </section>
     </main>
@@ -129,7 +194,10 @@
       var options = {
         chart: {
           type: "line",
+          background: "#EE3674",
+          foreColor: "white",
         },
+        colors: ["white"],
         series: [
           {
             name: "sales",
@@ -158,7 +226,10 @@
       let userChartsOptions = {
         chart: {
           type: "line",
+          background: "#57BC5D",
+          foreColor: "white",
         },
+        colors: ["white"],
         series: [
           {
             name: "sales",
