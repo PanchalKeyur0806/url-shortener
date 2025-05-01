@@ -6,7 +6,7 @@
   <body>
     <main class="flex">
       <%- include("../partials/aside") %>
-      <section class="h-screen w-4/5 bg-gray-200 overflow-y-auto">
+      <section class="h-screen lg:w-4/5 w-full bg-gray-200 overflow-y-auto">
         <div
           id="cards"
           class="mx-5 my-5 grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
@@ -119,14 +119,16 @@
           <div class="text-2xl py-5 font-medium text-blue-900">
             <h1>Recent Url Activity</h1>
           </div>
-          <div class="grid gap-3 grid-cols-3 rounded-sm">
+          <div
+            class="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 rounded-sm"
+          >
             <% recentUrlData.forEach(item => { %>
             <div class="w-full bg-white shadow px-5 py-2">
               <p class="mt-2 text-slate-600">
                 <span class="font-bold text-slate-600">shortid :- </span
                 ><span class="font-light"><%= item.shortid %> </span>
               </p>
-              <p class="mt-2">
+              <p class="mt-2 overflow-hidden">
                 <span class="font-bold text-slate-600">Url :- </span
                 ><span class="text-blue-600 font-light"><%= item.url %> </span>
               </p>
@@ -151,14 +153,16 @@
           <div class="text-2xl py-5 font-medium text-blue-900">
             <h1>Recent User Activity</h1>
           </div>
-          <div class="grid gap-3 grid-cols-3 rounded-sm">
+          <div
+            class="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 rounded-sm"
+          >
             <% recentUserData.forEach(item => { %>
             <div class="w-full bg-white shadow px-5 py-2">
               <p class="mt-2 text-slate-600">
                 <span class="font-bold">Name :- </span
                 ><span class="font-light"><%= item.name %> </span>
               </p>
-              <p class="mt-2">
+              <p class="mt-2 overflow-hidden">
                 <span class="font-bold text-slate-600">Email :- </span
                 ><span class="text-blue-600 font-light"><%= item.email %></span>
               </p>
@@ -184,12 +188,9 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
       const chartContainer = document.querySelector(".chart-container");
-      console.log(chartContainer);
 
       const label = JSON.parse(chartContainer.dataset.labels);
       const data = JSON.parse(chartContainer.dataset.datas);
-
-      console.log(label);
 
       var options = {
         chart: {
@@ -216,12 +217,9 @@
       // some comments
 
       const chartContainers = document.querySelectorAll(".chart-container")[1];
-      console.log(chartContainer);
 
       const userlabel = JSON.parse(chartContainers.dataset.labels);
       const userdata = JSON.parse(chartContainers.dataset.datas);
-
-      console.log(userlabel);
 
       let userChartsOptions = {
         chart: {

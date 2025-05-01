@@ -7,7 +7,7 @@ import {
   getUserRecentActivity,
 } from "../services/adminStatsServices.js";
 
-import { getWeeklyStats } from "../utils/getWeeklyStats.js";
+import { getStats } from "../utils/getWeeklyStats.js";
 import User from "../models/userModel.js";
 
 import catchAsync from "../utils/catchAsync.js";
@@ -24,7 +24,7 @@ const rendrAdminDashboard = catchAsync(async (req, res) => {
   ]);
 
   // get weekly url status
-  let urlStatsAndData = await getWeeklyStats(Url);
+  let urlStatsAndData = await getStats(Url, "createdAt", 1, "weekly");
 
   const urlLabels = urlStatsAndData.map((item) => item.week);
   const urlData = urlStatsAndData.map((item) => item.percentage);
@@ -39,9 +39,9 @@ const rendrAdminDashboard = catchAsync(async (req, res) => {
   })[0];
 
   // get weekly user status
-  let userStatsData = await getWeeklyStats(User);
+  let userStatsData = await getStats(User, "createdAt", 7, "daily");
 
-  const userLabels = userStatsData.map((item) => item.week);
+  const userLabels = userStatsData.map((item) => item.day);
   const userData = userStatsData.map((item) => item.percentage);
 
   const userLatestData = userStatsData.sort((a, b) => {
@@ -54,21 +54,25 @@ const rendrAdminDashboard = catchAsync(async (req, res) => {
 
   // get recent url activity
   const latestUrlActivity = await getUrlRecentActivity(Url, 3);
-  const formatedUrlActivity = latestUrlActivity[0]?.data.map((item) => {
-    return {
-      ...item,
-      date: moment(item.date).tz("Asia/Kolkata").format("DD-MM-YYYY hh:mm A"),
-    };
-  });
+  const formatedUrlActivity = latestUrlActivity[0]?.data
+    .slice(0, 3)
+    .map((item) => {
+      return {
+        ...item,
+        date: moment(item.date).tz("Asia/Kolkata").format("DD-MM-YYYY hh:mm A"),
+      };
+    });
 
   // get recent usres activity
   const latestUserActivity = await getUserRecentActivity(User, 5);
-  const formatedUsersActivity = latestUserActivity[0]?.data.map((item) => {
-    return {
-      ...item,
-      date: moment(item.date).tz("Asia/Kolkata").format("DD-MM-YYYY hh:mm A"),
-    };
-  });
+  const formatedUsersActivity = latestUserActivity[0]?.data
+    .slice(0, 3)
+    .map((item) => {
+      return {
+        ...item,
+        date: moment(item.date).tz("Asia/Kolkata").format("DD-MM-YYYY hh:mm A"),
+      };
+    });
 
   res.render("admin/adminDashboard", {
     title: "Admin Dashboard - url shortener",
@@ -89,8 +93,6 @@ const rendrAdminDashboard = catchAsync(async (req, res) => {
 
 const renderUserDashboard = catchAsync(async (req, res, next) => {
   const getAllUsers = await User.find().populate("plan").select("-password");
-
-  console.log(getAllUsers);
 
   res.status(200).render("admin/userDashboard", {
     title: "User dashboard - url shortener",
