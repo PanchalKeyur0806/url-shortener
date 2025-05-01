@@ -68,3 +68,74 @@ export const getTotalUrls = async () => {
 
   return totalUrls;
 };
+
+// get recent activities
+export const getUrlRecentActivity = async (Model, Day) => {
+  const todayDate = new Date();
+  const endDate = new Date(todayDate.getTime() - Day * 24 * 60 * 60 * 1000);
+
+  const activity = await Model.aggregate([
+    {
+      $match: {
+        createdAt: { $gte: endDate },
+      },
+    },
+    {
+      $group: {
+        _id: { shortid: "$shortId", url: "$redirectUrl", date: "$createdAt" },
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        data: {
+          $push: {
+            shortid: "$_id.shortid",
+            url: "$_id.url",
+            date: "$_id.date",
+            count: "$count",
+          },
+        },
+        total: { $sum: 1 },
+      },
+    },
+  ]);
+
+  return activity;
+};
+
+export const getUserRecentActivity = async (Model, Day) => {
+  const todayDate = new Date();
+  const endDate = new Date(todayDate.getTime() - Day * 24 * 60 * 60 * 1000);
+
+  const activity = await Model.aggregate([
+    {
+      $match: {
+        createdAt: { $gte: endDate },
+      },
+    },
+    {
+      $group: {
+        _id: { name: "$name", email: "$email", date: "$createdAt" },
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        data: {
+          $push: {
+            name: "$_id.name",
+            email: "$_id.email",
+            date: "$_id.date",
+            count: "$count",
+          },
+        },
+        total: { $sum: 1 },
+      },
+    },
+  ]);
+
+  return activity;
+};

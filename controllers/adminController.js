@@ -3,6 +3,8 @@ import {
   getDailyRevenue,
   getTotalUrls,
   getTotalUsers,
+  getUrlRecentActivity,
+  getUserRecentActivity,
 } from "../services/adminStatsServices.js";
 
 import { getWeeklyStats } from "../utils/getWeeklyStats.js";
@@ -10,11 +12,9 @@ import User from "../models/userModel.js";
 
 import catchAsync from "../utils/catchAsync.js";
 import Url from "../models/urlModel.js";
+import moment from "moment-timezone";
 
 dotenv.config({ path: "config.env" });
-
-const monthlyPrice = process.env.STRIPE_MONTHLY_PRICE_ID;
-const yearlyPrice = process.env.STRIPE_YEARLY_PRICE_ID;
 
 const rendrAdminDashboard = catchAsync(async (req, res) => {
   const [data, totalUsers, totalUrls] = await Promise.all([
@@ -52,6 +52,24 @@ const rendrAdminDashboard = catchAsync(async (req, res) => {
     return b.year - b.year;
   })[0];
 
+  // get recent url activity
+  const latestUrlActivity = await getUrlRecentActivity(Url, 3);
+  const formatedUrlActivity = latestUrlActivity[0]?.data.map((item) => {
+    return {
+      ...item,
+      date: moment(item.date).tz("Asia/Kolkata").format("DD-MM-YYYY hh:mm A"),
+    };
+  });
+
+  // get recent usres activity
+  const latestUserActivity = await getUserRecentActivity(User, 5);
+  const formatedUsersActivity = latestUserActivity[0]?.data.map((item) => {
+    return {
+      ...item,
+      date: moment(item.date).tz("Asia/Kolkata").format("DD-MM-YYYY hh:mm A"),
+    };
+  });
+
   res.render("admin/adminDashboard", {
     title: "Admin Dashboard - url shortener",
     data,
@@ -63,6 +81,9 @@ const rendrAdminDashboard = catchAsync(async (req, res) => {
     // send user stats and data
     userLabels: JSON.stringify(userLabels),
     userData: JSON.stringify(userData),
+    // recent activity
+    recentUrlData: formatedUrlActivity,
+    recentUserData: formatedUsersActivity,
   });
 });
 
