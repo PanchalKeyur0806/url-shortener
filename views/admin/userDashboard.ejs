@@ -13,7 +13,8 @@
             name="search"
             id="search"
             placeholder="Search user by email id"
-            class="mx-10 my-5 px-3 py-1 border-2 w-[95vw] lg:w-[50vw] focus:outline-slate-600 border-slate-600 rounded-sm focus:rounded-2xl lg:transition-all lg:duration-150 lg:ease-in-out"
+            class="mx-10 my-5 px-3 py-1 border-2 w-[95vw] lg:w-[50vw] bg-white focus:outline-slate-600 border-slate-600 rounded-sm focus:rounded-2xl lg:transition-all lg:duration-150 lg:ease-in-out"
+            onchange="searchFunction(this)"
           />
 
           <div class="relative group">
@@ -31,10 +32,11 @@
                 Subscription Status
               </h1>
               <select
-                name="select"
-                id="select"
+                name="selectPlan"
+                id="selectPlan"
                 class="border rounded-sm mb-3 mx-3 px-2"
               >
+                <option value="">None </option>
                 <option value="free">Free</option>
                 <option value="monthly">monthly</option>
                 <option value="yearly">yearly</option>
@@ -70,6 +72,11 @@
               />
             </div>
           </div>
+          <a
+            href="/admin/users"
+            class="ml-5 mr-5 bg-blue-900 px-3 py-1 text-white rounded-sm"
+            >Get all users</a
+          >
         </div>
 
         <!-- list all the users -->
@@ -187,6 +194,30 @@
 
     <script>
       //define data a
+      function searchFunction(e) {
+        const value = e.value.trim();
+        console.log(value);
+
+        if (value === " ") {
+          window.location.href = "/admin/users";
+        } else {
+          window.location.href = `/admin/users?search=${value}`;
+        }
+      }
+
+      // search by plan
+      const selectPlan = document.getElementById("selectPlan");
+      selectPlan.addEventListener("change", (e) => {
+        e.preventDefault();
+        const value = e.target.value;
+        console.log(value);
+
+        window.location.href = `/admin/users?search=plan:${value}`;
+
+        console.log(`/admin/users?search=plan:${value}`);
+
+        console.log(value);
+      });
     </script>
   </body>
 </html>

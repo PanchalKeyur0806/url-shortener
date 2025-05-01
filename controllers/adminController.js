@@ -13,6 +13,7 @@ import User from "../models/userModel.js";
 import catchAsync from "../utils/catchAsync.js";
 import Url from "../models/urlModel.js";
 import moment from "moment-timezone";
+import AppFeatures from "../utils/AppFeatures.js";
 
 dotenv.config({ path: "config.env" });
 
@@ -24,9 +25,9 @@ const rendrAdminDashboard = catchAsync(async (req, res) => {
   ]);
 
   // get weekly url status
-  let urlStatsAndData = await getStats(Url, "createdAt", 1, "weekly");
+  let urlStatsAndData = await getStats(Url, "createdAt", 7, "daily");
 
-  const urlLabels = urlStatsAndData.map((item) => item.week);
+  const urlLabels = urlStatsAndData.map((item) => item.day);
   const urlData = urlStatsAndData.map((item) => item.percentage);
 
   // latest report for the Url
@@ -92,11 +93,47 @@ const rendrAdminDashboard = catchAsync(async (req, res) => {
 });
 
 const renderUserDashboard = catchAsync(async (req, res, next) => {
-  const getAllUsers = await User.find().populate("plan").select("-password");
+  const features = new AppFeatures(
+    User.find().populate("plan"),
+    req.query
+  ).search();
+
+  let allUsers = await features.query.select("-password");
+
+  // Post-processing for plan searches
+  if (req.query.search && req.query.search.includes(":")) {
+    const [field, value] = req.query.search
+      .split(":")
+      .map((item) => item.trim());
+
+    if (field === "plan") {
+      // Filter users whose populated plan is null (didn't match the criteria)
+      allUsers = allUsers.filter((user) => user.plan !== null);
+    }
+  } else if (req.query.search) {
+    // For general search terms, also check plan names
+    const keyword = req.query.search.trim();
+    const filteredByPlan = allUsers.filter(
+      (user) =>
+        user.plan &&
+        user.plan.name &&
+        user.plan.name.toLowerCase().includes(keyword.toLowerCase())
+    );
+
+    // Find users who either matched the initial query OR have matching plan names
+    const userIds = new Set();
+    allUsers.forEach((user) => userIds.add(user._id.toString()));
+
+    filteredByPlan.forEach((user) => {
+      if (!userIds.has(user._id.toString())) {
+        allUsers.push(user);
+      }
+    });
+  }
 
   res.status(200).render("admin/userDashboard", {
     title: "User dashboard - url shortener",
-    users: getAllUsers,
+    users: allUsers,
   });
 });
 export { rendrAdminDashboard, renderUserDashboard };
