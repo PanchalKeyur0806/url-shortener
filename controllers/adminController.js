@@ -87,4 +87,14 @@ const rendrAdminDashboard = catchAsync(async (req, res) => {
   });
 });
 
-export { rendrAdminDashboard };
+const renderUserDashboard = catchAsync(async (req, res, next) => {
+  const getAllUsers = await User.find().populate("plan").select("-password");
+
+  console.log(getAllUsers);
+
+  res.status(200).render("admin/userDashboard", {
+    title: "User dashboard - url shortener",
+    users: getAllUsers,
+  });
+});
+export { rendrAdminDashboard, renderUserDashboard };
