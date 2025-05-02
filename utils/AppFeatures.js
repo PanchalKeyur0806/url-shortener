@@ -7,6 +7,20 @@ class AppFeatures {
   }
 
   search() {
+    const filter = {};
+    let planSearch = null;
+
+    // Handle status
+    if (this.queryString.status) {
+      const status = this.queryString.status.toLowerCase();
+      if (status === "active") {
+        filter.isActive = true;
+      } else if (status === "notactive") {
+        filter.isActive = false;
+      }
+    }
+
+    // Handle search
     if (this.queryString.search) {
       const searchQuery = this.queryString.search.trim();
 
@@ -16,35 +30,31 @@ class AppFeatures {
           .map((item) => item.trim());
 
         if (field === "plan") {
-          // For plan searches, we need to handle populated fields differently
-          // But we shouldn't break the query chain
-          this.query = this.query.find({}).populate({
-            path: "plan",
-            match: { name: { $regex: value, $options: "i" } },
-          });
-
-          // This ensures we only return users whose plans match after population
-          // We need to add a post-processing step in the controller
+          // Store plan filter separately to use with populate
+          planSearch = value;
         } else {
-          // For other fields, search normally
-          this.query = this.query.find({
-            [field]: { $regex: value, $options: "i" },
-          });
+          filter[field] = { $regex: value, $options: "i" };
         }
       } else {
-        // For general search without field specification
         const keyword = searchQuery;
-
-        this.query = this.query
-          .find({
-            $or: [
-              { name: { $regex: keyword, $options: "i" } },
-              { email: { $regex: keyword, $options: "i" } },
-              // We can't directly search plan.name here, so we'll add post-processing
-            ],
-          })
-          .populate("plan");
+        filter.$or = [
+          { name: { $regex: keyword, $options: "i" } },
+          { email: { $regex: keyword, $options: "i" } },
+        ];
       }
+    }
+
+    // Apply basic filters
+    this.query = this.query.find(filter);
+
+    // Apply plan search if needed
+    if (planSearch) {
+      this.query = this.query.populate({
+        path: "plan",
+        match: { name: { $regex: planSearch, $options: "i" } },
+      });
+    } else {
+      this.query = this.query.populate("plan");
     }
 
     return this;
