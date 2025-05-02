@@ -36,7 +36,7 @@
                 id="selectPlan"
                 class="border rounded-sm mb-3 mx-3 px-2"
               >
-                <option value="">None </option>
+                <option value="">None</option>
                 <option value="free">Free</option>
                 <option value="monthly">monthly</option>
                 <option value="yearly">yearly</option>
@@ -46,10 +46,11 @@
                 Account status
               </h1>
               <select
-                name="select"
-                id="select"
+                name="statusSearch"
+                id="statusSearch"
                 class="border rounded-sm mb-3 mx-3 px-2"
               >
+                <option value="none">None</option>
                 <option value="active">Active</option>
                 <option value="notactive">Not Active</option>
               </select>
@@ -135,7 +136,8 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-blue-100">
-              <% users.forEach(user => { %>
+              <% if (users && users.length > 0) { %> <% users.forEach(user => {
+              %>
               <tr class="hover:bg-blue-50 transition-colors">
                 <td
                   class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
@@ -185,7 +187,16 @@
                   <%= user.createdAt.toDateString() %>
                 </td>
               </tr>
-              <% }) %>
+              <% }) %> <% } else { %>
+              <tr>
+                <td
+                  colspan="9"
+                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                >
+                  No users found
+                </td>
+              </tr>
+              <% } %>
             </tbody>
           </table>
         </div>
@@ -210,13 +221,15 @@
       selectPlan.addEventListener("change", (e) => {
         e.preventDefault();
         const value = e.target.value;
-        console.log(value);
-
         window.location.href = `/admin/users?search=plan:${value}`;
+      });
 
-        console.log(`/admin/users?search=plan:${value}`);
-
-        console.log(value);
+      // search by status
+      const statusSearch = document.getElementById("statusSearch");
+      statusSearch.addEventListener("change", (e) => {
+        e.preventDefault();
+        const value = e.target.value;
+        window.location.href = `/admin/users?status=${value}`;
       });
     </script>
   </body>

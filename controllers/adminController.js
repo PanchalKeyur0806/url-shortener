@@ -14,6 +14,8 @@ import catchAsync from "../utils/catchAsync.js";
 import Url from "../models/urlModel.js";
 import moment from "moment-timezone";
 import AppFeatures from "../utils/AppFeatures.js";
+import searchByPopulatedField from "../services/adminSearchHelper.js";
+import AppError from "../utils/appError.js";
 
 dotenv.config({ path: "config.env" });
 
@@ -100,36 +102,24 @@ const renderUserDashboard = catchAsync(async (req, res, next) => {
 
   let allUsers = await features.query.select("-password");
 
-  // Post-processing for plan searches
-  if (req.query.search && req.query.search.includes(":")) {
-    const [field, value] = req.query.search
-      .split(":")
-      .map((item) => item.trim());
+  if (req.query.status) {
+    const status = req.query.status;
 
-    if (field === "plan") {
-      // Filter users whose populated plan is null (didn't match the criteria)
-      allUsers = allUsers.filter((user) => user.plan !== null);
+    if (status === "active") {
+      allUsers = allUsers.filter((user) => {
+        return user.isActive === true;
+      });
+    } else if (status === "notactive") {
+      allUsers = allUsers.filter((user) => {
+        return user.isActive === false;
+      });
+    } else {
+      throw new AppError("Invalid status format", 404);
     }
-  } else if (req.query.search) {
-    // For general search terms, also check plan names
-    const keyword = req.query.search.trim();
-    const filteredByPlan = allUsers.filter(
-      (user) =>
-        user.plan &&
-        user.plan.name &&
-        user.plan.name.toLowerCase().includes(keyword.toLowerCase())
-    );
-
-    // Find users who either matched the initial query OR have matching plan names
-    const userIds = new Set();
-    allUsers.forEach((user) => userIds.add(user._id.toString()));
-
-    filteredByPlan.forEach((user) => {
-      if (!userIds.has(user._id.toString())) {
-        allUsers.push(user);
-      }
-    });
   }
+
+  // Post-processing for plan searches
+  allUsers = searchByPopulatedField(allUsers, req.query.search, "plan");
 
   res.status(200).render("admin/userDashboard", {
     title: "User dashboard - url shortener",
