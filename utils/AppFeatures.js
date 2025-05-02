@@ -20,6 +20,16 @@ class AppFeatures {
       }
     }
 
+    // search for role
+    if (this.queryString.role) {
+      const role = this.queryString.role.toLowerCase().trim();
+      if (role === "user") {
+        filter.role = "user";
+      } else if (role === "admin") {
+        filter.role = "admin";
+      }
+    }
+
     // Handle search
     if (this.queryString.search) {
       const searchQuery = this.queryString.search.trim();

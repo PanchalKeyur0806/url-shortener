@@ -17,7 +17,7 @@
             onchange="searchFunction(this)"
           />
 
-          <div class="relative group">
+          <div id="filterMenu" class="relative">
             <ion-icon
               name="filter-outline"
               class="text-xl cursor-pointer pr -10"
@@ -25,7 +25,7 @@
 
             <div
               id="hidden"
-              class="w-50 absolute lg:top-5 lg:-left-3 right-5 bg-white rounded-xl px-3 hidden group-hover:block"
+              class="w-50 absolute lg:top-5 lg:-left-3 right-5 bg-white rounded-xl px-3 hidden"
             >
               <h1 class="font-bold mt-1 px-3 text-xl text-slate-800">Filter</h1>
               <h1 class="mt-3 px-3 text-slate-600 font-medium">
@@ -57,10 +57,11 @@
 
               <h1 class="mt-3 px-3 text-slate-600 font-medium">Role</h1>
               <select
-                name="select"
-                id="select"
+                name="selectUser"
+                id="selectUser"
                 class="border rounded-sm mb-3 mx-3 px-2"
               >
+                <option value="none">None</option>
                 <option value="user">user</option>
                 <option value="admin">admin</option>
               </select>
@@ -73,11 +74,9 @@
               />
             </div>
           </div>
-          <a
-            href="/admin/users"
-            class="ml-5 mr-5 bg-blue-900 px-3 py-1 text-white rounded-sm"
-            >Get all users</a
-          >
+          <div class="ml-5 mr-5 bg-blue-900 px-3 py-1 text-white rounded-sm">
+            <a href="/admin/users" class="">Get all users</a>
+          </div>
         </div>
 
         <!-- list all the users -->
@@ -204,7 +203,13 @@
     </main>
 
     <script>
-      //define data a
+      // open filter filterMenu
+      const filterMenu = document.getElementById("filterMenu");
+      const hidden = document.getElementById("hidden");
+      filterMenu.addEventListener("click", (e) => {
+        hidden.classList.toggle("hidden");
+      });
+
       function searchFunction(e) {
         const value = e.value.trim();
         console.log(value);
@@ -230,6 +235,14 @@
         e.preventDefault();
         const value = e.target.value;
         window.location.href = `/admin/users?status=${value}`;
+      });
+
+      // search by role
+      const userRole = document.getElementById("selectUser");
+      userRole.addEventListener("change", (e) => {
+        e.preventDefault();
+        const value = e.target.value;
+        window.location.href = `/admin/users?role=${value}`;
       });
     </script>
   </body>

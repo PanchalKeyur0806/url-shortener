@@ -118,6 +118,22 @@ const renderUserDashboard = catchAsync(async (req, res, next) => {
     }
   }
 
+  // search by role
+  if (req.query.role) {
+    const role = req.query.role;
+    if (role === "user") {
+      allUsers = allUsers.filter((user) => {
+        return (user.role = "user");
+      });
+    } else if (role === "admin") {
+      allUsers = allUsers.filter((user) => {
+        return (user.role = "admin");
+      });
+    } else {
+      throw new AppError("Invalid role type ", 404);
+    }
+  }
+
   // Post-processing for plan searches
   allUsers = searchByPopulatedField(allUsers, req.query.search, "plan");
 
