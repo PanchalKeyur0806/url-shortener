@@ -51,7 +51,7 @@
                 id="statusSearch"
                 class="border rounded-sm mb-3 mx-3 px-2"
               >
-                <option value="none">None</option>
+                <option value="">None</option>
                 <option value="active">Active</option>
                 <option value="notactive">Not Active</option>
               </select>
@@ -62,11 +62,19 @@
                 id="selectUser"
                 class="border rounded-sm mb-3 mx-3 px-2"
               >
-                <option value="none">None</option>
+                <option value="">None</option>
                 <option value="user">user</option>
                 <option value="admin">admin</option>
               </select>
               <br />
+
+              <input
+                type="submit"
+                value="filter"
+                id="filter"
+                onclick="searchByFilter()"
+                class="bg-blue-800 text-white mx-3 mb-1 px-3 py-1 rounded-sm"
+              />
             </div>
           </div>
           <div class="ml-5 mr-5 bg-blue-900 px-3 py-1 text-white rounded-sm">
@@ -229,6 +237,8 @@
       // open filter filterMenu
       const filterMenu = document.getElementById("filterMenu");
       const hidden = document.getElementById("hidden");
+      const filterBtn = document.getElementById("filter");
+
       filterMenu.addEventListener("click", (e) => {
         hidden.classList.toggle("hidden");
       });
@@ -246,27 +256,39 @@
 
       // search by plan
       const selectPlan = document.getElementById("selectPlan");
-      selectPlan.addEventListener("change", (e) => {
-        e.preventDefault();
-        const value = e.target.value;
-        window.location.href = `/admin/users?search=plan:${value}`;
-      });
-
-      // search by status
       const statusSearch = document.getElementById("statusSearch");
-      statusSearch.addEventListener("change", (e) => {
-        e.preventDefault();
-        const value = e.target.value;
-        window.location.href = `/admin/users?status=${value}`;
-      });
-
-      // search by role
       const userRole = document.getElementById("selectUser");
-      userRole.addEventListener("change", (e) => {
-        e.preventDefault();
-        const value = e.target.value;
-        window.location.href = `/admin/users?role=${value}`;
-      });
+
+      function searchByFilter() {
+        const value = selectPlan.value;
+        const statusSearchValue = statusSearch.value;
+        const userRoleValue = userRole.value;
+
+        const params = new URLSearchParams();
+
+        if (value === "free" || value === "monthly" || value === "yearly") {
+          params.append("search", `plan:${value}`);
+        }
+
+        if (
+          statusSearchValue === "active" ||
+          statusSearchValue === "notactive"
+        ) {
+          params.append("status", `${statusSearchValue}`);
+        }
+
+        if (userRoleValue === "user" || userRoleValue === "admin") {
+          params.append("role", `${userRoleValue}`);
+        }
+
+        const queryString = params.toString();
+        console.log("params is ", params);
+        console.log("query string is ", queryString);
+
+        window.location.href = queryString
+          ? `/admin/users?${queryString}`
+          : `/admin/users?page=1`;
+      }
     </script>
     <script>
       const nextBtn = document.getElementById("nextBtn");
