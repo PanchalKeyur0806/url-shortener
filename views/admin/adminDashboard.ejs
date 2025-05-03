@@ -15,9 +15,9 @@
             <h2 class="text-right font-extralight text-gray-500 pb-1 mt-2">
               Todays moneys
             </h2>
-            <% if (data || data.length > 0) { %> <% data.forEach(entry => { %>
-            <p class="text-right font-bold mb-4"><%= entry.totalRevenue %></p>
-            <% }) %> <% } %>
+            <% if (data || data.length > 0) { %>
+            <p class="text-right font-bold mb-4"><%= data[0].totalRevenue %></p>
+            <% } %>
 
             <p class="pl-3 font-medium mb-3">+5% from this week</p>
             <div

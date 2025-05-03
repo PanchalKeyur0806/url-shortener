@@ -19,7 +19,7 @@ export const getDailyRevenue = async () => {
       },
     },
     {
-      $sort: { "_id.date": 1 },
+      $sort: { "_id.date": -1 },
     },
   ]);
   const dailyRevenue = [];
