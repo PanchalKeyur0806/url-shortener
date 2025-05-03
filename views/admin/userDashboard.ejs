@@ -217,7 +217,11 @@
 
           <div class="flex items-center text-xl">
             <p class="mx-2 font-medium text-blue-800">Page no :-</p>
-            <p id="pageNo" class="text-white bg-blue-800 rounded-full px-2">
+            <p
+              id="pageNo"
+              class="text-white bg-blue-800 rounded-full px-2"
+              data-pages="<%=totalPages%>"
+            >
               <%= pageNo %>
             </p>
           </div>
@@ -234,91 +238,90 @@
     </main>
 
     <script>
-      // open filter filterMenu
+      // Open filter menu toggle
       const filterMenu = document.getElementById("filterMenu");
       const hidden = document.getElementById("hidden");
       const filterBtn = document.getElementById("filter");
 
-      filterMenu.addEventListener("click", (e) => {
+      filterMenu.addEventListener("click", () => {
         hidden.classList.toggle("hidden");
       });
 
+      const params = new URLSearchParams();
+
+      // Search input
       function searchFunction(e) {
         const value = e.value.trim();
-        console.log(value);
-
-        if (value === " ") {
+        if (value === "") {
           window.location.href = "/admin/users";
         } else {
-          window.location.href = `/admin/users?search=${value}`;
+          params.set("search", value);
+          redirectWithParams();
         }
       }
 
-      // search by plan
+      // Pagination buttons
+      const nextBtn = document.getElementById("nextBtn");
+      const prevBtn = document.getElementById("prevBtn");
+      const pageNo = document.getElementById("pageNo");
+
+      let currentPage = parseInt(pageNo.innerText);
+      const totalPages = parseInt(
+        document.getElementById("pageNo").dataset.pages
+      );
+
+      nextBtn.addEventListener("click", () => {
+        if (currentPage >= totalPages) {
+          alert("You're already on the last page.");
+          return;
+        }
+        currentPage += 1;
+        params.set("page", currentPage);
+        redirectWithParams();
+      });
+
+      prevBtn.addEventListener("click", () => {
+        if (currentPage <= 1) {
+          alert("You're already on the first page.");
+          return;
+        }
+        currentPage -= 1;
+        params.set("page", currentPage);
+        redirectWithParams();
+      });
+
+      // Filter by plan, status, role
       const selectPlan = document.getElementById("selectPlan");
       const statusSearch = document.getElementById("statusSearch");
       const userRole = document.getElementById("selectUser");
 
       function searchByFilter() {
-        const value = selectPlan.value;
-        const statusSearchValue = statusSearch.value;
-        const userRoleValue = userRole.value;
+        params.delete("search");
+        params.delete("status");
+        params.delete("role");
 
-        const params = new URLSearchParams();
+        const plan = selectPlan.value;
+        const status = statusSearch.value;
+        const role = userRole.value;
 
-        if (value === "free" || value === "monthly" || value === "yearly") {
-          params.append("search", `plan:${value}`);
+        if (plan) {
+          params.set("search", `plan:${plan}`);
+        }
+        if (status) {
+          params.set("status", status);
+        }
+        if (role) {
+          params.set("role", role);
         }
 
-        if (
-          statusSearchValue === "active" ||
-          statusSearchValue === "notactive"
-        ) {
-          params.append("status", `${statusSearchValue}`);
-        }
-
-        if (userRoleValue === "user" || userRoleValue === "admin") {
-          params.append("role", `${userRoleValue}`);
-        }
-
-        const queryString = params.toString();
-        console.log("params is ", params);
-        console.log("query string is ", queryString);
-
-        window.location.href = queryString
-          ? `/admin/users?${queryString}`
-          : `/admin/users?page=1`;
+        redirectWithParams();
       }
-    </script>
-    <script>
-      const nextBtn = document.getElementById("nextBtn");
-      const prevBtn = document.getElementById("prevBtn");
-      const pageNo = document.getElementById("pageNo");
 
-      let value = parseInt(pageNo.innerText);
-
-      const totalPages = <%= totalPages %>; // passed from backend
-      const usersLength = <%= users.length %>; // current page user count
-
-      nextBtn.addEventListener("click", () => {
-        if (value >= totalPages) {
-          alert("You're already on the last page.");
-          return;
-        }
-
-        value += 1;
-        window.location.href = `/admin/users?page=${value}`;
-      });
-
-      prevBtn.addEventListener("click", () => {
-        if (value <= 1) {
-          alert("You're already on the first page.");
-          return;
-        }
-
-        value -= 1;
-        window.location.href = `/admin/users?page=${value}`;
-      });
+      // Shared redirect function
+      function redirectWithParams() {
+        const queryString = params.toString();
+        window.location.href = `/admin/users?${queryString}`;
+      }
     </script>
   </body>
 </html>
