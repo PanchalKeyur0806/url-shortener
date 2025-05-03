@@ -94,11 +94,11 @@ const rendrAdminDashboard = catchAsync(async (req, res) => {
   });
 });
 
+// render user dashboard in the controller
 const renderUserDashboard = catchAsync(async (req, res, next) => {
-  const features = new AppFeatures(
-    User.find().populate("plan"),
-    req.query
-  ).search();
+  const features = new AppFeatures(User.find().populate("plan"), req.query)
+    .search()
+    .paginate();
 
   let allUsers = await features.query.select("-password");
 
@@ -134,12 +134,25 @@ const renderUserDashboard = catchAsync(async (req, res, next) => {
     }
   }
 
+  // pagination
+  const limit = parseInt(req.query.limit) || 5;
+  const currentPage = parseInt(req.query.page) || 1;
+  const totalDocs = await User.countDocuments();
+  const totalPages = Math.ceil(totalDocs / limit);
+  const pageNo = req.query.page || 1;
+
+  if (currentPage > totalPages && totalPages > 0) {
+    return next(new AppError("Requested page does not exist", 404));
+  }
+
   // Post-processing for plan searches
   allUsers = searchByPopulatedField(allUsers, req.query.search, "plan");
 
   res.status(200).render("admin/userDashboard", {
     title: "User dashboard - url shortener",
     users: allUsers,
+    pageNo,
+    totalPages,
   });
 });
 export { rendrAdminDashboard, renderUserDashboard };

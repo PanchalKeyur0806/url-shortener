@@ -17,12 +17,13 @@
             onchange="searchFunction(this)"
           />
 
-          <div id="filterMenu" class="relative">
-            <ion-icon
-              name="filter-outline"
-              class="text-xl cursor-pointer pr -10"
-            ></ion-icon>
-
+          <div class="relative">
+            <div id="filterMenu">
+              <ion-icon
+                name="filter-outline"
+                class="text-xl cursor-pointer pr -10"
+              ></ion-icon>
+            </div>
             <div
               id="hidden"
               class="w-50 absolute lg:top-5 lg:-left-3 right-5 bg-white rounded-xl px-3 hidden"
@@ -66,12 +67,6 @@
                 <option value="admin">admin</option>
               </select>
               <br />
-
-              <input
-                type="submit"
-                value="filter"
-                class="mx-3 px-3 py-1 bg-blue-900 mb-2 text-white rounded-xl cursor-pointer"
-              />
             </div>
           </div>
           <div class="ml-5 mr-5 bg-blue-900 px-3 py-1 text-white rounded-sm">
@@ -199,6 +194,34 @@
             </tbody>
           </table>
         </div>
+
+        <div
+          id="arrow-btn"
+          class="mt-10 mx-10 flex justify-between items-center"
+        >
+          <div class="text-4xl cursor-pointer">
+            <ion-icon
+              id="prevBtn"
+              class="text-white bg-blue-800 rounded-full"
+              name="arrow-back-circle-outline"
+            ></ion-icon>
+          </div>
+
+          <div class="flex items-center text-xl">
+            <p class="mx-2 font-medium text-blue-800">Page no :-</p>
+            <p id="pageNo" class="text-white bg-blue-800 rounded-full px-2">
+              <%= pageNo %>
+            </p>
+          </div>
+
+          <div class="text-4xl cursor-pointer">
+            <ion-icon
+              id="nextBtn"
+              class="text-white bg-blue-800 rounded-full"
+              name="arrow-forward-circle-outline"
+            ></ion-icon>
+          </div>
+        </div>
       </section>
     </main>
 
@@ -243,6 +266,36 @@
         e.preventDefault();
         const value = e.target.value;
         window.location.href = `/admin/users?role=${value}`;
+      });
+    </script>
+    <script>
+      const nextBtn = document.getElementById("nextBtn");
+      const prevBtn = document.getElementById("prevBtn");
+      const pageNo = document.getElementById("pageNo");
+
+      let value = parseInt(pageNo.innerText);
+
+      const totalPages = <%= totalPages %>; // passed from backend
+      const usersLength = <%= users.length %>; // current page user count
+
+      nextBtn.addEventListener("click", () => {
+        if (value >= totalPages) {
+          alert("You're already on the last page.");
+          return;
+        }
+
+        value += 1;
+        window.location.href = `/admin/users?page=${value}`;
+      });
+
+      prevBtn.addEventListener("click", () => {
+        if (value <= 1) {
+          alert("You're already on the first page.");
+          return;
+        }
+
+        value -= 1;
+        window.location.href = `/admin/users?page=${value}`;
       });
     </script>
   </body>
