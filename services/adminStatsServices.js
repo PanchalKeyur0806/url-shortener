@@ -87,6 +87,9 @@ export const getUrlRecentActivity = async (Model, Day) => {
       },
     },
     {
+      $sort: { "_id.date": -1 },
+    },
+    {
       $group: {
         _id: null,
         data: {
@@ -120,6 +123,9 @@ export const getUserRecentActivity = async (Model, Day) => {
         _id: { name: "$name", email: "$email", date: "$createdAt" },
         count: { $sum: 1 },
       },
+    },
+    {
+      $sort: { "_id.date": -1 },
     },
     {
       $group: {
