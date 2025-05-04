@@ -20,6 +20,20 @@ class AppFeatures {
       }
     }
 
+    // search by subscription status
+    if (this.queryString.subscriptionstatus) {
+      const subscriptionstatus = this.queryString.subscriptionstatus
+        .toLowerCase()
+        .trim();
+      if (subscriptionstatus === "active") {
+        filter.stripeSubscriptionStatus = "active";
+      } else if (subscriptionstatus === "canceled") {
+        filter.stripeSubscriptionStatus = "canceled";
+      } else {
+        filter.stripeSubscriptionStatus = subscriptionstatus;
+      }
+    }
+
     // search for role
     if (this.queryString.role) {
       const role = this.queryString.role.toLowerCase().trim();

@@ -7,6 +7,68 @@
     <main class="flex">
       <%- include("../partials/aside") %>
       <section class="lg:w-4/5 w-full h-screen bg-gray-200">
+        <div id="search" class="flex items-center">
+          <input
+            type="search"
+            name="search"
+            id="search"
+            placeholder="Search user by email id"
+            class="mx-10 my-5 px-3 py-1 w-[95vw] lg:w-[50vw] bg-white focus:outline-none rounded-sm focus:rounded-2xl lg:transition-all lg:duration-150 lg:ease-in-out"
+            onchange="searchFunction(this)"
+          />
+
+          <div class="relative">
+            <div id="filterMenu">
+              <ion-icon
+                name="filter-outline"
+                class="text-xl cursor-pointer pr -10"
+              ></ion-icon>
+            </div>
+            <div
+              id="hidden"
+              class="w-50 absolute lg:top-5 lg:-left-3 right-5 bg-white rounded-xl px-3 hidden"
+            >
+              <h1 class="font-bold mt-1 px-3 text-xl text-slate-800">Filter</h1>
+
+              <h1 class="mt-3 px-3 text-slate-600 font-medium">
+                Account status
+              </h1>
+              <select
+                name="statusSearch"
+                id="statusSearch"
+                class="border rounded-sm mb-3 mx-3 px-2"
+              >
+                <option value="">None</option>
+                <option value="active">Active</option>
+                <option value="canceled">Canceled</option>
+              </select>
+
+              <h1 class="mt-3 px-3 text-slate-600 font-medium">Role</h1>
+              <select
+                name="selectUser"
+                id="selectUser"
+                class="border rounded-sm mb-3 mx-3 px-2"
+              >
+                <option value="">None</option>
+                <option value="user">user</option>
+                <option value="admin">admin</option>
+              </select>
+              <br />
+
+              <input
+                type="submit"
+                value="filter"
+                id="filter"
+                onclick="searchByFilter()"
+                class="bg-blue-800 text-white mx-3 mb-1 px-3 py-1 rounded-sm"
+              />
+            </div>
+          </div>
+          <div class="ml-5 mr-5 bg-blue-900 px-3 py-1 text-white rounded-sm">
+            <a href="/admin/users" class="">Get all users</a>
+          </div>
+        </div>
+
         <h1
           class="mx-5 my-5 text-2xl text-center text-blue-900 font-medium font-serif"
         >
@@ -127,7 +189,117 @@
             </tbody>
           </table>
         </div>
+
+        <div
+          id="arrow-btn"
+          class="mt-10 mx-10 flex justify-between items-center"
+        >
+          <div class="text-4xl cursor-pointer">
+            <ion-icon
+              id="prevBtn"
+              class="text-white bg-blue-800 rounded-full"
+              name="arrow-back-circle-outline"
+            ></ion-icon>
+          </div>
+
+          <div class="flex items-center text-xl">
+            <p class="mx-2 font-medium text-blue-800">Page no :-</p>
+            <p
+              id="pageNo"
+              class="text-white bg-blue-800 rounded-full px-2"
+              data-pages="<%=totalPages%>"
+            >
+              <%= pageNo %>
+            </p>
+          </div>
+
+          <div class="text-4xl cursor-pointer">
+            <ion-icon
+              id="nextBtn"
+              class="text-white bg-blue-800 rounded-full"
+              name="arrow-forward-circle-outline"
+            ></ion-icon>
+          </div>
+        </div>
       </section>
     </main>
+
+    <script>
+      // Open filter menu toggle
+      const filterMenu = document.getElementById("filterMenu");
+      const hidden = document.getElementById("hidden");
+      const filterBtn = document.getElementById("filter");
+
+      filterMenu.addEventListener("click", () => {
+        hidden.classList.toggle("hidden");
+      });
+
+      const params = new URLSearchParams();
+
+      // Search input
+      function searchFunction(e) {
+        const value = e.value.trim();
+        if (value === "") {
+          window.location.href = "/admin/subscription";
+        } else {
+          params.set("search", value);
+          redirectWithParams();
+        }
+      }
+
+      // Pagination buttons
+      const nextBtn = document.getElementById("nextBtn");
+      const prevBtn = document.getElementById("prevBtn");
+      const pageNo = document.getElementById("pageNo");
+
+      let currentPage = parseInt(pageNo.innerText);
+      const totalPages = parseInt(
+        document.getElementById("pageNo").dataset.pages
+      );
+
+      nextBtn.addEventListener("click", () => {
+        if (currentPage >= totalPages) {
+          alert("You're already on the last page.");
+          return;
+        }
+        currentPage += 1;
+        params.set("page", currentPage);
+        redirectWithParams();
+      });
+
+      prevBtn.addEventListener("click", () => {
+        if (currentPage <= 1) {
+          alert("You're already on the first page.");
+          return;
+        }
+        currentPage -= 1;
+        params.set("page", currentPage);
+        redirectWithParams();
+      });
+
+      // Filter by plan, status, role
+      const statusSearch = document.getElementById("statusSearch");
+      const userRole = document.getElementById("selectUser");
+
+      function searchByFilter() {
+        const status = statusSearch.value;
+        const role = userRole.value;
+
+        if (status) {
+          params.set("subscriptionstatus", status);
+        }
+        if (role) {
+          params.set("role", role);
+        }
+
+        redirectWithParams();
+      }
+
+      // Shared redirect function
+      function redirectWithParams() {
+        const queryString = params.toString();
+        window.location.href = `/admin/subscription?${queryString}`;
+      }
+    </script>
   </body>
 </html>

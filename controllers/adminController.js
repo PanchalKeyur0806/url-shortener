@@ -163,6 +163,22 @@ const renderSubscriptionboard = catchAsync(async (req, res, next) => {
 
   let allsubscriptions = await features.query.select("-password");
 
+  if (req.query.subscriptionstatus) {
+    const subscriptionstatus = req.query.subscriptionstatus;
+
+    if (subscriptionstatus === "active") {
+      allsubscriptions = allsubscriptions.filter((user) => {
+        return user.stripeSubscriptionStatus === "active";
+      });
+    } else if (subscriptionstatus === "canceled") {
+      allsubscriptions = allsubscriptions.filter((user) => {
+        return user.stripeSubscriptionStatus === "canceled";
+      });
+    } else {
+      throw new AppError("Invalid status format", 404);
+    }
+  }
+
   // pagination
   const limit = parseInt(req.query.limit) || 5;
   const currentPage = parseInt(req.query.page) || 1;
@@ -184,6 +200,8 @@ const renderSubscriptionboard = catchAsync(async (req, res, next) => {
   res.render("admin/subscriptionboard", {
     title: "Admin subscriptionboard - url shortener",
     allsubscriptions,
+    pageNo,
+    totalPages,
   });
 });
 export { rendrAdminDashboard, renderUserDashboard, renderSubscriptionboard };
