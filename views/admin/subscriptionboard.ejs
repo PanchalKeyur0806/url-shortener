@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include("../partials/head") %>
+  </head>
+  <body>
+    <main class="flex">
+      <%- include("../partials/aside") %>
+      <section class="lg:w-4/5 w-full h-screen bg-gray-200">
+        <h1
+          class="mx-5 my-5 text-2xl text-center text-blue-900 font-medium font-serif"
+        >
+          All Subscriptions
+        </h1>
+
+        <div
+          class="w-[95vw] lg:w-[75vw] mx-auto overflow-x-auto shadow-md rounded-lg"
+        >
+          <table id="usersTable" class="w-full divide-y divide-blue-200">
+            <thead class="bg-blue-500 text-white">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  Id
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  Name
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  Email
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  Role
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  subscription id
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  plan start date
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  plan end date
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  Subscriptions status
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-blue-100">
+              <% if (allsubscriptions && allsubscriptions.length > 0) { %> <%
+              allsubscriptions.forEach(user => { %>
+              <tr class="hover:bg-blue-50 transition-colors">
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                >
+                  <%= user._id %>
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                >
+                  <%= user.name %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <%= user.email %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <span
+                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800"
+                  >
+                    <%= user.role %>
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <% if (user.stripeCustomerId === null){%> Free plan <% } else
+                  {%> <%=user.stripeCustomerId%> <% }%>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <%= user.planStartDate %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <%= user.planEndDate %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <% if (user.stripeSubscriptionStatus === "active") { %>
+                  <span
+                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                  >
+                    <%= user.stripeSubscriptionStatus %>
+                  </span>
+                  <% } else if(user.stripeSubscriptionStatus === "canceled") {
+                  %>
+                  <span
+                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800"
+                  >
+                    <%= user.stripeSubscriptionStatus %>
+                  </span>
+                  <% } else { %>
+                  <span>Free plan</span>
+                  <%}%>
+                </td>
+              </tr>
+              <% }) %> <% } else { %>
+              <tr>
+                <td
+                  colspan="9"
+                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                >
+                  No subscriptions found
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

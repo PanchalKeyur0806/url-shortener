@@ -155,4 +155,35 @@ const renderUserDashboard = catchAsync(async (req, res, next) => {
     totalPages,
   });
 });
-export { rendrAdminDashboard, renderUserDashboard };
+
+const renderSubscriptionboard = catchAsync(async (req, res, next) => {
+  const features = new AppFeatures(User.find().populate("plan"), req.query)
+    .search()
+    .paginate();
+
+  let allsubscriptions = await features.query.select("-password");
+
+  // pagination
+  const limit = parseInt(req.query.limit) || 5;
+  const currentPage = parseInt(req.query.page) || 1;
+  const totalDocs = await User.countDocuments();
+  const totalPages = Math.ceil(totalDocs / limit);
+  const pageNo = req.query.page || 1;
+
+  if (currentPage > totalPages && totalPages > 0) {
+    return next(new AppError("Requested page does not exist", 404));
+  }
+
+  // Post-processing for plan searches
+  allsubscriptions = searchByPopulatedField(
+    allsubscriptions,
+    req.query.search,
+    "plan"
+  );
+
+  res.render("admin/subscriptionboard", {
+    title: "Admin subscriptionboard - url shortener",
+    allsubscriptions,
+  });
+});
+export { rendrAdminDashboard, renderUserDashboard, renderSubscriptionboard };
