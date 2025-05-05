@@ -41,7 +41,7 @@ router.route("/logout").get(handleLogout);
 router
   .route("/profile")
   .get(protect, renderProfile)
-  .post(protect, changeProfile);
+  .patch(protect, changeProfile);
 
 router.route("/").get(homePage).post(protect, validateUrl, createShortUrl);
 

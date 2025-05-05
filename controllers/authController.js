@@ -1,10 +1,9 @@
 import dotenv from "dotenv";
+import bcrypt from "bcryptjs";
 import User from "../models/userModel.js";
 import AppError from "../utils/appError.js";
 import catchAsync from "../utils/catchAsync.js";
 import * as authServices from "../services/authServices.js";
-import { title } from "process";
-import { log } from "console";
 
 dotenv.config({ path: "./config.env" });
 
@@ -101,7 +100,7 @@ const renderProfile = catchAsync(async (req, res, next) => {
     title: "Profile page - url shortner",
     status: null,
     message: null,
-    data: currentUser,
+    user: currentUser,
   });
 });
 
@@ -109,31 +108,30 @@ const renderProfile = catchAsync(async (req, res, next) => {
 const changeProfile = catchAsync(async (req, res, next) => {
   try {
     const { name, email, password, confirmPassword } = req.body;
-    if (!name) {
-      throw new AppError("please enter your name", 400);
-    }
-
-    if (!email) {
-      throw new AppError("please enter your email", 400);
-    }
-
-    if (!password) {
-      throw new AppError("please enter your password", 400);
-    }
-
     const currentUser = req.user;
-    const findUser = await User.findById(currentUser._id);
 
-    findUser.name = name;
-    findUser.email = email;
-    findUser.password = password;
-    findUser.confirmPassword = confirmPassword;
-    await findUser.save();
+    const updates = {};
+    if (name) updates.name = name;
+    if (email) updates.email = email;
+    if (password) {
+      if (password !== confirmPassword) {
+        return next(new AppError("password does not match", 400));
+      }
+
+      updates.password = await bcrypt.hash(password, 10);
+    }
+
+    const updateUser = await User.findByIdAndUpdate(currentUser._id, updates, {
+      new: true,
+      runValidators: true,
+    });
 
     res.render("profile", {
       title: "Profile - url shortner",
       status: "success",
-      message: "profile updated successfully",
+      message: "Profile updated successfully",
+      data: updateUser,
+      user: currentUser,
     });
   } catch (error) {
     res.render("profile", {
