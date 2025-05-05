@@ -1,9 +1,11 @@
-import { Plan } from "../models/planModel.js";
-
 class AppFeatures {
   constructor(query, queryString) {
     this.query = query;
     this.queryString = queryString;
+  }
+
+  modelHasField(field) {
+    return this.query.model.schema.path(field);
   }
 
   search() {
@@ -71,14 +73,16 @@ class AppFeatures {
     // Apply basic filters
     this.query = this.query.find(filter);
 
-    // Apply plan search if needed
-    if (planSearch) {
-      this.query = this.query.populate({
-        path: "plan",
-        match: { name: { $regex: planSearch, $options: "i" } },
-      });
-    } else {
-      this.query = this.query.populate("plan");
+    // Apply plan population only if model has 'plan' field
+    if (this.modelHasField("plan")) {
+      if (planSearch) {
+        this.query = this.query.populate({
+          path: "plan",
+          match: { name: { $regex: planSearch, $options: "i" } },
+        });
+      } else {
+        this.query = this.query.populate("plan");
+      }
     }
 
     return this;

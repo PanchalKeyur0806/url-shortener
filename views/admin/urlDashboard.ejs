@@ -13,7 +13,9 @@
             type="search"
             name="search"
             id="search"
+            placeholder="Search by user name or email"
             class="mx-10 my-5 px-3 py-1 w-[95vw] lg:w-[50vw] bg-white focus:outline-none shadow rounded-sm focus:rounded-2xl lg:transition-all lg:duration-150 lg:ease-in-out"
+            onchange="searchFunction(this)"
           />
         </div>
 
@@ -105,7 +107,89 @@
             </tbody>
           </table>
         </div>
+
+        <div
+          id="arrow-btn"
+          class="mt-10 mx-10 flex justify-between items-center"
+        >
+          <div class="text-4xl cursor-pointer">
+            <ion-icon
+              id="prevBtn"
+              class="text-white bg-blue-800 rounded-full"
+              name="arrow-back-circle-outline"
+            ></ion-icon>
+          </div>
+
+          <div class="flex items-center text-xl">
+            <p class="mx-2 font-medium text-blue-800">Page no :-</p>
+            <p
+              id="pageNo"
+              class="text-white bg-blue-800 rounded-full px-2"
+              data-pages="<%=totalPages%>"
+            >
+              <%= pageNo %>
+            </p>
+          </div>
+
+          <div class="text-4xl cursor-pointer">
+            <ion-icon
+              id="nextBtn"
+              class="text-white bg-blue-800 rounded-full"
+              name="arrow-forward-circle-outline"
+            ></ion-icon>
+          </div>
+        </div>
       </section>
     </main>
+
+    <script>
+      const params = new URLSearchParams();
+
+      // Search input
+      function searchFunction(e) {
+        const value = e.value.trim();
+        if (value === "") {
+          window.location.href = "/admin/urls";
+        } else {
+          params.append("search", value);
+          window.location.href = `/admin/urls?search=userId:${value}`;
+        }
+      }
+
+      // Pagination buttons
+      const nextBtn = document.getElementById("nextBtn");
+      const prevBtn = document.getElementById("prevBtn");
+      const pageNo = document.getElementById("pageNo");
+
+      let currentPage = parseInt(pageNo.innerText);
+      const totalPages = parseInt(
+        document.getElementById("pageNo").dataset.pages
+      );
+
+      nextBtn.addEventListener("click", () => {
+        if (currentPage >= totalPages) {
+          alert("You're already on the last page.");
+          return;
+        }
+        currentPage += 1;
+        params.append("page", currentPage);
+        redirectWithParams();
+      });
+
+      prevBtn.addEventListener("click", () => {
+        if (currentPage <= 1) {
+          alert("You're already on the first page.");
+          return;
+        }
+        currentPage -= 1;
+        params.append("page", currentPage);
+        redirectWithParams();
+      });
+
+      function redirectWithParams() {
+        const queryString = params.toString();
+        window.location.href = `/admin/urls?${queryString}`;
+      }
+    </script>
   </body>
 </html>

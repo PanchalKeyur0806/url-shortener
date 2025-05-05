@@ -207,16 +207,32 @@ const renderSubscriptionboard = catchAsync(async (req, res, next) => {
 });
 
 const renderUrlDashboard = catchAsync(async (req, res, next) => {
-  const allUrls = await Url.find().populate("userId");
+  const features = new AppFeatures(Url.find().populate("userId"), req.query)
+    .search()
+    .paginate();
+
+  let allUrls = await features.query;
+
   if (!allUrls) {
     return next(new AppError("There is no urls in the database", 404));
   }
 
-  // console.log(allUrls);
+  // pagination
+  const limit = parseInt(req.query.limit) || 5;
+  const currentPage = parseInt(req.query.page) || 1;
+  const totalDocs = await User.countDocuments();
+  const totalPages = Math.ceil(totalDocs / limit);
+  const pageNo = req.query.page || 1;
+
+  if (currentPage > totalPages && totalPages > 0) {
+    return next(new AppError("Requested page does not exist", 404));
+  }
 
   res.render("admin/urlDashboard", {
     title: "Admin urls - url shortener",
     allUrls,
+    totalPages,
+    pageNo,
   });
 });
 

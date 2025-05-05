@@ -506,8 +506,14 @@
   .w-50 {
     width: calc(var(--spacing) * 50);
   }
+  .w-\[95\%\] {
+    width: 95%;
+  }
   .w-\[95vw\] {
     width: 95vw;
+  }
+  .w-\[100vw\] {
+    width: 100vw;
   }
   .w-full {
     width: 100%;
@@ -517,6 +523,9 @@
   }
   .max-w-md {
     max-width: var(--container-md);
+  }
+  .min-w-0 {
+    min-width: calc(var(--spacing) * 0);
   }
   .min-w-full {
     min-width: 100%;
