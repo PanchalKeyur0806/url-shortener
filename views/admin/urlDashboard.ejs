@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include("../partials/head") %>
+  </head>
+  <body>
+    <main class="flex">
+      <%- include("../partials/aside") %>
+
+      <section class="lg:w-4/5 w-full h-screen bg-gray-200">
+        <div id="search">
+          <input
+            type="search"
+            name="search"
+            id="search"
+            class="mx-10 my-5 px-3 py-1 w-[95vw] lg:w-[50vw] bg-white focus:outline-none shadow rounded-sm focus:rounded-2xl lg:transition-all lg:duration-150 lg:ease-in-out"
+          />
+        </div>
+
+        <h1
+          class="mx-5 my-5 text-2xl text-center text-blue-900 font-medium font-serif"
+        >
+          All Users Urls
+        </h1>
+
+        <div
+          class="w-[95vw] lg:w-[75vw] mx-auto overflow-x-auto shadow-md rounded-lg"
+        >
+          <table id="usersTable" class="w-full divide-y divide-blue-200">
+            <thead class="bg-blue-500 text-white">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  Id
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  Short Id
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  redirect url
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  user name
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  user email
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  createdAt
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-blue-100">
+              <% if (allUrls && allUrls.length > 0) { %> <%
+              allUrls.forEach((url) => { %>
+              <tr class="hover:bg-blue-50 transition-colors">
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                >
+                  <%= url._id %>
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                >
+                  <%= url.shortId %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <%= url.redirectUrl %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <span
+                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800"
+                  >
+                    <%= url.userId.name %>
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <%= url.userId.email %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <%= url.createdAt %>
+                </td>
+              </tr>
+              <% }) %> <% } else { %>
+              <tr>
+                <td
+                  colspan="9"
+                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                >
+                  No urls found
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

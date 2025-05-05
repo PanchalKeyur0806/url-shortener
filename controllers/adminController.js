@@ -83,6 +83,7 @@ const rendrAdminDashboard = catchAsync(async (req, res) => {
     totalUsers,
     totalUrls,
     latestData,
+    userLatestData,
     labels: JSON.stringify(urlLabels),
     datas: JSON.stringify(urlData),
     // send user stats and data
@@ -204,4 +205,24 @@ const renderSubscriptionboard = catchAsync(async (req, res, next) => {
     totalPages,
   });
 });
-export { rendrAdminDashboard, renderUserDashboard, renderSubscriptionboard };
+
+const renderUrlDashboard = catchAsync(async (req, res, next) => {
+  const allUrls = await Url.find().populate("userId");
+  if (!allUrls) {
+    return next(new AppError("There is no urls in the database", 404));
+  }
+
+  // console.log(allUrls);
+
+  res.render("admin/urlDashboard", {
+    title: "Admin urls - url shortener",
+    allUrls,
+  });
+});
+
+export {
+  rendrAdminDashboard,
+  renderUserDashboard,
+  renderSubscriptionboard,
+  renderUrlDashboard,
+};
