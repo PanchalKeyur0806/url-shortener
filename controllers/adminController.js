@@ -236,9 +236,16 @@ const renderUrlDashboard = catchAsync(async (req, res, next) => {
   });
 });
 
+const renderAdminProfile = (req, res) => {
+  res.status(200).render("admin/profile", {
+    title: "Admin Profile - url shortener",
+  });
+};
+
 export {
   rendrAdminDashboard,
   renderUserDashboard,
   renderSubscriptionboard,
   renderUrlDashboard,
+  renderAdminProfile,
 };

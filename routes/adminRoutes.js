@@ -4,6 +4,7 @@ import {
   renderUserDashboard,
   renderSubscriptionboard,
   renderUrlDashboard,
+  renderAdminProfile,
 } from "../controllers/adminController.js";
 
 const router = express.Router();
@@ -12,5 +13,6 @@ router.get("/", rendrAdminDashboard);
 router.get("/users", renderUserDashboard);
 router.get("/subscription", renderSubscriptionboard);
 router.get("/urls", renderUrlDashboard);
+router.get("/profile", renderAdminProfile);
 
 export default router;
