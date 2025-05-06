@@ -8,13 +8,19 @@ import {
 } from "../controllers/adminController.js";
 
 import { protect } from "../middleware/protect.js";
+import { restrictTo } from "../middleware/restrictTo.js";
 
 const router = express.Router();
 
-router.get("/", rendrAdminDashboard);
-router.get("/users", renderUserDashboard);
-router.get("/subscription", renderSubscriptionboard);
-router.get("/urls", renderUrlDashboard);
-router.get("/profile", protect, renderAdminProfile);
+router.get("/", protect, restrictTo("admin"), rendrAdminDashboard);
+router.get("/users", protect, restrictTo("admin"), renderUserDashboard);
+router.get(
+  "/subscription",
+  protect,
+  restrictTo("admin"),
+  renderSubscriptionboard
+);
+router.get("/urls", protect, restrictTo("admin"), renderUrlDashboard);
+router.get("/profile", protect, restrictTo("admin"), renderAdminProfile);
 
 export default router;

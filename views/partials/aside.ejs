@@ -1,14 +1,28 @@
-<aside class="min-h-screen w-1/5 bg-blue-800 text-white hidden lg:block">
+<div id="menuBtn" onclick="menu()" class="md:hidden text-3xl mx-1">
+  <ion-icon name="menu-outline"></ion-icon>
+</div>
+<aside
+  id="menu"
+  class="min-h-screen w-full md:w-2/5 lg:w-1/5 bg-blue-800 text-white hidden md:block"
+>
   <div
     id="logo"
-    class="flex items-center cursor-pointer font-medium border-b-2 border-slate-900"
+    class="md:block hidden items-center cursor-pointer font-medium border-b-2 border-slate-900"
   >
     <img
       src="https://free-url-shortener.rb.gy/url-shortener.png"
       alt="website logo"
+      id="closeBtn"
       class="w-20"
     />
     <span>Url shortener</span>
+  </div>
+  <div onclick="closeMenu()">
+    <ion-icon
+      id="closeMenu"
+      name="close-outline"
+      class="mx-10 m-5 text-3xl"
+    ></ion-icon>
   </div>
   <div id="navigation" class="mt-10 mx-5">
     <div
@@ -38,3 +52,17 @@
     </div>
   </div>
 </aside>
+
+<script>
+  function menu() {
+    document.getElementById("menu").classList.toggle("hidden");
+    document.getElementById("menuBtn").classList.toggle("hidden");
+  }
+
+  function closeMenu() {
+    console.log("i am running");
+
+    document.getElementById("menu").classList.toggle("hidden");
+    document.getElementById("menuBtn").classList.toggle("hidden");
+  }
+</script>

@@ -4,185 +4,201 @@
     <%- include("../partials/head") %>
   </head>
   <body>
-    <main class="flex">
-      <%- include("../partials/aside") %>
-      <section class="h-screen lg:w-4/5 w-full bg-gray-200 overflow-y-auto">
-        <div
-          id="cards"
-          class="mx-5 my-5 grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
-        >
-          <div class="pr-3 cursor-pointer rounded-2xl bg-white shadow relative">
-            <h2 class="text-right font-extralight text-gray-500 pb-1 mt-2">
-              Todays moneys
-            </h2>
-            <% if (data || data.length > 0) { %>
-            <p class="text-right font-bold mb-4"><%= data[0].totalRevenue %></p>
-            <% } %>
-
-            <p class="pl-3 font-medium mb-3">+5% from this week</p>
+    <main>
+      <div class="flex">
+        <%- include("../partials/aside") %>
+        <section class="h-screen lg:w-4/5 w-full bg-gray-200 overflow-y-auto">
+          <div
+            id="cards"
+            class="mx-5 my-5 grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
+          >
             <div
-              class="flex items-center justify-center text-2xl absolute left-5 -top-2 bg-green-800 text-white rounded size-10"
+              class="pr-3 cursor-pointer rounded-2xl bg-white shadow relative"
             >
-              <ion-icon name="cash-outline"></ion-icon>
+              <h2 class="text-right font-extralight text-gray-500 pb-1 mt-2">
+                Todays moneys
+              </h2>
+              <% if (data || data.length > 0) { %>
+              <p class="text-right font-bold mb-4">
+                <%= data[0].totalRevenue %>
+              </p>
+              <% } %>
+
+              <p class="pl-3 font-medium mb-3">+5% from this week</p>
+              <div
+                class="flex items-center justify-center text-2xl absolute left-5 -top-2 bg-green-800 text-white rounded size-10"
+              >
+                <ion-icon name="cash-outline"></ion-icon>
+              </div>
+            </div>
+
+            <!-- users -->
+            <div
+              class="pr-3 cursor-pointer rounded-2xl bg-white shadow relative"
+            >
+              <h2 class="text-right font-extralight text-gray-500 pb-1 mt-2">
+                Total Users
+              </h2>
+              <% if (totalUsers) { %>
+              <p class="text-right font-bold mb-4">
+                <%= totalUsers[0].userCount %>
+              </p>
+              <% } %>
+
+              <p class="pl-3 font-medium mb-3">+5% from this week</p>
+              <div
+                class="flex items-center justify-center text-2xl absolute left-5 -top-2 bg-blue-800 text-white rounded size-10"
+              >
+                <ion-icon name="person-circle-outline"></ion-icon>
+              </div>
+            </div>
+
+            <!-- URls -->
+            <div
+              class="pr-3 cursor-pointer rounded-2xl bg-white shadow relative"
+            >
+              <h2 class="text-right font-extralight text-gray-500 pb-1 mt-2">
+                Total Urls
+              </h2>
+              <% if (totalUrls) { %>
+              <p class="text-right font-bold mb-4">
+                <%= totalUrls[0].totalUrls %>
+              </p>
+              <% } %>
+
+              <p class="pl-3 font-medium mb-3">
+                +<%= latestData.percentage %>% from this week
+              </p>
+              <div
+                class="flex items-center justify-center text-2xl absolute left-5 -top-2 bg-red-800 text-white rounded size-10"
+              >
+                <ion-icon name="link-outline"></ion-icon>
+              </div>
+            </div>
+
+            <!-- subscription -->
+            <div
+              class="pr-3 cursor-pointer rounded-2xl bg-white shadow relative"
+            >
+              <h2 class="text-right font-extralight text-gray-500 pb-1 mt-2">
+                Total subscription
+              </h2>
+              <p class="text-right font-bold mb-4">5500</p>
+
+              <p class="pl-3 font-medium mb-3">+5% from this week</p>
+              <div
+                class="flex items-center justify-center text-2xl absolute left-5 -top-2 bg-green-800 text-white rounded size-10"
+              >
+                <ion-icon name="card-outline"></ion-icon>
+              </div>
             </div>
           </div>
 
-          <!-- users -->
-          <div class="pr-3 cursor-pointer rounded-2xl bg-white shadow relative">
-            <h2 class="text-right font-extralight text-gray-500 pb-1 mt-2">
-              Total Users
-            </h2>
-            <% if (totalUsers) { %>
-            <p class="text-right font-bold mb-4">
-              <%= totalUsers[0].userCount %>
+          <!-- charts -->
+          <div class="flex flex-col lg:flex-row gap-5 mx-5">
+            <div
+              class="chart-container lg:w-1/2 w-full shadow bg-white rounded-2xl hover:shadow-xl"
+              data-labels="<%=labels%>"
+              data-datas="<%=datas%>"
+            >
+              <div id="myChart" class="mx-5 mt-3"></div>
+              <div
+                id="heading"
+                class="text-2xl font-bold mx-5 my-3 text-blue-950"
+              >
+                Weekly Url charts
+              </div>
+            </div>
+
+            <div
+              class="chart-container lg:w-1/2 w-full shadow bg-white rounded-2xl hover:shadow-xl"
+              data-labels="<%=userLabels%>"
+              data-datas="<%=userData%>"
+            >
+              <div id="myChart2" class="mx-5 mt-3"></div>
+              <div
+                id="heading"
+                class="text-2xl font-bold mx-5 my-3 text-blue-950"
+              >
+                Weekly User charts
+              </div>
+            </div>
+          </div>
+
+          <!-- Get Recent Activity auto -->
+          <div class="mx-5 my-5">
+            <div class="text-2xl py-5 font-medium text-blue-900">
+              <h1>Recent Url Activity</h1>
+            </div>
+            <div
+              class="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 rounded-sm"
+            >
+              <% recentUrlData.forEach(item => { %>
+              <div class="w-full bg-white shadow px-5 py-2">
+                <p class="mt-2 text-slate-600">
+                  <span class="font-bold text-slate-600">shortid :- </span
+                  ><span class="font-light"><%= item.shortid %> </span>
+                </p>
+                <p class="mt-2 overflow-hidden">
+                  <span class="font-bold text-slate-600">Url :- </span
+                  ><span class="text-blue-600 font-light"
+                    ><%= item.url %>
+                  </span>
+                </p>
+                <p class="mt-2 text-green-800">
+                  <span class="font-bold text-slate-600">Date :- </span
+                  ><span class="font-light"><%= item.date %> </span>
+                </p>
+              </div>
+              <% }) %>
+            </div>
+            <p
+              class="flex flex-row-reverse items-center mt-3 text-blue-700 text-sm"
+            >
+              <a href="/admin/urls"
+                >See all urls
+                <ion-icon name="arrow-forward-circle-outline"></ion-icon
+              ></a>
             </p>
-            <% } %>
-
-            <p class="pl-3 font-medium mb-3">+5% from this week</p>
-            <div
-              class="flex items-center justify-center text-2xl absolute left-5 -top-2 bg-blue-800 text-white rounded size-10"
-            >
-              <ion-icon name="person-circle-outline"></ion-icon>
-            </div>
           </div>
 
-          <!-- URls -->
-          <div class="pr-3 cursor-pointer rounded-2xl bg-white shadow relative">
-            <h2 class="text-right font-extralight text-gray-500 pb-1 mt-2">
-              Total Urls
-            </h2>
-            <% if (totalUrls) { %>
-            <p class="text-right font-bold mb-4">
-              <%= totalUrls[0].totalUrls %>
+          <div class="mx-5 my-5">
+            <div class="text-2xl py-5 font-medium text-blue-900">
+              <h1>Recent User Activity</h1>
+            </div>
+            <div
+              class="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 rounded-sm"
+            >
+              <% recentUserData.forEach(item => { %>
+              <div class="w-full bg-white shadow px-5 py-2">
+                <p class="mt-2 text-slate-600">
+                  <span class="font-bold">Name :- </span
+                  ><span class="font-light"><%= item.name %> </span>
+                </p>
+                <p class="mt-2 overflow-hidden">
+                  <span class="font-bold text-slate-600">Email :- </span
+                  ><span class="text-blue-600 font-light"
+                    ><%= item.email %></span
+                  >
+                </p>
+                <p class="mt-2 text-green-800">
+                  <span class="font-bold">Date :- </span
+                  ><span class="font-light"><%= item.date %> </span>
+                </p>
+              </div>
+              <% }) %>
+            </div>
+            <p
+              class="flex flex-row-reverse items-center mt-3 text-blue-700 text-sm"
+            >
+              <a href="/admin/users"
+                >See all users
+                <ion-icon name="arrow-forward-circle-outline"></ion-icon
+              ></a>
             </p>
-            <% } %>
-
-            <p class="pl-3 font-medium mb-3">
-              +<%= latestData.percentage %>% from this week
-            </p>
-            <div
-              class="flex items-center justify-center text-2xl absolute left-5 -top-2 bg-red-800 text-white rounded size-10"
-            >
-              <ion-icon name="link-outline"></ion-icon>
-            </div>
           </div>
-
-          <!-- subscription -->
-          <div class="pr-3 cursor-pointer rounded-2xl bg-white shadow relative">
-            <h2 class="text-right font-extralight text-gray-500 pb-1 mt-2">
-              Total subscription
-            </h2>
-            <p class="text-right font-bold mb-4">5500</p>
-
-            <p class="pl-3 font-medium mb-3">+5% from this week</p>
-            <div
-              class="flex items-center justify-center text-2xl absolute left-5 -top-2 bg-green-800 text-white rounded size-10"
-            >
-              <ion-icon name="card-outline"></ion-icon>
-            </div>
-          </div>
-        </div>
-
-        <!-- charts -->
-        <div class="flex flex-col lg:flex-row gap-5 mx-5">
-          <div
-            class="chart-container lg:w-1/2 w-full shadow bg-white rounded-2xl hover:shadow-xl"
-            data-labels="<%=labels%>"
-            data-datas="<%=datas%>"
-          >
-            <div id="myChart" class="mx-5 mt-3"></div>
-            <div
-              id="heading"
-              class="text-2xl font-bold mx-5 my-3 text-blue-950"
-            >
-              Weekly Url charts
-            </div>
-          </div>
-
-          <div
-            class="chart-container lg:w-1/2 w-full shadow bg-white rounded-2xl hover:shadow-xl"
-            data-labels="<%=userLabels%>"
-            data-datas="<%=userData%>"
-          >
-            <div id="myChart2" class="mx-5 mt-3"></div>
-            <div
-              id="heading"
-              class="text-2xl font-bold mx-5 my-3 text-blue-950"
-            >
-              Weekly User charts
-            </div>
-          </div>
-        </div>
-
-        <!-- Get Recent Activity auto -->
-        <div class="mx-5 my-5">
-          <div class="text-2xl py-5 font-medium text-blue-900">
-            <h1>Recent Url Activity</h1>
-          </div>
-          <div
-            class="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 rounded-sm"
-          >
-            <% recentUrlData.forEach(item => { %>
-            <div class="w-full bg-white shadow px-5 py-2">
-              <p class="mt-2 text-slate-600">
-                <span class="font-bold text-slate-600">shortid :- </span
-                ><span class="font-light"><%= item.shortid %> </span>
-              </p>
-              <p class="mt-2 overflow-hidden">
-                <span class="font-bold text-slate-600">Url :- </span
-                ><span class="text-blue-600 font-light"><%= item.url %> </span>
-              </p>
-              <p class="mt-2 text-green-800">
-                <span class="font-bold text-slate-600">Date :- </span
-                ><span class="font-light"><%= item.date %> </span>
-              </p>
-            </div>
-            <% }) %>
-          </div>
-          <p
-            class="flex flex-row-reverse items-center mt-3 text-blue-700 text-sm"
-          >
-            <a href="/admin/urls"
-              >See all urls
-              <ion-icon name="arrow-forward-circle-outline"></ion-icon
-            ></a>
-          </p>
-        </div>
-
-        <div class="mx-5 my-5">
-          <div class="text-2xl py-5 font-medium text-blue-900">
-            <h1>Recent User Activity</h1>
-          </div>
-          <div
-            class="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 rounded-sm"
-          >
-            <% recentUserData.forEach(item => { %>
-            <div class="w-full bg-white shadow px-5 py-2">
-              <p class="mt-2 text-slate-600">
-                <span class="font-bold">Name :- </span
-                ><span class="font-light"><%= item.name %> </span>
-              </p>
-              <p class="mt-2 overflow-hidden">
-                <span class="font-bold text-slate-600">Email :- </span
-                ><span class="text-blue-600 font-light"><%= item.email %></span>
-              </p>
-              <p class="mt-2 text-green-800">
-                <span class="font-bold">Date :- </span
-                ><span class="font-light"><%= item.date %> </span>
-              </p>
-            </div>
-            <% }) %>
-          </div>
-          <p
-            class="flex flex-row-reverse items-center mt-3 text-blue-700 text-sm"
-          >
-            <a href="/admin/users"
-              >See all users
-              <ion-icon name="arrow-forward-circle-outline"></ion-icon
-            ></a>
-          </p>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
