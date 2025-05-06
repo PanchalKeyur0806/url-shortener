@@ -21,10 +21,10 @@
             </div>
             <div id="adminInfo" class="text-[17px] text-white">
               <p class="mt-2 cursor-pointer font-extralight">
-                <span class="font-bold">Name :- </span>Hello
+                <span class="font-bold">Name :- </span><%= user.name %>
               </p>
               <p class="mt-2 cursor-pointer font-extralight">
-                <span class="font-bold">Email :- </span> Admin
+                <span class="font-bold">Email :- </span> <%= user.email %>
               </p>
             </div>
           </div>
@@ -43,6 +43,7 @@
                       name="name"
                       id="name"
                       placeholder="change your name"
+                      value="<%= user.name %>"
                       class="outline py-1 px-3 mt-2 w-full"
                       readonly
                     />
@@ -65,6 +66,7 @@
                       type="email"
                       name="email"
                       id="email"
+                      value="<%= user.email  %>"
                       placeholder="change your email "
                       class="outline py-1 px-3 mt-2 w-full"
                       readonly
