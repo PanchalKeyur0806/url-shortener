@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include("./partials/head") %>
+  </head>
+  <body class="flex flex-col">
+    <%- include("./partials/navbar") %>
+    <main class="bg-gray-200">
+      <section class="w-[95vw] md:w-[75vw] mx-auto">
+        <div class="mt-20 mx-5 text-xl text-slate-700 font-light">
+          Get started
+        </div>
+        <div class="mt-1 mx-5 font-bold text-4xl">
+          <p>Get in touch with Us</p>
+          <p>we are here to assit you</p>
+        </div>
+
+        <div class="mt-20 mx-5">
+          <form action="/contact-us" method="post">
+            <div class="text-xl font-medium text-center mt-10">
+              Submit your form
+            </div>
+            <div class="mt-5">
+              <label for="subject" class="text-[16px] font-medium"
+                >Your subject</label
+              ><br />
+              <input
+                type="text"
+                name="subject"
+                id="subject"
+                placeholder="Enter your subject"
+                class="mt-1 w-full border-b-2 focus:outline-none px-3 py-1"
+              />
+            </div>
+            <div class="mt-10">
+              <label for="message" class="text-[16px] font-medium"
+                >Enter your message</label
+              >
+              <br />
+              <textarea
+                name="message"
+                id="message"
+                placeholder="Enter your message"
+                class="mt-1 w-full border-b-2 focus:outline-none px-3 py-1"
+              ></textarea>
+            </div>
+            <div class="mt-5 mb-5">
+              <input
+                type="submit"
+                value="submit your form"
+                class="w-100 px-3 py-3 cursor-pointer bg-blue-800 text-white rounded-2xl md:hover:bg-blue-700 md:transition-all md:duration-150 md:ease-in-out"
+              />
+            </div>
+          </form>
+        </div>
+
+        <div id="info" class="mx-5 my-20">
+          <div class="text-sm font-light">contact info</div>
+          <div class="md:flex gap-5 justify-between block">
+            <div class="w-3/5 text-4xl font-bold mt-10">
+              <h1>We are always with you</h1>
+            </div>
+            <div class="md:w-1/5 w-full mt-10">
+              <p class="font-bold">Email address</p>
+              <p class="font-light">help@gmail.com</p>
+
+              <p class="mt-2 font-medium">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Reiciendis, quibusdam.
+              </p>
+            </div>
+            <div class="md:w-1/5 w-full mt-10">
+              <p class="font-bold">Phone Number</p>
+              <p class="font-light">1000000000</p>
+
+              <p class="mt-2 font-medium">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Reiciendis, quibusdam.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <%- include("./partials/footer") %>
+  </body>
+</html>

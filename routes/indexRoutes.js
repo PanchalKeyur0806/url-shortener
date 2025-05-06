@@ -3,6 +3,7 @@ import {
   homePage,
   createShortUrl,
   redirectToUrl,
+  contactUs,
 } from "../controllers/indexController.js";
 
 import {
@@ -43,7 +44,7 @@ router
   .get(protect, renderProfile)
   .patch(protect, changeProfile);
 
-router.route("/").get(homePage).post(protect, validateUrl, createShortUrl);
+router.route("/contact-us").get(contactUs).post(contactUs);
 
 // our pricing page
 router.get("/pricing", renderPricing);
@@ -54,5 +55,7 @@ router.post("/month-plan", monthlyPlan);
 router.post("/yearly-plan", yearlyPlan);
 
 router.get("/:urlid", redirectToUrl);
+
+router.route("/").get(homePage).post(protect, validateUrl, createShortUrl);
 
 export default router;

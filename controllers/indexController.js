@@ -60,4 +60,9 @@ const redirectToUrl = catchAsync(async (req, res, next) => {
   res.redirect(entry.redirectUrl);
 });
 
-export { homePage, createShortUrl, redirectToUrl };
+const contactUs = (req, res) => {
+  res.render("contact", {
+    title: "contact us - url shortner",
+  });
+};
+export { homePage, createShortUrl, redirectToUrl, contactUs };

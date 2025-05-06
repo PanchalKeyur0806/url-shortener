@@ -34,6 +34,7 @@
     --color-blue-800: oklch(0.424 0.199 265.638);
     --color-blue-900: oklch(0.379 0.146 265.522);
     --color-blue-950: oklch(0.282 0.091 267.935);
+    --color-slate-200: oklch(0.929 0.013 255.508);
     --color-slate-300: oklch(0.869 0.022 252.894);
     --color-slate-600: oklch(0.446 0.043 257.281);
     --color-slate-700: oklch(0.372 0.044 257.287);
@@ -396,6 +397,9 @@
   .my-10 {
     margin-block: calc(var(--spacing) * 10);
   }
+  .my-20 {
+    margin-block: calc(var(--spacing) * 20);
+  }
   .mt-1 {
     margin-top: calc(var(--spacing) * 1);
   }
@@ -521,6 +525,9 @@
   .h-24 {
     height: calc(var(--spacing) * 24);
   }
+  .h-\[70vw\] {
+    height: 70vw;
+  }
   .h-screen {
     height: 100vh;
   }
@@ -544,6 +551,12 @@
   }
   .w-1\/5 {
     width: calc(1/5 * 100%);
+  }
+  .w-3 {
+    width: calc(var(--spacing) * 3);
+  }
+  .w-3\/5 {
+    width: calc(3/5 * 100%);
   }
   .w-5 {
     width: calc(var(--spacing) * 5);
@@ -571,6 +584,9 @@
   }
   .w-64 {
     width: calc(var(--spacing) * 64);
+  }
+  .w-100 {
+    width: calc(var(--spacing) * 100);
   }
   .w-\[95vw\] {
     width: 95vw;
@@ -848,6 +864,9 @@
   .bg-red-800 {
     background-color: var(--color-red-800);
   }
+  .bg-slate-200 {
+    background-color: var(--color-slate-200);
+  }
   .bg-white {
     background-color: var(--color-white);
   }
@@ -1008,6 +1027,9 @@
   .text-xs {
     font-size: var(--text-xs);
     line-height: var(--tw-leading, var(--text-xs--line-height));
+  }
+  .text-\[16px\] {
+    font-size: 16px;
   }
   .text-\[17px\] {
     font-size: 17px;
@@ -1383,6 +1405,11 @@
       background-color: var(--color-gray-100);
     }
   }
+  .focus\:bg-slate-200 {
+    &:focus {
+      background-color: var(--color-slate-200);
+    }
+  }
   .focus\:outline-slate-600 {
     &:focus {
       outline-color: var(--color-slate-600);
@@ -1439,6 +1466,11 @@
       width: calc(1/2 * 100%);
     }
   }
+  .md\:w-1\/5 {
+    @media (width >= 48rem) {
+      width: calc(1/5 * 100%);
+    }
+  }
   .md\:w-2\/5 {
     @media (width >= 48rem) {
       width: calc(2/5 * 100%);
@@ -1482,6 +1514,34 @@
   .md\:bg-transparent {
     @media (width >= 48rem) {
       background-color: transparent;
+    }
+  }
+  .md\:transition-all {
+    @media (width >= 48rem) {
+      transition-property: all;
+      transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+      transition-duration: var(--tw-duration, var(--default-transition-duration));
+    }
+  }
+  .md\:duration-150 {
+    @media (width >= 48rem) {
+      --tw-duration: 150ms;
+      transition-duration: 150ms;
+    }
+  }
+  .md\:ease-in-out {
+    @media (width >= 48rem) {
+      --tw-ease: var(--ease-in-out);
+      transition-timing-function: var(--ease-in-out);
+    }
+  }
+  .md\:hover\:bg-blue-700 {
+    @media (width >= 48rem) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--color-blue-700);
+        }
+      }
     }
   }
   .lg\:relative {
