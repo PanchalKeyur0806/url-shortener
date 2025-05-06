@@ -3,7 +3,8 @@ import {
   homePage,
   createShortUrl,
   redirectToUrl,
-  contactUs,
+  renderContactUs,
+  submitContactPage,
 } from "../controllers/indexController.js";
 
 import {
@@ -29,6 +30,7 @@ import { validateUrl } from "../middleware/validateUrl.js";
 import { validateRegisters } from "../middleware/validateRegister.js";
 import { validateLogin } from "../middleware/validateLogin.js";
 import { protect } from "../middleware/protect.js";
+import { validateContactPage } from "../middleware/validateContactPage.js";
 
 const router = express.Router();
 
@@ -44,7 +46,10 @@ router
   .get(protect, renderProfile)
   .patch(protect, changeProfile);
 
-router.route("/contact-us").get(contactUs).post(contactUs);
+router
+  .route("/contact-us")
+  .get(renderContactUs)
+  .post(protect, validateContactPage, submitContactPage);
 
 // our pricing page
 router.get("/pricing", renderPricing);

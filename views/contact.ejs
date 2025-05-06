@@ -5,7 +5,25 @@
   </head>
   <body class="flex flex-col">
     <%- include("./partials/navbar") %>
+
     <main class="bg-gray-200">
+      <div id="popup">
+        <% if (status === "success") { %>
+        <div
+          class="w-[95vw] md:w-[60vw] mx-auto mt-5 p-4 flex justify-between items-center bg-green-100 text-green-800 rounded-lg"
+        >
+          <p><%= message %></p>
+          <p class="cursor-pointer dismiss-btn">X</p>
+        </div>
+        <% } else if(status === "error"){ %>
+        <div
+          class="w-[95vw] md:w-[60vw] mx-auto mt-5 p-4 flex justify-between items-center bg-red-100 text-red-800 rounded-lg"
+        >
+          <p><%= message %></p>
+          <p class="cursor-pointer dismiss-btn">X</p>
+        </div>
+        <% } %>
+      </div>
       <section class="w-[95vw] md:w-[75vw] mx-auto">
         <div class="mt-20 mx-5 text-xl text-slate-700 font-light">
           Get started
@@ -83,5 +101,20 @@
       </section>
     </main>
     <%- include("./partials/footer") %>
+
+    <script>
+      const popup = document.getElementById("popup");
+      const dismiss_btn = document.querySelector(".dismiss-btn");
+
+      if (dismiss_btn) {
+        dismiss_btn.addEventListener("click", () => {
+          popup.remove();
+        });
+
+        setTimeout(() => {
+          popup.style.display = "none";
+        }, 5000);
+      }
+    </script>
   </body>
 </html>

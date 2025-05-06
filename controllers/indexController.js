@@ -4,6 +4,7 @@ import Url from "../models/urlModel.js";
 import AppError from "../utils/appError.js";
 import * as urlServices from "../services/urlServices.js";
 import User from "../models/userModel.js";
+import Contact from "../models/contactModel.js";
 
 const homePage = (req, res) => {
   res.render("index", {
@@ -60,9 +61,38 @@ const redirectToUrl = catchAsync(async (req, res, next) => {
   res.redirect(entry.redirectUrl);
 });
 
-const contactUs = (req, res) => {
+const renderContactUs = (req, res) => {
   res.render("contact", {
     title: "contact us - url shortner",
+    status: "",
+    message: "",
   });
 };
-export { homePage, createShortUrl, redirectToUrl, contactUs };
+
+const submitContactPage = catchAsync(async (req, res, next) => {
+  const currentUser = req.user;
+  const { subject, message } = req.body;
+
+  const createContact = await Contact.create({
+    userId: currentUser._id,
+    subject,
+    message,
+  });
+
+  if (!createContact) {
+    return next(new AppError("Some error occured", 404));
+  }
+  res.status(200).render("contact", {
+    title: "Contact us - url shortner",
+    status: "success",
+    message: "Contact submited successfully",
+  });
+});
+
+export {
+  homePage,
+  createShortUrl,
+  redirectToUrl,
+  renderContactUs,
+  submitContactPage,
+};
