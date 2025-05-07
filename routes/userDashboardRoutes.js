@@ -4,10 +4,11 @@ import {
   userSubscription,
 } from "../controllers/userDashboardController.js";
 import { protect } from "../middleware/protect.js";
+import { restrictTo } from "../middleware/restrictTo.js";
 
 const router = express.Router();
 
-router.get("/", protect, renderDashboard);
-router.get("/subscription", protect, userSubscription);
+router.get("/", protect, restrictTo("user"), renderDashboard);
+router.get("/subscription", protect, restrictTo("user"), userSubscription);
 
 export default router;

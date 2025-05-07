@@ -31,6 +31,7 @@ import { validateRegisters } from "../middleware/validateRegister.js";
 import { validateLogin } from "../middleware/validateLogin.js";
 import { protect } from "../middleware/protect.js";
 import { validateContactPage } from "../middleware/validateContactPage.js";
+import { restrictTo } from "../middleware/restrictTo.js";
 
 const router = express.Router();
 
@@ -43,21 +44,21 @@ router.route("/login").get(renderLoginPage).post(validateLogin, handleLogin);
 router.route("/logout").get(handleLogout);
 router
   .route("/profile")
-  .get(protect, renderProfile)
-  .patch(protect, changeProfile);
+  .get(protect, restrictTo("user"), renderProfile)
+  .patch(protect, restrictTo("user"), changeProfile);
 
 router
   .route("/contact-us")
   .get(renderContactUs)
-  .post(protect, validateContactPage, submitContactPage);
+  .post(protect, restrictTo("user"), validateContactPage, submitContactPage);
 
 // our pricing page
 router.get("/pricing", renderPricing);
 
 // need to change
-router.post("/free-plan", createFreePlan);
-router.post("/month-plan", monthlyPlan);
-router.post("/yearly-plan", yearlyPlan);
+router.post("/free-plan", protect, restrictTo("user"), createFreePlan);
+router.post("/month-plan", protect, restrictTo("user"), monthlyPlan);
+router.post("/yearly-plan", protect, restrictTo("user"), yearlyPlan);
 
 router.get("/:urlid", redirectToUrl);
 

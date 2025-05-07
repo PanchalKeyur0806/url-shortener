@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 import ejs from "ejs";
 import cors from "cors";
 import bodyParser from "body-parser";
+import jwt from "jsonwebtoken";
 
 // custom modules
 import indexRouter from "./routes/indexRoutes.js";
@@ -20,6 +21,7 @@ import userDashboardRoutes from "./routes/userDashboardRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 
 import { stripeWebhook } from "./controllers/stripeController.js";
+import User from "./models/userModel.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -58,14 +60,36 @@ const accessLogStream = fs.createWriteStream(
 // 2. Setup Morgan middleware to log in 'combined' format and save into access.log
 app.use(morgan("combined", { stream: accessLogStream }));
 
+// middleware
 app.use((req, res, next) => {
   const originalRender = res.render;
-  res.render = function (view, options, callback) {
-    const isLoggedIn = req.cookies.jwt ? true : false; // Adjust based on how you store user login status
+
+  res.render = async function (view, options, callback) {
+    let isLoggedIn = false;
+    let isAdmin = false;
+
+    try {
+      const token = req.cookies.jwt;
+      if (token) {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const findUser = await User.findById(decoded.id);
+
+        if (findUser) {
+          isLoggedIn = true;
+          isAdmin = findUser.role === "admin";
+        }
+      }
+    } catch (err) {
+      console.error("JWT or user error:", err.message);
+    }
+
     options = options || {};
     options.isLoggedIn = isLoggedIn;
+    options.isAdmin = isAdmin;
+
     originalRender.call(this, view, options, callback);
   };
+
   next();
 });
 

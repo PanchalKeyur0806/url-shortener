@@ -16,6 +16,11 @@
       class="md:static absolute left-0 top-full md:min-h-fit md:w-auto w-full bg-blue-950 md:bg-transparent hidden md:flex flex-col"
     >
       <ul class="flex md:flex-row flex-col items-center gap-5 my-8 md:my-3">
+        <% if (isAdmin) { %>
+        <li>
+          <a href="/admin" class="hover:text-gray-300 cursor-pointer">Admin</a>
+        </li>
+        <% } %>
         <li><a href="/" class="hover:text-gray-300 cursor-pointer">Home</a></li>
         <li>
           <a href="/pricing" class="hover:text-gray-300 cursor-pointer"
@@ -31,11 +36,11 @@
     </div>
 
     <div class="flex gap-2 items-center">
-      <% if (isLoggedIn) { %>
-
+      <% if (isLoggedIn) { %> <% if (!isAdmin) { %>
       <div>
         <p id="profile" class="hover:text-gray-300 cursor-pointer">Profile</p>
       </div>
+      <% } %>
 
       <a href="/logout" id="logout" class="mr-5 hover:text-gray-300">Logout</a>
 
