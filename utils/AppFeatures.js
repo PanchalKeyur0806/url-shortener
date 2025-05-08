@@ -11,6 +11,7 @@ class AppFeatures {
   search() {
     const filter = {};
     let planSearch = null;
+    let userSearch = null;
 
     // Handle status
     if (this.queryString.status) {
@@ -49,6 +50,7 @@ class AppFeatures {
     // Handle search
     if (this.queryString.search) {
       const searchQuery = this.queryString.search.trim();
+      const userSearchQuery = this.queryString.search.trim();
 
       if (searchQuery.includes(":")) {
         const [field, value] = searchQuery
@@ -58,6 +60,8 @@ class AppFeatures {
         if (field === "plan") {
           // Store plan filter separately to use with populate
           planSearch = value;
+        } else if (field === "userId") {
+          userSearch = value;
         } else {
           filter[field] = { $regex: value, $options: "i" };
         }
@@ -82,6 +86,17 @@ class AppFeatures {
         });
       } else {
         this.query = this.query.populate("plan");
+      }
+    }
+
+    if (this.modelHasField("userId")) {
+      if (userSearch) {
+        this.query = this.query.populate({
+          path: "userId",
+          match: { name: { $regex: userSearch, $options: "i" } },
+        });
+      } else {
+        this.query = this.query.populate("userId");
       }
     }
 

@@ -143,17 +143,20 @@
     </main>
 
     <script>
-      const params = new URLSearchParams();
+      const urlParams = new URLSearchParams(window.location.search); // Get existing params from URL
 
       // Search input
       function searchFunction(e) {
         const value = e.value.trim();
+        console.log(value);
+
         if (value === "") {
-          window.location.href = "/admin/urls";
+          urlParams.delete("search");
         } else {
-          params.append("search", value);
-          window.location.href = `/admin/urls?search=userId:${value}`;
+          urlParams.set("search", `userId:${value}`);
         }
+        urlParams.set("page", 1); // Reset to page 1 when a new search is made
+        redirectWithParams();
       }
 
       // Pagination buttons
@@ -162,9 +165,7 @@
       const pageNo = document.getElementById("pageNo");
 
       let currentPage = parseInt(pageNo.innerText);
-      const totalPages = parseInt(
-        document.getElementById("pageNo").dataset.pages
-      );
+      const totalPages = parseInt(pageNo.dataset.pages);
 
       nextBtn.addEventListener("click", () => {
         if (currentPage >= totalPages) {
@@ -172,7 +173,7 @@
           return;
         }
         currentPage += 1;
-        params.append("page", currentPage);
+        urlParams.set("page", currentPage);
         redirectWithParams();
       });
 
@@ -182,12 +183,12 @@
           return;
         }
         currentPage -= 1;
-        params.append("page", currentPage);
+        urlParams.set("page", currentPage);
         redirectWithParams();
       });
 
       function redirectWithParams() {
-        const queryString = params.toString();
+        const queryString = urlParams.toString();
         window.location.href = `/admin/urls?${queryString}`;
       }
     </script>

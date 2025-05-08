@@ -228,6 +228,8 @@ const renderUrlDashboard = catchAsync(async (req, res, next) => {
     return next(new AppError("Requested page does not exist", 404));
   }
 
+  allUrls = searchByPopulatedField(allUrls, req.query.search, "userId");
+
   res.render("admin/urlDashboard", {
     title: "Admin urls - url shortener",
     allUrls,

@@ -234,17 +234,18 @@
         hidden.classList.toggle("hidden");
       });
 
-      const params = new URLSearchParams();
+      const params = new URLSearchParams(window.location.search); // Keep existing params
 
       // Search input
       function searchFunction(e) {
         const value = e.value.trim();
         if (value === "") {
-          window.location.href = "/admin/subscription";
+          params.delete("search");
         } else {
           params.set("search", value);
-          redirectWithParams();
         }
+        params.set("page", 1); // Reset page when new search is performed
+        redirectWithParams();
       }
 
       // Pagination buttons
@@ -253,9 +254,7 @@
       const pageNo = document.getElementById("pageNo");
 
       let currentPage = parseInt(pageNo.innerText);
-      const totalPages = parseInt(
-        document.getElementById("pageNo").dataset.pages
-      );
+      const totalPages = parseInt(pageNo.dataset.pages);
 
       nextBtn.addEventListener("click", () => {
         if (currentPage >= totalPages) {
@@ -277,7 +276,7 @@
         redirectWithParams();
       });
 
-      // Filter by plan, status, role
+      // Filter by subscription status and role
       const statusSearch = document.getElementById("statusSearch");
       const userRole = document.getElementById("selectUser");
 
@@ -287,11 +286,17 @@
 
         if (status) {
           params.set("subscriptionstatus", status);
-        }
-        if (role) {
-          params.set("role", role);
+        } else {
+          params.delete("subscriptionstatus");
         }
 
+        if (role) {
+          params.set("role", role);
+        } else {
+          params.delete("role");
+        }
+
+        params.set("page", 1); // Reset page when filters change
         redirectWithParams();
       }
 
